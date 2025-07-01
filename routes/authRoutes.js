@@ -7,7 +7,8 @@ const Batch = require('../models/Batch');
 const router = express.Router();
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcryptjs");
+
 const moment = require('moment');
 
 
@@ -33,6 +34,7 @@ router.get('/', (req, res) => {
     });
 });
 
+// Reg
 // Register Handler
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
