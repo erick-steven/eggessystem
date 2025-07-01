@@ -1,0 +1,690 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Basic HTML Structure</title>
+    <!-- Add your CSS files or styles here -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Bootstrap Icons -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Minified Chart.js -->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+  
+/* Query Action Button */
+/* Query Action Button - adjusted positioning */
+.query-action {
+  position: relative; /* Changed from absolute */
+  left: 0;
+  z-index: 1000;
+}
+
+
+.query-action button {
+    background-color:red; /* Teal color */
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 10px;
+    z-index: 1000;
+}
+
+.query-action button:hover {
+    background-color: #d11e1e; /* Darker teal on hover */
+}
+/* Base Header Styles */
+.header {
+  background: #003B4A;
+  color: white;
+  padding: 0.1rem 0.5rem; /* Almost no vertical padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  gap: 0.2rem; /* Minimal gap */
+  line-height: 1; /* Prevents extra height from text */
+  font-size: 0.9rem; /* Smaller text (adjust if needed) */
+}
+/* Logo Section */
+
+/* Logo Section - fixed alignment */
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: orange;
+  z-index: 1;
+  margin-left: 0; /* Remove previous margin */
+}
+.logo i {
+  font-size: 1.1rem;
+}
+
+/* User Controls - ensure proper spacing */
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto; /* Push to the right */
+  z-index: 1;
+}
+
+#currentUser {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.btn-danger {
+  background: red;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* Menu Button */
+.menu-button {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 769px) {
+  .header {
+    padding: 0.8rem 1.5rem;
+  }
+  .logo {
+    font-size: 1.2rem;
+    margin-left: 3rem;
+  }
+  .logo i {
+    font-size: 1.2rem;
+  }
+  .btn-danger, 
+  .menu-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 480px) {
+  .header {
+    padding: 0.6rem;
+    gap: 0.5rem;
+  }
+  .logo {
+    font-size: 1rem;
+  }
+  .user-controls {
+    gap: 0.5rem;
+  }
+  #currentUser {
+    display: none; /* Hide on smallest screens if needed */
+  }
+}
+.header {
+  display: flex !important; /* Ensures visibility */
+}
+/* Sidebar */
+.query-sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Initially hidden */
+    height: 100%;
+    width: 250px;
+    background-color: rgba(0, 0, 0, 0.9); /* Dark semi-transparent background */
+    color: white;
+    transition: left 0.3s ease;
+    z-index: 900;
+    padding-top: 60px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.query-sidebar.open {
+    left: 0; /* Show sidebar */
+}
+
+.query-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.query-sidebar li {
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.query-sidebar li:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effect */
+}
+
+.query-sidebar a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.query-sidebar a i {
+    font-size: 18px;
+}
+
+
+
+
+
+
+
+/* Grid Table */
+.grid-table {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(100px, 1fr));
+  gap: 1px;
+  background: #003B4A;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.grid-header, .grid-row {
+  display: contents;
+}
+
+.grid-header > div, .grid-row > div {
+  padding: 0.75rem;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-header > div {
+  background-color: rgba(3, 3, 3, 0.24);
+  color: #fff;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .form-cell {
+    min-width: 120px;
+  }
+  
+  .grid-header > div, .grid-row > div {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Form Section */
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-cell::before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
+
+  .header {
+    display: none;
+  }
+
+  /* Grid Table */
+  .grid-table {
+    grid-template-columns: 1fr;
+    background: transparent;
+  }
+
+  .grid-header {
+    display: none;
+  }
+
+  .grid-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+  }
+
+  .grid-row > div {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background-color: transparent;
+    border-bottom: 1px solid #eee;
+  }
+
+  .grid-row > div:last-child {
+    border-bottom: none;
+  }
+
+  .grid-row > div::before {
+    content: attr(data-label);
+    font-weight: bold;
+    margin-right: 1rem;
+    color: #003B4A;
+  }
+
+  .action-buttons {
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+    border-top: 1px solid #eee;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .input-group {
+    width: 100%;
+    max-width: 100% !important;
+  }
+  
+  .action-buttons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+
+#batch-form-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#batch-form-table {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.batch-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.batch-form-cell {
+  flex: 1 1 150px;
+  min-width: 0;
+  padding: 8px;
+  /* Removed all border properties */
+}
+
+.batch-form-cell input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid #ddd; /* Kept border only for input fields */
+  border-radius: 4px;
+}
+
+.batch-form-header {
+  font-weight: bold;
+  background-color:#003B4A;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.batch-form-header .batch-form-cell {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .batch-form-row {
+    flex-direction: column;
+    gap: 5px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .batch-form-header {
+    display: none;
+  }
+  
+  .batch-form-cell {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 5px 0;
+  }
+  
+  .batch-form-cell[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #033f55;
+    font-size: 0.9rem;
+  }
+  
+  .batch-form-cell input {
+    width: 100%;
+  }
+}
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <!-- Query Action Button -->
+        <div class="query-action">
+            <button class="btn btn-info" onclick="toggleSidebar()">Query Action</button>
+        </div>
+        <!-- Logo -->
+        <div class="logo">
+            <i class="bi bi-egg"></i> Layers
+        </div>
+        <!-- User Info and Logout -->
+        <div>
+            <span id="currentUser">Hello, User</span>
+            <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="querySidebar" class="query-sidebar">
+        <ul>
+          <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+
+          <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+          <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+      
+          <li><a href="/financials"><i class="fas fa-dollar-sign"></i> Financials</a></li>
+         
+          <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+          <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+          <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+      
+          <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+          <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+      
+          <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+ 
+        </ul>
+    </div>
+    <div class="container my-5">
+      <div id="batch-form-container">
+        <form action="/batch" method="POST" id="batch-form-table">
+          <div class="batch-form-row batch-form-header">
+            <div class="batch-form-cell">Batch No</div>
+            <div class="batch-form-cell">Breed</div>
+            <div class="batch-form-cell">Total Number</div>
+            <div class="batch-form-cell">Age</div>
+            <div class="batch-form-cell">Date</div>
+          </div>
+    
+          <div class="batch-form-row">
+            <div class="batch-form-cell" data-label="Batch No">
+              <input type="text" name="batchNo" class="form-control" value="<%= batchNo %>" readonly />
+            </div>
+            <div class="batch-form-cell" data-label="Grade">
+              <input type="text" name="grade" class="form-control" placeholder="Enter breed" required />
+            </div>
+            <div class="batch-form-cell" data-label="Total Number">
+              <input type="number" name="totalNumber" class="form-control" placeholder="Total" required />
+            </div>
+            <div class="batch-form-cell" data-label="Age">
+              <input type="number" name="age" class="form-control" placeholder="Age in week" required />
+            </div>
+            <div class="batch-form-cell" data-label="Date">
+              <input type="date" name="date" class="form-control" required />
+            </div>
+          </div>
+    
+          <div class="text-end mt-3">
+            <button type="submit" class="btn btn-primary">Save Batch</button>
+          </div>
+        </form>
+      </div>
+    </div>
+      
+      <section class="container mt-4">
+        <h2 class="text-center mb-4">
+          <i class="fas fa-dove text-primary me-2"></i>Top 5 Current Flocks
+        </h2>
+      
+        <div class="d-flex flex-wrap justify-content-between mb-3 gap-2">
+          <!-- Batch Selection -->
+          <div class="input-group flex-grow-1" style="min-width: 250px; max-width: 500px;">
+            <select class="form-control" id="batchNo" name="batchNo" required>
+              <option value="">-- Select a Batch --</option>
+              <% if (batches && batches.length) { %>
+                  <% batches.forEach(batch => { %>
+                      <option value="<%= batch._id %>"
+                              data-total="<%= batch.totalNumber %>"
+                              data-current="<%= batch.currentCount %>">
+                          <%= batch.batchNo %> (Current: <%= batch.currentCount %>/Total: <%= batch.totalNumber %>)
+                      </option>
+                  <% }); %>
+              <% } else { %>
+                  <option value="" disabled>No active batches available</option>
+              <% } %>
+          </select>
+            
+            <!-- Search Bar -->
+            <input type="text" id="eggSearchInput" class="form-control" placeholder="Search...">
+            <button class="btn btn-success" type="button"><i class="fas fa-search"></i></button>
+          </div>
+      
+          <!-- Select number of rows to display -->
+          <div class="input-group" style="min-width: 150px; max-width: 200px;">
+            <select id="rowsPerPage" class="form-control">
+              <option value="5">show 5 rows</option>
+              <option value="10">10 rows</option>
+              <option value="15">15 rows</option>
+              <option value="20">20 rows</option>
+            </select>
+          </div>
+        </div>
+      
+        <!-- Grid Table -->
+        <div class="grid-table">
+          <div class="grid-header">
+            <div>#</div>
+            <div><i class="fas fa-hashtag me-1"></i>Batch Number</div>
+            <div><i class="fas fa-star me-1"></i>Breed</div>
+            <div><i class="fas fa-hourglass-half me-1"></i>Age in week</div>
+            <div><i class="fas fa-boxes me-1"></i> CurrentCount  </div>
+            <div><i class="fas fa-calendar-alt me-1"></i>Date</div>
+            <div><i class="fas fa-cogs me-1"></i>Actions</div>
+          </div>
+      
+          <% if (batches && batches.length > 0) { %>
+            <% batches.forEach((batch, index) => { %>
+                <div class="grid-row" data-batch-id="<%= batch._id %>">
+                    <div data-label="#"> <%= index + 1 %> </div>
+                    <div data-label="Batch Number"> <%= batch.batchNo %> </div>
+                    <div data-label="Grade"> <%= batch.grade %> </div>
+        
+                    <!-- Display current age in weeks -->
+                    <div data-label="Age"> <%= batch.currentAgeWeeks %> Weeks </div>
+        
+                    <div data-label="Current Count"> <%= batch.currentCount %> </div>
+        
+                    <div data-label="Date">
+                        <%= batch.creationDate ? batch.creationDate.toISOString().split('T')[0] : 'No date' %>
+                    </div>
+                    
+                    <div data-label="Actions" class="action-buttons">
+                        <button class="btn btn-warning btn-sm edit-btn" onclick="editBatch('<%= batch._id %>')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-btn" onclick="deleteBatch('<%= batch._id %>', this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="alert alert-warning text-center mt-3 w-100">No batches found.</div>
+        <% } %>
+        
+        </div>
+      </section>
+    
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript to Add Rows -->
+    
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+<script>
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+        const batchFilter = document.getElementById("batchFilter");
+        const eggSearchInput = document.getElementById("eggSearchInput");
+        const rowsPerPage = document.getElementById("rowsPerPage");
+        const batchRows = document.querySelectorAll(".grid-row");
+
+        function filterRows() {
+            const selectedBatch = batchFilter.value; // Get selected batch ID
+            const searchValue = eggSearchInput.value.toLowerCase(); // Get search text
+            let visibleCount = 0; // Count of displayed rows
+
+            batchRows.forEach(row => {
+                const batchId = row.getAttribute("data-batch-id"); // Get batch ID from row
+                const rowText = row.textContent.toLowerCase();
+                
+                const matchesBatch = selectedBatch === "all" || batchId === selectedBatch;
+                const matchesSearch = rowText.includes(searchValue);
+
+                if (matchesBatch && matchesSearch) {
+                    if (visibleCount < parseInt(rowsPerPage.value)) {
+                        row.style.display = "";
+                        visibleCount++;
+                    } else {
+                        row.style.display = "none";
+                    }
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        batchFilter.addEventListener("change", filterRows);
+        eggSearchInput.addEventListener("input", filterRows);
+        rowsPerPage.addEventListener("change", filterRows);
+
+        filterRows(); // Initialize filtering on page load
+    });
+
+
+
+
+
+        function toggleSidebar() {
+    const sidebar = document.getElementById("querySidebar");
+    const overlay = document.getElementById("overlay");
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("active");
+}
+
+// Close sidebar when clicking outside
+document.getElementById("overlay").addEventListener("click", () => {
+    toggleSidebar();
+});
+
+ 
+ 
+
+
+
+// Function to handle batch editing
+function editBatch(batchId) {
+    // Redirect to edit page with the batch ID
+    window.location.href = `/batch/edit/${batchId}`;
+}
+
+// Function to handle batch deletion
+function deleteBatch(batchId, buttonElement) {
+    if (confirm('Are you sure you want to delete this batch? This action cannot be undone.')) {
+        fetch(`/batch/${batchId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Remove the row from the table
+                buttonElement.closest('.grid-row').remove();
+                
+                // Show success message
+                alert('Batch deleted successfully');
+                
+                // Optional: Reload the page to refresh the list
+                // window.location.reload();
+            } else {
+                alert('Failed to delete batch');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting batch');
+        });
+    }
+}
+ 
+    </script>
+</body>
+</html>

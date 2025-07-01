@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Poultry Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+   
+   <style>
+        /* Enhanced Styles */
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .main-container {
+            max-width: 90%;
+            margin: 30px auto;
+            padding: 25px;
+            background-color: white;
+            border-radius: 10px;
+       
+        }
+        
+        .section-container {
+            padding: 25px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            border: 1px solid #eaeaea;
+        }
+
+        /* Account Cards */
+        .account-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .account-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        .receivable-card {
+            border-left-color: #28a745;
+        }
+        .payable-card {
+            border-left-color: #dc3545;
+        }
+        
+        /* Status Badges */
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35em 0.65em;
+            border-radius: 50rem;
+        }
+        
+        /* Progress Bars */
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+        }
+        
+        /* Icons */
+        .category-icon {
+            width: 24px;
+            text-align: center;
+            margin-right: 10px;
+            color: #555;
+        }
+        
+        /* Tabs */
+        .nav-tabs {
+            border-bottom: 2px solid #dee2e6;
+        }
+        .nav-tabs .nav-link {
+            border: none;
+            color: #495057;
+            padding: 0.75rem 1.25rem;
+            font-weight: 500;
+        }
+        .nav-tabs .nav-link.active {
+            font-weight: 600;
+            color: #0d6efd;
+            border-bottom: 3px solid #0d6efd;
+            background-color: transparent;
+        }
+        
+        /* Amount Display */
+        .amount-due {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+        
+        /* Batch Selector */
+        .batch-selector {
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1.75rem;
+            border: 1px solid #d0e3ff;
+        }
+        
+        .batch-info {
+            background-color: #e6f7ff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.75rem;
+            border: 1px solid #b3e0ff;
+        }
+        
+        /* Buttons */
+        .btn-outline-success {
+            border-width: 2px;
+        }
+        
+        /* Table */
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .main-container {
+                max-width: 100%;
+                padding: 15px;
+            }
+            
+            .section-container {
+                padding: 15px;
+            }
+            
+            .batch-selector .col-md-5,
+            .batch-selector .col-md-7 {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <!-- Query Action Button -->
+        <div class="query-action">
+            <button class="btn btn-info" onclick="toggleSidebar()">Query Action</button>
+        </div>
+        <!-- Logo -->
+        <div class="logo">
+            <i class="bi bi-egg"></i> Layers
+        </div>
+        <!-- User Info and Logout -->
+        <div>
+            <span id="currentUser">Hello, User</span>
+            <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="querySidebar" class="query-sidebar">
+        <ul>
+          <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+    
+          <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+          <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+      
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="financialsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-dollar-sign"></i> Financials
+            </a>
+            <div class="dropdown-menu" aria-labelledby="financialsDropdown">
+                <a class="dropdown-item" href="/financials">All Financials</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/financials#inventory-summary">Inventory Summary</a>
+                <a class="dropdown-item" href="/financials#income-sources">Income Sources</a>
+                <a class="dropdown-item" href="/financials#expense-items">Expense Items</a>
+                <a class="dropdown-item" href="/financials#current-flocks">Current Flocks</a>
+            </div>
+        </li>
+          <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+          <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+          <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+      
+          <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+          <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+      
+          <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+        </ul>
+    </div>
+    <div class="main-container">
+        <!-- Batch Selection Section -->
+        <div class="section-container">
+            <div class="batch-selector">
+                <form method="get" class="row g-3 align-items-center">
+                    <div class="col-md-5">
+                        <label class="form-label fw-bold">Select Batch</label>
+                        <select class="form-select" name="batchId" onchange="this.form.submit()">
+                            <option value="">-- All Batches --</option>
+                            <% batches.forEach(b => { %>
+                                <option value="<%= b._id %>" 
+                                    <%= currentBatch && currentBatch._id.equals(b._id) ? 'selected' : '' %>>
+                                    Batch #<%= b.batchNo %> - <%= b.birdType || 'Unspecified' %>
+                                </option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    <div class="col-md-7">
+                        <% if (currentBatch) { %>
+                            <div class="batch-info">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-1">
+                                            Batch #<%= currentBatch.batchNo %>
+                                            <span class="badge bg-<%= currentBatch.status === 'active' ? 'success' : 'secondary' %> ms-2">
+                                                <%= currentBatch.status.toUpperCase() %>
+                                            </span>
+                                        </h5>
+                                        <% if (currentBatch.startDate) { %>
+                                            <p class="mb-0 text-muted">
+                                                <i class="fas fa-egg me-1"></i><%= currentBatch.birdCount %> birds
+                                                <span class="mx-2">•</span>
+                                                <i class="fas fa-calendar-day me-1"></i>
+                                                <%= new Date(currentBatch.startDate).toLocaleDateString() %>
+                                            </p>
+                                        <% } %>
+                                    </div>
+                                    <div>
+                                        <a href="/financials/supplier-payments" class="btn btn-sm btn-outline-secondary">
+                                            Clear Selection
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="section-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">
+                    <i class="fas fa-calculator me-2"></i><%= title %>
+                    <small class="text-muted fs-6 ms-2"><%= currentDate %></small>
+                </h2>
+                <div>
+                    <button class="btn btn-outline-primary me-2">
+                        <i class="fas fa-download me-1"></i>Export
+                    </button>
+                    <a href="/financials/new?batchId=<%= currentBatch?._id %>" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>New Transaction
+                    </a>
+                </div>
+            </div>
+
+            <ul class="nav nav-tabs mb-4" id="accountingTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="payable-tab" data-bs-toggle="tab" data-bs-target="#payable" type="button">
+                        Accounts Payable <span class="badge bg-danger ms-1"><%= accountsPayable.length %></span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="receivable-tab" data-bs-toggle="tab" data-bs-target="#receivable" type="button">
+                        Accounts Receivable <span class="badge bg-success ms-1"><%= accountsReceivable.length %></span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="accountingTabsContent">
+                <!-- Accounts Payable Tab -->
+                <div class="tab-pane fade show active" id="payable" role="tabpanel">
+                    <% if (accountsPayable.length === 0) { %>
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i> 
+                            <%= currentBatch ? `No outstanding payable accounts for Batch #${currentBatch.batchNo}` : 'No outstanding payable accounts across all batches' %>
+                        </div>
+                    <% } else { %>
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                            <% accountsPayable.forEach(account => { %>
+                                <div class="col">
+                                    <div class="card account-card payable-card h-100" data-transaction-id="<%= account.transaction._id %>" data-original-amount="<%= account.transaction.amount %>">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-<%= getCategoryIcon(account.transaction.category) %> category-icon"></i>
+                                                <%= formatCategory(account.transaction.category) %>
+                                            </h5>
+                                            <span class="badge status-badge bg-<%= getStatusColor(account.transaction.payment.status) %>">
+                                                <%= account.transaction.payment.status.toUpperCase() %>
+                                            </span>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row mb-3">
+                                                <div class="col-6">
+                                                    <small class="text-muted">Supplier:</small>
+                                                    <p class="mb-0"><%= account.transaction.payment.counterparty || 'Not specified' %></p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Batch:</small>
+                                                    <p class="mb-0">
+                                                        <% if (currentBatch) { %>
+                                                            #<%= currentBatch.batchNo %>
+                                                        <% } else { %>
+                                                            N/A
+                                                        <% } %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <small class="text-muted">Amount Due:</small>
+                                                <h4 class="amount-due text-danger">$<%= account.amountDue.toFixed(2) %></h4>
+                                                <small class="text-muted">
+                                                    Total: $<%= account.transaction.amount.toFixed(2) %> | 
+                                                    Paid: $<%= (account.transaction.amount - account.amountDue).toFixed(2) %>
+                                                </small>
+                                                <div class="progress mt-2">
+                                                    <% const paidPercent = ((account.transaction.amount - account.amountDue) / account.transaction.amount * 100) %>
+                                                    <div class="progress-bar bg-<%= paidPercent >= 100 ? 'success' : (paidPercent > 0 ? 'warning' : 'danger') %>" 
+                                                         role="progressbar" 
+                                                         style="width: <%= paidPercent %>%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <form class="payment-form" data-ajax-submit action="/financials/record-payment" method="POST">
+                                                <input type="hidden" name="financialId" value="<%= account._id %>">
+                                                <input type="hidden" name="transactionId" value="<%= account.transaction._id %>">
+                                                <input type="hidden" name="batchId" value="<%= currentBatch?._id %>">
+                                                <div class="row g-2 mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label small">Amount</label>
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text">$</span>
+                                                            <input type="number" class="form-control payment-amount" name="amount" 
+                                                                   step="0.01" min="0.01" 
+                                                                   max="<%= account.amountDue.toFixed(2) %>" 
+                                                                   value="<%= account.amountDue.toFixed(2) %>"
+                                                                   required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label small">Method</label>
+                                                        <select class="form-select form-select-sm payment-method" name="method" required>
+                                                            <option value="cash">Cash</option>
+                                                            <option value="bank">Bank Transfer</option>
+                                                            <option value="mobile_money">Mobile Money</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid gap-2">
+                                                    <button type="submit" class="btn btn-sm btn-outline-success payment-submit">
+                                                        <i class="fas fa-check-circle me-1"></i> Record Payment
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="card-footer bg-transparent">
+                                            <small class="text-muted">
+                                                <i class="far fa-calendar me-1"></i>
+                                                Recorded: <%= new Date(account.date).toLocaleDateString() %>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <!-- Accounts Receivable Tab -->
+                <div class="tab-pane fade" id="receivable" role="tabpanel">
+                    <% if (accountsReceivable.length === 0) { %>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> 
+                            <%= currentBatch ? `No outstanding receivable accounts for Batch #${currentBatch.batchNo}` : 'No outstanding receivable accounts across all batches' %>
+                        </div>
+                    <% } else { %>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Customer</th>
+                                        <th>Category</th>
+                                        <th>Batch</th>
+                                        <th>Amount Due</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% accountsReceivable.forEach(account => { %>
+                                        <tr data-transaction-id="<%= account.transaction._id %>">
+                                            <td><%= account.transaction.payment.counterparty || 'N/A' %></td>
+                                            <td>
+                                                <i class="fas fa-<%= getCategoryIcon(account.transaction.category) %> me-1"></i>
+                                                <%= formatCategory(account.transaction.category) %>
+                                            </td>
+                                            <td>
+                                                <% if (currentBatch) { %>
+                                                    #<%= currentBatch.batchNo %>
+                                                <% } else { %>
+                                                    N/A
+                                                <% } %>
+                                            </td>
+                                            <td class="amount-due">$<%= account.amountDue.toFixed(2) %></td>
+                                            <td>
+                                                <%= new Date(account.date).toLocaleDateString() %>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-<%= getStatusColor(account.transaction.payment.status) %>">
+                                                    <%= account.transaction.payment.status.toUpperCase() %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-success me-1" 
+                                                        onclick="showReceiveModal('<%= account._id %>', '<%= account.transaction._id %>', '<%= account.amountDue.toFixed(2) %>')">
+                                                    <i class="fas fa-money-bill-wave"></i> Receive
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary" 
+                                                        onclick="sendReminder('<%= account.transaction.payment.counterparty %>', '<%= account.amountDue.toFixed(2) %>')">
+                                                    <i class="fas fa-envelope"></i> Remind
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receive Payment Modal -->
+    <div class="modal fade" id="receiveModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Record Payment Received</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="receiveForm" data-ajax-submit action="/financials/record-payment" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" name="financialId" id="receiveFinancialId">
+                        <input type="hidden" name="transactionId" id="receiveTransactionId">
+                        <input type="hidden" name="batchId" value="<%= currentBatch?._id %>">
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Amount Received</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" name="amount" id="receiveAmount" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Payment Method</label>
+                            <select class="form-select" name="method" required>
+                                <option value="cash">Cash</option>
+                                <option value="bank">Bank Transfer</option>
+                                <option value="mobile_money">Mobile Money</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Reference/Notes</label>
+                            <input type="text" class="form-control" name="reference">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Record Payment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Enhanced Payment Form Handler
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle all payment forms
+            document.querySelectorAll('[data-ajax-submit]').forEach(form => {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    try {
+                        // Show loading state
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Processing...';
+                        
+                        // Collect form data
+                        const formData = new FormData(form);
+                        const data = Object.fromEntries(formData.entries());
+                        
+                        // Validate amount
+                        if (!data.amount || isNaN(data.amount)) {
+                            throw new Error('Please enter a valid amount');
+                        }
+                        
+                        // Convert amount to number
+                        data.amount = parseFloat(data.amount);
+                        
+                        // Send request
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        });
+                        
+                        // Handle response
+                        const result = await response.json();
+                        
+                        if (!response.ok || !result.success) {
+                            throw new Error(result.error || `Payment failed (${response.status})`);
+                        }
+                        
+                        // Update UI based on transaction type
+                        if (result.transactionType === 'payable') {
+                            updatePayableUI(form, result);
+                        } else {
+                            updateReceivableUI(form, result);
+                        }
+                        
+                        // Show success message
+                        showAlert(result.message, 'success');
+                        
+                        // Reset form if not modal
+                        if (form.id !== 'receiveForm') {
+                            form.reset();
+                        }
+                        
+                    } catch (error) {
+                        console.error('Payment error:', error);
+                        showAlert(error.message, 'danger');
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }
+                });
+            });
+            
+            // Payable UI updates
+            function updatePayableUI(form, result) {
+                const card = form.closest('.account-card');
+                if (!card) return;
+                
+                // Update amount due
+                const amountDueElement = card.querySelector('.amount-due');
+                if (amountDueElement) {
+                    amountDueElement.textContent = `$${result.balance.toFixed(2)}`;
+                    amountDueElement.className = `amount-due text-${result.cleared ? 'success' : 'danger'}`;
+                }
+                
+                // Update progress bar
+                const progressBar = card.querySelector('.progress-bar');
+                if (progressBar) {
+                    const paidPercent = ((result.originalAmount - result.balance) / result.originalAmount * 100);
+                    progressBar.style.width = `${paidPercent}%`;
+                    progressBar.className = `progress-bar bg-${paidPercent >= 100 ? 'success' : (paidPercent > 0 ? 'warning' : 'danger')}`;
+                }
+                
+                // Update status badge
+                const statusBadge = card.querySelector('.status-badge');
+                if (statusBadge) {
+                    statusBadge.textContent = result.status.toUpperCase();
+                    statusBadge.className = `badge status-badge bg-${getStatusColor(result.status)}`;
+                }
+                
+                // Remove if fully paid
+                if (result.cleared) {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '0';
+                    setTimeout(() => card.remove(), 500);
+                }
+            }
+            
+            // Receivable UI updates
+            function updateReceivableUI(form, result) {
+                const row = form.closest('tr');
+                if (!row) return;
+                
+                // Update amount due
+                const amountDueCell = row.querySelector('.amount-due');
+                if (amountDueCell) {
+                    amountDueCell.textContent = `$${result.balance.toFixed(2)}`;
+                }
+                
+                // Update status badge
+                const statusBadge = row.querySelector('.badge');
+                if (statusBadge) {
+                    statusBadge.textContent = result.status.toUpperCase();
+                    statusBadge.className = `badge bg-${getStatusColor(result.status)}`;
+                }
+                
+                // Remove if fully paid
+                if (result.cleared) {
+                    row.style.transition = 'all 0.5s ease';
+                    row.style.opacity = '0';
+                    setTimeout(() => row.remove(), 500);
+                }
+                
+                // Close modal if this was from modal form
+                if (form.id === 'receiveForm') {
+                    bootstrap.Modal.getInstance(document.getElementById('receiveModal')).hide();
+                }
+            }
+            
+            // Helper function to get status color
+            function getStatusColor(status) {
+                const colors = {
+                    'pending': 'danger',
+                    'partial': 'warning',
+                    'paid': 'success',
+                    'overdue': 'danger'
+                };
+                return colors[status] || 'secondary';
+            }
+        });
+        
+        // Show receive payment modal
+        window.showReceiveModal = function(financialId, transactionId, amountDue) {
+            const modal = new bootstrap.Modal(document.getElementById('receiveModal'));
+            
+            document.getElementById('receiveFinancialId').value = financialId;
+            document.getElementById('receiveTransactionId').value = transactionId;
+            
+            const amountInput = document.getElementById('receiveAmount');
+            amountInput.value = amountDue;
+            amountInput.max = amountDue;
+            
+            modal.show();
+        }
+        
+        // Send reminder function
+        window.sendReminder = function(customer, amount) {
+            // In a real app, this would send an email/SMS
+            showAlert(`Reminder sent to ${customer} for $${amount}`, 'info');
+        }
+        
+        // Enhanced alert function
+        function showAlert(message, type = 'success') {
+            // Remove any existing alerts first
+            document.querySelectorAll('.global-alert').forEach(el => el.remove());
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `global-alert alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = `
+                top: 20px;
+                right: 20px;
+                z-index: 1060;
+                min-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            
+            alertDiv.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 
+                                      type === 'danger' ? 'fa-exclamation-triangle' : 
+                                      type === 'info' ? 'fa-info-circle' : 'fa-bell'} me-2"></i>
+                    <div>${message}</div>
+                    <button type="button" class="btn-close ms-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 150);
+            }, 5000);
+            
+            // Add click handler for close button
+            alertDiv.querySelector('.btn-close').addEventListener('click', () => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 150);
+            });
+        }
+
+
+
+
+
+
+        function toggleSidebar() {
+    const sidebar = document.getElementById("querySidebar");
+    const overlay = document.getElementById("overlay");
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("active");
+}
+
+// Close sidebar when clicking outside
+document.getElementById("overlay").addEventListener("click", () => {
+    toggleSidebar();
+});
+
+ 
+ 
+
+    </script>
+</body>
+</html>
+
+<% 
+// Helper functions
+function getCategoryIcon(category) {
+    const icons = {
+        'egg': 'egg',
+        'culled': 'drumstick-bite',
+        'feed': 'seedling',
+        'chick': 'kiwi-bird',
+        'medication': 'pills',
+        'labor': 'user-tie',
+        'transport': 'truck',
+        'other': 'file-invoice-dollar'
+    };
+    return icons[category] || 'file-invoice-dollar';
+}
+
+function formatCategory(category) {
+    const names = {
+        'egg': 'Egg Sales',
+        'culled': 'Culled Sales',
+        'feed': 'Feed Supply',
+        'chick': 'Chicks Purchase',
+        'medication': 'Medication',
+        'labor': 'Labor',
+        'transport': 'Transport',
+        'other': 'Other'
+    };
+    return names[category] || category;
+}
+
+function getStatusColor(status) {
+    const colors = {
+        'pending': 'danger',
+        'partial': 'warning',
+        'paid': 'success',
+        'overdue': 'danger'
+    };
+    return colors[status] || 'secondary';
+}
+%>

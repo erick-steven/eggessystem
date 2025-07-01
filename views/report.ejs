@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Generation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+   
+   
+   
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Bootstrap Icons -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+       
+
+
+       .container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px  !important;
+    padding-top: 50px !important;
+}
+ 
+
+
+        h2 {
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        h2 i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        /* Form Label Styling */
+        .form-label {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+
+        .form-label i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+
+        /* Select Dropdown Styling */
+        .form-control {
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            background-color: #3498db;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-primary i {
+            font-size: 18px;
+        }
+
+        /* Report Result Styling */
+        #reportResult {
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .alert-success {
+            background-color: #d5f5e3;
+            color: #27ae60;
+            border: 1px solid #2ecc71;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #dc3545;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert i {
+            font-size: 20px;
+        }
+        h3, h5 {
+            color: #2c3e50;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        h5 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        /* Table Styles */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table th, .table td {
+            padding: 22px 15px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #2c3e50;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tbody tr:nth-of-type(even) {
+            background-color: #f8f9fa;
+        }
+
+        .table tbody tr:last-of-type {
+            border-bottom: 2px solid #2c3e50;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Analysis Row Styles */
+        .analysis-row {
+            background-color: #e9f5ff !important;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .analysis-row td {
+            padding: 15px;
+        }
+
+        .analysis-row strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Button Styles (Optional) */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background-color: #2c3e50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #1a252f;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .table th, .table td {
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            h5 {
+                font-size: 16px;
+            }
+        }
+        .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        flex: 1 1 auto;
+        min-width: 150px;
+        position: relative;
+    }
+
+    .search-group {
+        position: relative;
+        max-width: 250px;
+    }
+
+    .search-input {
+        padding-left: 35px;
+        width: 100%;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7f8c8d;
+        z-index: 2;
+    }
+
+    .select-dropdown {
+        width: 100%;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 15px;
+    }
+
+    .submit-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        white-space: nowrap;
+        min-width: fit-content;
+    }
+
+    @media (max-width: 768px) {
+        .form-container {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+        }
+
+        .form-group, .search-group {
+            max-width: 100% !important;
+            width: 100%;
+        }
+
+        .submit-btn {
+            width: 100%;
+        }
+
+        .btn-text {
+            display: inline;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .btn-text {
+            display: none;
+        }
+
+        .submit-btn {
+            padding: 10px 15px;
+        }
+
+        .submit-btn i {
+            margin-right: 0;
+        }
+    }
+    .table-container {
+    position: relative;
+    overflow: hidden;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 40px; /* Space for arrows */
+    padding-bottom: 10px; /* Prevents scrollbar from touching content */
+}
+
+/* Hide scrollbar but keep functionality */
+.table-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+    transition: all 0.3s ease;
+    opacity: 0.9;
+}
+
+.scroll-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-50%) scale(1.1);
+    opacity: 1;
+}
+
+.scroll-button.left {
+    left: 0;
+}
+
+.scroll-button.right {
+    right: 0;
+}
+
+.scroll-button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    transform: translateY(-50%);
+    opacity: 0.5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-wrapper {
+        margin: 0 30px;
+    }
+    
+    .scroll-button {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <!-- Query Action Button -->
+        <div class="query-action">
+            <button class="btn btn-info" onclick="toggleSidebar()">Query Action</button>
+        </div>
+        <!-- Logo -->
+        <div class="logo">
+            <i class="bi bi-egg"></i> Layers
+        </div>
+        <!-- User Info and Logout -->
+        <div>
+            <span id="currentUser">Hello, User</span>
+            <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="querySidebar" class="query-sidebar">
+        <ul>
+            <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+        <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+        <li><a href="/financials"><i class="fas fa-dollar-sign"></i> Financials</a></li>
+      
+        <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+        <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+        <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+        <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+    <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+
+    <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+        </ul>
+    </div>
+    <!-- Main Content -->
+    <div class="container my-5">
+        <h2><i class="fas fa-file-alt"></i> Batch Report</h2>
+      
+        <form action="/report" method="GET">
+            <div class="form-container">
+                <!-- Search input -->
+                <div class="form-group search-group">
+                    <input type="text" id="searchInput" class="form-control search-input" 
+                           placeholder="Search Batch Number..." onkeyup="filterBatches()">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                
+                <!-- Batch Dropdown -->
+                <div class="form-group">
+                    <select name="batch" class="form-control select-dropdown" id="batchDropdown">
+                        <option value="">Select Batch</option>
+                        <% allBatches.forEach(b => { %>
+                            <option value="<%= b._id %>" <%= selectedBatchId == b._id ? 'selected' : '' %>>
+                                <%= b.batchNo %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+                
+                <!-- Submit button -->
+                <button class="btn btn-primary submit-btn" type="submit">
+                    <i class="fas fa-search"></i> <span class="btn-text">Generate Report</span>
+                </button>
+            </div>
+        </form>
+        <% if (selectedBatch) { %>
+            <h3>Report for Batch: <%= selectedBatch.batchNo %></h3>
+        
+            <!-- Batch Details Section -->
+            <h5 class="mt-4">Batch Details:</h5>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Batch Number</th>
+                        <th>Breed</th>
+                        <th>Age (week)</th>
+                        <th>Total Number</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><%= selectedBatch.batchNo %></td>
+                        <td><%= selectedBatch.grade %></td>
+                        <td><%= selectedBatch.age %></td>
+                        <td><%= selectedBatch.totalNumber %></td>
+                        <td><%= selectedBatch.date.toDateString() %></td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <!-- Egg Production Table -->
+            <h5 class="mt-4">Egg Production:</h5>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Total Eggs</th>
+                        <th>Good Eggs %</th>
+                        <th>Bad Eggs %</th>
+                        <th>Weight (kg)</th>
+                        <th>WC Layer %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% eggData.forEach(entry => { 
+                        const layerAge = Math.floor((new Date(entry.date) - new Date(selectedBatch.date)) / (1000 * 60 * 60 * 24));
+                        let wcLayerPercentage = 0;
+                        if (layerAge <= 4) {
+                            wcLayerPercentage = 0; 
+                        } else if (layerAge <= 12) {
+                            wcLayerPercentage = 0;
+                        } else if (layerAge <= 16) {
+                            wcLayerPercentage = 0;
+                        } else if (layerAge <= 20) {
+                            wcLayerPercentage = 50;
+                        } else if (layerAge <= 30) {
+                            wcLayerPercentage = 85;
+                        } else if (layerAge <= 60) {
+                            wcLayerPercentage = 80;
+                        } else if (layerAge <= 80) {
+                            wcLayerPercentage = 60;
+                        } else {
+                            wcLayerPercentage = 30;
+                        }
+                        const wcLayerCount = Math.round(selectedBatch.totalNumber * (wcLayerPercentage / 100));
+        
+                        // Calculate Egg Production Percentage
+                        const eggProductionPercentage = ((entry.totalEggs / selectedBatch.totalNumber) * 100).toFixed(2);
+        
+                        // Determine Life Stage and Expected Values
+                        let lifeStage = "";
+                        let expectedWeightRange = "";
+                        let expectedEggProductionRange = "";
+                        if (selectedBatch.age <= 6) {
+                            lifeStage = "Chick (Brooding)";
+                            expectedWeightRange = "0.04–0.60 kg";
+                            expectedEggProductionRange = "No eggs";
+                        } else if (selectedBatch.age <= 16) {
+                            lifeStage = "Grower Stage";
+                            expectedWeightRange = "0.60–1.2 kg";
+                            expectedEggProductionRange = "No eggs";
+                        } else if (selectedBatch.age <= 20) {
+                            lifeStage = "Pre-laying Stage";
+                            expectedWeightRange = "1.3–1.5 kg";
+                            expectedEggProductionRange = "First eggs begin";
+                        } else if (selectedBatch.age <= 30) {
+                            lifeStage = "Peak Production";
+                            expectedWeightRange = "1.5–1.8 kg";
+                            expectedEggProductionRange = "85%–95%";
+                        } else if (selectedBatch.age <= 72) {
+                            lifeStage = "Laying Period";
+                            expectedWeightRange = "1.8–2.0 kg";
+                            expectedEggProductionRange = "80%–90%";
+                        } else {
+                            lifeStage = "Late Laying Stage";
+                            expectedWeightRange = "2.0–2.2 kg";
+                            expectedEggProductionRange = "60%–75%";
+                        }
+        
+                        // Feedback based on comparison
+                        let feedback = "";
+                        if (entry.weight < parseFloat(expectedWeightRange.split("–")[0])) {
+                            feedback += "Weight is below expected. Review nutrition and health. ";
+                        } else if (entry.weight > parseFloat(expectedWeightRange.split("–")[1])) {
+                            feedback += "Weight is above expected. Monitor feed intake. ";
+                        } else {
+                            feedback += "Weight is within the expected range. ";
+                        }
+        
+                        if (eggProductionPercentage < parseFloat(expectedEggProductionRange.split("–")[0])) {
+                            feedback += "Egg production is below expected. Check for stress, disease, or feed quality. ";
+                        } else if (eggProductionPercentage > parseFloat(expectedEggProductionRange.split("–")[1])) {
+                            feedback += "Egg production is above expected. Excellent performance! ";
+                        } else {
+                            feedback += "Egg production is within the expected range. ";
+                        }
+                    %>
+                        <tr>
+                            <td><%= entry.date.toDateString() %></td>
+                            <td><%= entry.totalEggs %></td>
+                            <td><%= entry.goodEggsPercent %>%</td>
+                            <td><%= entry.badEggsPercent %>%</td>
+                            <td><%= entry.weight %> kg</td>
+                            <td><%= wcLayerPercentage %>% (WC Layers: <%= wcLayerCount %>)</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <strong>Analysis for <%= entry.date.toDateString() %>:</strong><br>
+                                - Life Stage: <%= lifeStage %><br>
+                                - Egg Production Percentage: <%= eggProductionPercentage %>%<br>
+                                - Expected Weight Range: <%= expectedWeightRange %><br>
+                                - Expected Egg Production Range: <%= expectedEggProductionRange %><br>
+                                - Feedback: <%= feedback %>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <h5 class="mt-4">Financials:</h5>
+            <div class="table-container">
+                <button class="scroll-button left" disabled>&#9664;</button>
+                <div class="table-wrapper">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Income</th>
+                                <th>Expenses</th>
+                                <th>Profit</th>
+                                <th>Egg Qty</th>
+                                <th>Egg Price</th>
+                                <th>Egg Income</th>
+                                <th>Culled Qty</th>
+                                <th>Culled Price</th>
+                                <th>Culled Income</th>
+                                <th>Feed Cost</th>
+                                <th>Chick Cost</th>
+                                <th>Medication Cost</th>
+                                <th>Labor Cost</th>
+                                <th>Transport Cost</th>
+                                <th>Trays Produced</th>
+                                <th>Trays Sold</th>
+                                <th>Trays Remaining</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% financialData.forEach(entry => { %>
+                                <tr>
+                                    <td><%= entry.date.toLocaleDateString() %></td>
+                                    <td><%= entry.totalIncome.toLocaleString() %></td>
+                                    <td><%= entry.totalExpenses.toLocaleString() %></td>
+                                    <td><%= entry.profit.toLocaleString() %></td>
+                                    <td><%= entry.eggQty.toLocaleString() %></td>
+                                    <td><%= entry.eggPrice.toLocaleString() %></td>
+                                    <td><%= entry.eggIncome.toLocaleString() %></td>
+                                    <td><%= entry.culledQty.toLocaleString() %></td>
+                                    <td><%= entry.culledPrice.toLocaleString() %></td>
+                                    <td><%= entry.culledIncome.toLocaleString() %></td>
+                                    <td><%= entry.feedCost.toLocaleString() %></td>
+                                    <td><%= entry.chickCost.toLocaleString() %></td>
+                                    <td><%= entry.medicationCost.toLocaleString() %></td>
+                                    <td><%= entry.laborCost.toLocaleString() %></td>
+                                    <td><%= entry.transportCost.toLocaleString() %></td>
+                                    <td><%= entry.traysProduced.toLocaleString() %></td>
+                                    <td><%= entry.traysSold.toLocaleString() %></td>
+                                    <td><%= entry.traysRemaining.toLocaleString() %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="scroll-button right">&#9654;</button>
+            </div>
+            
+            <!-- Financial Recommendations Section -->
+            <div class="financial-recommendations mt-4">
+                <h5><i class="fas fa-lightbulb"></i> Financial Insights</h5>
+                
+                <% if (financialData.length > 0) { 
+                    // Calculate financial metrics
+                    const totalIncome = financialData.reduce((sum, entry) => sum + entry.totalIncome, 0);
+                    const totalExpenses = financialData.reduce((sum, entry) => sum + entry.totalExpenses, 0);
+                    const profitMargin = ((totalIncome - totalExpenses) / totalIncome) * 100;
+                    const avgDailyProfit = (totalIncome - totalExpenses) / financialData.length;
+                    
+                    // Calculate cost percentages
+                    const feedPercentage = (financialData.reduce((sum, entry) => sum + entry.feedCost, 0) / totalExpenses) * 100;
+                    const laborPercentage = (financialData.reduce((sum, entry) => sum + entry.laborCost, 0) / totalExpenses) * 100;
+                    const medicationPercentage = (financialData.reduce((sum, entry) => sum + entry.medicationCost, 0) / totalExpenses) * 100;
+                    
+                    // Calculate tray metrics
+                    const totalTraysProduced = financialData.reduce((sum, entry) => sum + entry.traysProduced, 0);
+                    const totalTraysSold = financialData.reduce((sum, entry) => sum + entry.traysSold, 0);
+                    const traySalesPercentage = (totalTraysSold / totalTraysProduced) * 100;
+                %>
+                
+                <div class="card mb-3">
+                    <div class="card-header bg-primary text-white">
+                        <strong>Key Financial Metrics</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p><strong>Total Income:</strong> <%= totalIncome.toLocaleString() %></p>
+                                <p><strong>Total Expenses:</strong> <%= totalExpenses.toLocaleString() %></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Profit Margin:</strong> <%= profitMargin.toFixed(2) %>%</p>
+                                <p><strong>Avg Daily Profit:</strong> <%= avgDailyProfit.toLocaleString() %></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Tray Sales Rate:</strong> <%= traySalesPercentage.toFixed(2) %>%</p>
+                                <p><strong>Unsold Trays:</strong> <%= (totalTraysProduced - totalTraysSold).toLocaleString() %></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <strong>Recommendations</strong>
+                    </div>
+                    <div class="card-body">
+                        <% if (profitMargin < 15) { %>
+                            <div class="alert alert-warning">
+                                <h6><i class="fas fa-exclamation-triangle"></i> Low Profit Margin (<%= profitMargin.toFixed(2) %>%)</h6>
+                                <p>Your profit margin is below the recommended 15% threshold. Consider:</p>
+                                <ul>
+                                    <% if (feedPercentage > 60) { %>
+                                        <li>Feed costs make up <%= feedPercentage.toFixed(2) %>% of expenses - explore bulk purchasing or alternative suppliers</li>
+                                    <% } %>
+                                    <% if (laborPercentage > 25) { %>
+                                        <li>Labor costs are high at <%= laborPercentage.toFixed(2) %>% - consider efficiency improvements</li>
+                                    <% } %>
+                                    <% if (medicationPercentage > 15) { %>
+                                        <li>Medication costs are significant at <%= medicationPercentage.toFixed(2) %>% - review health management practices</li>
+                                    <% } %>
+                                    <li>Explore premium markets for your eggs to increase revenue</li>
+                                    <li>Review pricing strategy for eggs and culled birds</li>
+                                </ul>
+                            </div>
+                        <% } %>
+                        
+                        <% if (traySalesPercentage < 90) { %>
+                            <div class="alert alert-warning">
+                                <h6><i class="fas fa-exclamation-triangle"></i> Inventory Management</h6>
+                                <p>Only <%= traySalesPercentage.toFixed(2) %>% of produced trays were sold (<%= totalTraysSold %>/<%= totalTraysProduced %>).</p>
+                                <ul>
+                                    <li>Review your sales channels and marketing strategies</li>
+                                    <li>Consider offering promotions for older inventory</li>
+                                    <li>Adjust production to better match demand</li>
+                                </ul>
+                            </div>
+                        <% } %>
+                        
+                        <% if (avgDailyProfit > 0 && profitMargin >= 15) { %>
+                            <div class="alert alert-success">
+                                <h6><i class="fas fa-check-circle"></i> Healthy Financial Performance</h6>
+                                <p>Your batch is performing well with a <%= profitMargin.toFixed(2) %>% profit margin.</p>
+                                <ul>
+                                    <li>Consider reinvesting profits in equipment upgrades</li>
+                                    <li>Explore expanding production capacity</li>
+                                    <li>Review opportunities for premium product lines</li>
+                                </ul>
+                            </div>
+                        <% } %>
+                        
+                        <!-- Cost Structure Analysis -->
+                        <div class="mt-3">
+                            <h6><i class="fas fa-chart-pie"></i> Cost Structure Analysis</h6>
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-danger" style="width: <%= feedPercentage %>%" 
+                                     title="Feed: <%= feedPercentage.toFixed(2) %>%">
+                                    Feed
+                                </div>
+                                <div class="progress-bar bg-warning" style="width: <%= laborPercentage %>%" 
+                                     title="Labor: <%= laborPercentage.toFixed(2) %>%">
+                                    Labor
+                                </div>
+                                <div class="progress-bar bg-info" style="width: <%= medicationPercentage %>%" 
+                                     title="Medication: <%= medicationPercentage.toFixed(2) %>%">
+                                    Meds
+                                </div>
+                            </div>
+                            <small class="text-muted">Feed <%= feedPercentage.toFixed(2) %>% | 
+                                Labor <%= laborPercentage.toFixed(2) %>% | 
+                                Meds <%= medicationPercentage.toFixed(2) %>% | 
+                                Other <%= (100 - feedPercentage - laborPercentage - medicationPercentage).toFixed(2) %>%</small>
+                        </div>
+                    </div>
+                </div>
+                <% } else { %>
+                    <div class="alert alert-info">No financial data available for analysis</div>
+                <% } %>
+            </div>
+      
+    </div>
+    <button class="scroll-button right">&#9654;</button>
+</div>
+<% } else { %>
+    <p class="text-muted">Select a batch or search to generate a report.</p>
+<% } %>
+    <!-- JavaScript -->
+    <script>
+    
+        function logout() {
+            alert("Logging out...");
+        }
+
+
+
+
+function logout() {
+    alert('Logout clicked!');
+    // Add your logout logic here
+}
+
+
+
+function filterBatches() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const options = document.querySelectorAll('#batchDropdown option');
+        
+        options.forEach(option => {
+            const batchNo = option.textContent.toLowerCase();
+            if (batchNo.includes(input)) {
+                option.style.display = 'block';  // Show batch number
+            } else {
+                option.style.display = 'none';   // Hide batch number
+            }
+        });
+    }
+    </script>
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

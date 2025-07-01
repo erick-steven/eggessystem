@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Financial Record</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    
+    <style>
+        /* Preserve original header styles exactly */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        
+        .query-action .btn {
+            padding: 8px 15px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        #currentUser {
+            margin-right: 10px;
+        }
+        
+        /* Enhanced responsive form styles */
+        .edit-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .form-table td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            width: 200px;
+        }
+        
+        .section-header {
+            background-color: #e7f5ff;
+            font-weight: 600;
+            padding: 10px 12px;
+        }
+        
+        /* Responsive adaptations */
+        @media (max-width: 768px) {
+            .form-table, .form-table tbody, .form-table tr, .form-table td {
+                display: block;
+                width: 100%;
+            }
+            
+            .form-table tr {
+                margin-bottom: 15px;
+                border: 1px solid #dee2e6;
+                border-radius: 5px;
+                overflow: hidden;
+            }
+            
+            .form-table td {
+                padding: 10px;
+                border-bottom: 1px solid #eee;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            
+            .form-table td:last-child {
+                border-bottom: none;
+            }
+            
+            .form-label {
+                flex: 0 0 100%;
+                margin-bottom: 5px;
+                padding-right: 0;
+            }
+            
+            .form-control {
+                flex: 1;
+                min-width: 100%;
+            }
+            
+            .section-header {
+                padding: 8px 10px;
+            }
+            
+            .btn-group-mobile {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn-group-mobile .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preserved Header Exactly As Is -->
+    <div class="header">
+        <div class="query-action">
+            <button class="btn btn-info" onclick="toggleSidebar()">Quick Actions</button>
+        </div>
+        <div class="logo">
+            <i class="bi bi-egg"></i> Layers
+        </div>
+        <div>
+            <span id="currentUser">Hello, User</span>
+            <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <!-- Sidebar (unchanged) -->
+    <div id="querySidebar" class="query-sidebar">
+        <ul>
+            <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+            <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+            <li><a href="/financials"><i class="fas fa-dollar-sign"></i> Financials</a></li>
+            <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+            <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+            <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+    </div>
+    
+    <!-- Enhanced Responsive Form Container -->
+    <div class="container">
+        <div class="edit-container">
+            <h2 class="mb-4 text-center">
+                <i class="fas fa-money-bill-wave me-2"></i>Edit Financial Record
+            </h2>
+            
+            <form action="/financials/update/<%= record._id %>" method="POST">
+                <table class="form-table">
+                    <tbody>
+                        <!-- Batch Info -->
+                        <tr class="section-header">
+                            <td colspan="2">Batch Information</td>
+                        </tr>
+                        <tr>
+                            <td class="form-label">Batch</td>
+                            <td>
+                                <select class="form-select" name="batch" required>
+                                    <% batches.forEach(batch => { %>
+                                        <option value="<%= batch._id %>" 
+                                            <%= batch._id.toString() === record.batch?._id.toString() ? 'selected' : '' %>>
+                                            <%= batch.batchNo %>
+                                        </option>
+                                    <% }) %>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="form-label">Date</td>
+                            <td>
+                                <input type="date" class="form-control" name="date" 
+                                       value="<%= record.date ? record.date.toISOString().split('T')[0] : '' %>" required>
+                            </td>
+                        </tr>
+                        
+                        <!-- Income Section -->
+                        <tr class="section-header">
+                            <td colspan="2">Income Details</td>
+                        </tr>
+                        <tr>
+                            <td class="form-label">Total Income (₹)</td>
+                            <td>
+                                <input type="number" step="0.01" class="form-control" name="totalIncome" 
+                                       value="<%= record.totalIncome %>" required>
+                            </td>
+                        </tr>
+                        <!-- Additional income fields... -->
+                        
+                        <!-- Expenses Section -->
+                        <tr class="section-header">
+                            <td colspan="2">Expense Details</td>
+                        </tr>
+                        <tr>
+                            <td class="form-label">Total Expenses (₹)</td>
+                            <td>
+                                <input type="number" step="0.01" class="form-control" name="totalExpenses" 
+                                       value="<%= record.totalExpenses %>" required>
+                            </td>
+                        </tr>
+                        <!-- Additional expense fields... -->
+                        
+                        <!-- Tray Management -->
+                        <tr class="section-header">
+                            <td colspan="2">Tray Management</td>
+                        </tr>
+                        <tr>
+                            <td class="form-label">Trays Sold</td>
+                            <td>
+                                <input type="number" class="form-control" name="traysSold" 
+                                       value="<%= record.traysSold %>" required>
+                            </td>
+                        </tr>
+                        
+                        <!-- Form Actions -->
+                        <tr>
+                            <td colspan="2" class="pt-4">
+                                <div class="d-flex justify-content-end btn-group-mobile">
+                                    <button type="submit" class="btn btn-primary me-2">
+                                        <i class="fas fa-save me-1"></i>Update Record
+                                    </button>
+                                    <a href="/financials" class="btn btn-secondary">
+                                        <i class="fas fa-times me-1"></i>Cancel
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('querySidebar').classList.toggle('active');
+        }
+        
+        function logout() {
+            // Logout implementation
+            window.location.href = '/logout';
+        }
+    </script>
+</body>
+</html>

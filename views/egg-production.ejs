@@ -1,0 +1,657 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  
+  <!-- Minified Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Minified Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <style>
+ /* Egg Production Form - Soft Modern Style */
+#egg-production-container {
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  border: 1px solid #eaeaea;
+}
+
+#egg-production-container h2 {
+  color: #2d3748;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  font-size: 1.3rem;
+}
+
+#egg-production-container h2 .icon {
+  color: #4299e1;
+}
+
+/* Table Styling */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  
+}.table thead {
+  border-radius: 5px 5px 0 0; /* Top-left and top-right only */
+  overflow: hidden; /* This is crucial to make the radius visible */
+}
+
+.table thead th {
+  background-color: rgb(3, 64, 85);
+  color: #ffffff;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 500;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* Optional: Perfect rounded corners for first and last cells */
+.table thead th:first-child {
+  border-top-left-radius: 5px;
+}
+.table thead th:last-child {
+  border-top-right-radius: 5px;
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.table tbody td {
+  padding: 14px 16px;
+  vertical-align: middle;
+  color: #4a5568;
+  border-bottom: 1px solid #edf2f7;
+}
+
+/* Input Fields */
+.table tbody td input,
+.table tbody td select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #4a5568;
+  background-color: #ffffff;
+  transition: all 0.2s;
+}
+
+.table tbody td input:focus,
+.table tbody td select:focus {
+  border-color: #4299e1;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  #egg-production-container {
+    padding: 16px;
+    box-shadow: none;
+    border: none;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #ffffff;
+  }
+
+  .table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border: none;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    font-weight: 500;
+    color: #718096;
+    margin-right: 16px;
+  }
+
+  .table tbody td input,
+  .table tbody td select {
+    width: 60%;
+    background-color: #ffffff;
+  }
+}
+
+/* Submit Button */
+.btn-submit {
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: #185c94;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  transition: all 0.2s;
+  margin-top: 20px;
+}
+
+.btn-submit:hover {
+  background-color: #194b7a;
+  transform: translateY(-1px);
+  color: white;
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+.grid-table {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(100px, 1fr));
+    gap: 1px;
+    background-color: #ddd;
+    border-radius: 8px 8px 0 0; /* Top corners only */
+    overflow: hidden; /* Ensures rounded corners are visible */
+}
+
+.grid-header {
+    display: contents; /* Allows header to participate in grid layout */
+}
+
+.grid-header > div {
+    position: relative; /* Needed for z-index */
+    z-index: 1; /* Ensures header stays above other elements */
+    padding: 0.75rem;
+    background-color: rgb(3, 64, 85);
+    color: #fff;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-row {
+    display: contents;
+}
+
+.grid-row > div {
+    padding: 0.75rem;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* First and last header cells for perfect rounded corners */
+.grid-header > div:first-child {
+    border-top-left-radius: 8px;
+}
+
+.grid-header > div:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .grid-table {
+        grid-template-columns: 1fr;
+        border-radius: 0.25rem; /* Full rounded corners for mobile cards */
+    }
+
+    .grid-header {
+        display: none;
+    }
+
+    .grid-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 0.25rem;
+    }
+
+    .grid-row > div {
+        justify-content: space-between;
+        padding: 0.5rem;
+    }
+
+    .grid-row > div::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 1rem;
+        background-color: #343a40;
+        color: #fff;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+    }
+
+    .grid-row > div:last-child::before {
+        display: none;
+    }
+}
+
+/* Button Styles */
+.btn-sm {
+    margin: 0.1rem;
+}
+
+@media (max-width: 576px) {
+    .btn-sm {
+        display: block;
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+}
+</style>
+</head>
+<body>
+<div class="header">
+    <!-- Query Action Button -->
+    <div class="query-action">
+        <button class="btn btn-info" onclick="toggleSidebar()">Query Action</button>
+    </div>
+    <!-- Logo -->
+    <div class="logo">
+        <i class="bi bi-egg"></i> Layers
+    </div>
+    <!-- User Info and Logout -->
+    <div>
+        <span id="currentUser">Hello, User</span>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div id="querySidebar" class="query-sidebar">
+    <ul>
+      <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+
+      <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+      <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+  
+      <li><a href="/financials"><i class="fas fa-dollar-sign"></i> Financials</a></li>
+     
+      <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+      <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+      <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+  
+      <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+      <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+  
+      <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+    </ul>
+</div>
+<!-- views/egg-production.ejs -->
+<div class="container my-5">
+    <div id="egg-production-container">
+      <form method="POST" action="/egg-production">
+        <h2 class="mb-4">  Record Egg Production</h2>
+        <div class="table-responsive">
+          <table class="table table-striped">  <!-- Removed table-bordered -->
+            <thead>
+              <tr>
+                <th>Batch No</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Bad</th>
+                <th>Good(%)</th>
+                <th>Weight(kg)</th>
+                <th>Production (%)</th>
+                <th>Trays Produced</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <!-- Batch Select -->
+                <td data-label="Batch No">
+                  <select class="form-control" name="batch" id="batchSelect" required onchange="updateFlockDetails()">
+                    <option value="">Select Batch</option>
+                    <% batches.forEach(batch => { %>
+                      <option value="<%= batch._id %>" data-total="<%= batch.totalNumber %>">
+                        <%= batch.batchNo %>
+                      </option>
+                    <% }) %>
+                  </select>
+                </td>
+                
+                <!-- Date -->
+                <td data-label="Date"><input type="date" name="date" class="form-control" required></td>
+                
+                <!-- Total Eggs -->
+                <td data-label="Total Eggs"><input type="number" name="totalEggs" id="totalEggs" class="form-control" required oninput="calculateProductionPercent()"></td>
+                
+                <!-- Bad & Good Eggs -->
+                <td data-label="Bad Eggs"><input type="number" name="badEggsPercent" id="badEggsPercent" class="form-control" required oninput="calculateGoodEggs()"></td>
+                <td data-label="Good Eggs (%)"><input type="number" name="goodEggsPercent" id="goodEggsPercent" class="form-control" readonly required></td>
+                
+                <!-- Weight -->
+                <td data-label="Weight (kg)"><input type="number" name="weight" step="0.01" class="form-control" required></td>
+                
+                <!-- Egg Production % -->
+                <td data-label="Egg Production (%)"><input type="text" id="eggProductionPercent" class="form-control" readonly></td>
+                
+                <!-- Trays Produced -->
+                <td data-label="Trays Produced"><input type="text" id="traysProduced" class="form-control" readonly></td>
+                
+                <!-- Available Tray Stock -->
+                <td data-label="Available Tray Stock"><input type="text" id="traysRemaining" class="form-control" readonly></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Hidden field to store total flock -->
+        <input type="hidden" id="totalFlock">
+  
+        <div class="d-flex justify-content-end mt-3">
+          <button class="btn btn-submit" type="submit">
+            <i class="fas fa-plus icon"></i> Add Record
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+<section class="container mt-4">
+    <h2 class="text-center"><i class="fas fa-dove text-primary"></i> Latest Egg Production Records</h2>
+
+    <!-- Search Bar, Batch Selection, and Rows Display Control -->
+    <div class="d-flex justify-content-between mb-3">
+        <!-- Batch Selection -->
+        <div class="input-group" style="max-width: 500px;">
+            <select id="batchFilter" class="form-control">
+                <option value="all">All Batches</option>
+                <% batches.forEach(batch => { %>
+                    <option value="<%= batch._id %>"><%= batch.batchNo %></option>
+                <% }) %>
+            </select>
+            
+            <!-- Search Bar -->
+            <input type="text" id="eggSearchInput" class="form-control" placeholder="Search...">
+            <button class="btn btn-success" type="button"><i class="fas fa-search"></i></button>
+        </div>
+
+        <!-- Select number of rows to display -->
+        <div class="input-group" style="max-width: 200px;">
+            <select id="rowsPerPage" class="form-control">
+                <option value="5">show 5 rows</option>
+                <option value="10">10 rows</option>
+                <option value="15">15 rows</option>
+                <option value="20">20 rows</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Table Display -->
+    <div class="grid-table mt-3" id="eggProductionTable">
+        <div class="grid-header">
+            <div><i class="fas fa-hashtag"></i> Batch No</div>
+            <div><i class="fas fa-calendar-alt"></i> Date</div>
+            <div><i class="fas fa-egg"></i> Total Eggs</div>
+            <div><i class="fas fa-check-circle text-success"></i> Good Eggs (%)</div>
+            <div><i class="fas fa-times-circle text-danger"></i> Bad Eggs (%)</div>
+            <div><i class="fas fa-percentage"></i> Egg Production (%)</div> <!-- NEW -->
+            <div><i class="fas fa-cogs"></i> Actions</div>
+        </div>
+
+        <% if (records && records.length > 0) { %>
+            <% records.forEach((record) => { %>
+                <div class="grid-row" data-batch="<%= record.batch?._id %>" data-record-id="<%= record._id %>">
+                    <div data-label="Batch No"> <%= record.batch?.batchNo || 'N/A' %> </div>
+                    <div data-label="Date">
+                        <%= record.date ? record.date.toISOString().split('T')[0] : 'No date' %>
+                    </div>
+                    <div data-label="Total Eggs"> <%= record.totalEggs %> </div>
+                    <div data-label="Good Eggs (%)"> <%= record.goodEggsPercent %> </div>
+                    <div data-label="Bad Eggs (%)"> <%= record.badEggsPercent %> </div>
+                    <div data-label="Egg Production (%)"> <%= record.productionPercent || 'N/A' %> </div>
+                    <div data-label="Actions">
+                        <!-- Edit Button -->
+                        <button class="btn btn-warning btn-sm edit-btn" 
+                                onclick="window.location.href='/egg-production/edit/<%= record._id %>'"
+                                title="Edit Record">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        
+                        <!-- Delete Button -->
+                        <button class="btn btn-danger btn-sm delete-btn" 
+                                onclick="if(confirm('Are you sure?')) { deleteRecord('<%= record._id %>', this) }"
+                                title="Delete Record">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="alert alert-warning text-center mt-3 w-100">No egg production records found.</div>
+        <% } %>
+        
+        
+    </div>
+</section>
+
+<!-- JavaScript for Filtering, Searching, and Row Control -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("eggSearchInput");
+        const batchFilter = document.getElementById("batchFilter");
+        const rowsPerPage = document.getElementById("rowsPerPage");
+        const eggRows = document.querySelectorAll("#eggProductionTable .grid-row");
+
+        function filterTable() {
+            const searchValue = searchInput.value.toLowerCase();
+            const selectedBatch = batchFilter.value;
+            let visibleRows = 0;
+
+            eggRows.forEach((row) => {
+                const batchId = row.getAttribute("data-batch");
+                const rowText = row.innerText.toLowerCase();
+                const matchesSearch = rowText.includes(searchValue);
+                const matchesBatch = selectedBatch === "all" || batchId === selectedBatch;
+
+                if (matchesSearch && matchesBatch) {
+                    row.style.display = visibleRows < rowsPerPage.value ? "" : "none";
+                    visibleRows++;
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        searchInput.addEventListener("input", filterTable);
+        batchFilter.addEventListener("change", filterTable);
+        rowsPerPage.addEventListener("change", filterTable);
+
+        // Initialize filter on page load
+        filterTable();
+    });
+</script>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+<!-- JavaScript to Add Rows -->
+ 
+<script>
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('querySidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+
+function logout() {
+    // Improved logout with confirmation
+    if (confirm('Are you sure you want to logout?')) {
+        // Add your actual logout logic here
+        window.location.href = '/logout'; // Example redirect
+    }
+}
+async function calculateProductionPercent() {
+    try {
+        // Get and validate inputs
+        const totalEggsInput = document.getElementById('totalEggs');
+        const totalFlockInput = document.getElementById('totalFlock');
+        
+        const totalEggs = parseFloat(totalEggsInput.value) || 0;
+        const totalFlock = parseFloat(totalFlockInput.value) || 0;
+
+        // Clear previous errors
+        totalEggsInput.classList.remove('is-invalid');
+        totalFlockInput.classList.remove('is-invalid');
+
+        // Validate inputs
+        if (totalEggs < 0) {
+            totalEggsInput.classList.add('is-invalid');
+            throw new Error('Total eggs cannot be negative');
+        }
+        
+        if (totalFlock <= 0) {
+            totalFlockInput.classList.add('is-invalid');
+            throw new Error('Flock size must be greater than 0');
+        }
+
+        // Calculate egg production percentage
+        const eggProductionPercent = totalFlock > 0 ? (totalEggs / totalFlock) * 100 : 0;
+        document.getElementById('eggProductionPercent').value = eggProductionPercent.toFixed(2);
+
+        // Calculate trays (X.YY format)
+        const fullTrays = Math.floor(totalEggs / 30);
+        const remainingEggs = totalEggs % 30;
+        const traysProduced = remainingEggs === 0 ? 
+            fullTrays.toString() : 
+            `${fullTrays}.${remainingEggs.toString().padStart(2, '0')}`;
+        
+        document.getElementById('traysProduced').value = traysProduced;
+
+        // Update remaining trays (fetch if batch selected)
+        const batchId = document.getElementById('batchSelect').value;
+        document.getElementById('traysRemaining').value = batchId ? 
+            (await fetchTrayData(batchId))?.traysRemaining ?? traysProduced : 
+            traysProduced;
+
+    } catch (error) {
+        console.error('Production calculation error:', error);
+        alert(`Error: ${error.message}`);
+    }
+}
+
+// Helper function for API calls
+async function fetchTrayData(batchId) {
+    try {
+        const response = await fetch(`/api/batch/${batchId}/trays`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        return await response.json();
+    } catch (error) {
+        console.error('Fetch error:', error);
+        return null;
+    }
+}
+
+// Update flock details
+async function updateFlockDetails() {
+    try {
+        const selectedBatch = document.getElementById('batchSelect').selectedOptions[0];
+        const totalFlock = selectedBatch ? 
+            parseInt(selectedBatch.getAttribute('data-total')) || 0 : 0;
+        
+        document.getElementById('totalFlock').value = totalFlock;
+        await calculateProductionPercent();
+    } catch (error) {
+        console.error('Error in updateFlockDetails:', error);
+    }
+}
+
+// Event listeners with debouncing for input fields
+function setupEventListeners() {
+    // Debounce function to limit rapid firing of events
+    const debounce = (func, delay) => {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    };
+
+    document.getElementById('batchSelect').addEventListener('change', updateFlockDetails);
+    document.getElementById('totalEggs').addEventListener('input', 
+        debounce(calculateProductionPercent, 300));
+    document.getElementById('badEggsPercent').addEventListener('input', 
+        debounce(calculateGoodEggs, 300));
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    setupEventListeners();
+    // Initial calculations
+    calculateGoodEggs();
+    calculateProductionPercent();
+});
+
+
+// Delete record function
+function deleteRecord(recordId, buttonElement) {
+    fetch(`/egg-production/${recordId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Remove the row from the UI
+            buttonElement.closest('.grid-row').remove();
+            // Show success message
+            alert('Record deleted successfully');
+        } else {
+            alert('Failed to delete record');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting record');
+    });
+}
+    </script>
+ 
+</body>
+</html>

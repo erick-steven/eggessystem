@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financials</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+  <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Minified Chart.js -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+    <style>
+
+ 
+
+
+
+
+
+/* General Section Styling */
+.section-container {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+/* Table Responsive Container */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Table Styling */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 600px; /* Minimum width before scrolling kicks in */
+}
+
+/* Table Header with Rounded Corners */
+.table thead tr:first-child th:first-child {
+    border-top-left-radius: 5px;
+}
+
+.table thead tr:first-child th:last-child {
+    border-top-right-radius: 5px;
+}
+
+/* Table Header Cells */
+.table thead th {
+    background-color: rgb(3, 64, 85);
+    color: white;
+    padding: 10px 12px;
+    text-align: center;
+    border: none;
+    white-space: nowrap;
+}
+
+/* Table Body Styling */
+.table tbody td {
+    padding: 8px 10px;
+    vertical-align: middle;
+    border: none;
+}
+
+/* Input and Select Styling */
+.form-control, .form-select {
+    min-height: 38px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 0.75rem;
+    }
+    
+    .table thead th {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+    
+    .table tbody td {
+        padding: 6px 8px;
+    }
+    
+    .form-control, .form-select,
+    .input-group-text {
+        font-size: 0.85rem;
+    }
+    
+    .input-group-sm > .form-control,
+    .input-group-sm > .form-select,
+    .input-group-sm > .input-group-text {
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+    .table thead th {
+        padding: 6px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .table tbody td {
+        padding: 4px 6px;
+    }
+    
+    .fas, .far {
+        font-size: 0.9rem;
+    }
+}/* Grid Table Container - Professional Mobile Version */
+.grid-table-container {
+    overflow-x: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+
+/* Header Row - Professional Styling */
+.grid-header {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(100px, 1fr));
+    background: #003B4A;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.grid-header > div {
+    padding: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+}
+
+/* Body Rows - Professional Styling */
+.grid-row {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(100px, 1fr));
+    transition: all 0.2s ease;
+}
+
+.grid-row > div {
+    padding: 0.85rem;
+    font-size: 0.9rem;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Zebra Striping for Better Readability */
+.grid-row:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.grid-row:hover {
+    background-color: #f5f5f5;
+}
+
+/* Professional Mobile View */
+@media (max-width: 768px) {
+    .grid-table-container {
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        overflow-x: visible;
+    }
+    
+    .grid-header {
+        display: none; /* Hide header in mobile */
+    }
+    
+    .grid-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        border: 1px solid #eaeaea;
+        padding: 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .grid-row > div {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        align-items: center;
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid #f0f0f0;
+        text-align: left;
+        gap: 1rem;
+    }
+    
+    .grid-row > div:last-child {
+        border-bottom: none;
+    }
+    
+    .grid-row > div::before {
+        content: attr(data-label);
+        font-weight: 500;
+        color: #666;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+    
+    /* Special styling for action buttons */
+    .grid-row > div[data-label="Actions"] {
+        background: #f8f9fa;
+        padding: 1rem;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .grid-row > div[data-label="Actions"]::before {
+        display: none;
+    }
+    
+    /* Batch number gets highlighted */
+    .grid-row > div[data-label="Batch"] {
+        background: #003B4A;
+        color: white;
+        grid-column: 1 / -1;
+    }
+    
+    .grid-row > div[data-label="Batch"]::before {
+        color: rgba(255,255,255,0.7);
+    }
+    
+    /* Financial values get special treatment */
+    .grid-row > div[data-label="Income"],
+    .grid-row > div[data-label="Expenses"],
+    .grid-row > div[data-label="Profit"] {
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+    }
+    
+    /* Responsive buttons */
+    .btn-sm {
+        min-width: 80px;
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+        margin: 0 0.25rem;
+    }
+}
+
+/* Extra Small Devices */
+@media (max-width: 480px) {
+    .grid-row > div {
+        grid-template-columns: 100px 1fr;
+        padding: 0.75rem 1rem;
+        gap: 0.75rem;
+    }
+    
+    .btn-sm {
+        width: 100%;
+        margin: 0.25rem 0 !important;
+    }
+    
+    /* Filter controls */
+    .d-flex.flex-column.flex-md-row {
+        flex-direction: column;
+    }
+    
+    .input-group {
+        margin-bottom: 0.75rem;
+    }
+    
+    #rowsPerPage {
+        width: 100%;
+    }
+}
+
+/* Professional Enhancements */
+.grid-row > div[data-label="Profit"] {
+    font-weight: 600;
+    color: #2a7f2a;
+}
+
+.grid-row > div[data-label="Expenses"] {
+    color: #c23b22;
+}
+
+/* Smooth transitions */
+.grid-row, .grid-row > div {
+    transition: all 0.25s ease;
+}
+
+/* Professional dropdown */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 6px;
+    padding: 0.5rem 0;
+}
+
+.dropdown-item {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.85rem;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+    color: #003B4A;
+}
+    </style>
+
+<body>
+    <div class="header">
+        <!-- Query Action Button -->
+        <div class="query-action">
+            <button class="btn btn-info" onclick="toggleSidebar()">Query Action</button>
+        </div>
+        <!-- Logo -->
+        <div class="logo">
+            <i class="bi bi-egg"></i> Layers
+        </div>
+        <!-- User Info and Logout -->
+        <div>
+            <span id="currentUser">Hello, User</span>
+            <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="querySidebar" class="query-sidebar">
+        <ul>
+          <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+    
+          <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+          <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+      
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="financialsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-dollar-sign"></i> Financials
+            </a>
+            <div class="dropdown-menu" aria-labelledby="financialsDropdown">
+                <a class="dropdown-item" href="/financials">All Financials</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/financials#inventory-summary">Inventory Summary</a>
+                <a class="dropdown-item" href="/financials#income-sources">Income Sources</a>
+                <a class="dropdown-item" href="/financials#expense-items">Expense Items</a>
+                <a class="dropdown-item" href="/financials#current-flocks">Current Flocks</a>
+            </div>
+        </li>
+          <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+          <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+          <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+      
+          <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+          <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+      
+          <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+        </ul>
+    </div>
+    <div class="container my-5">
+        <form action="/financials" method="POST" onsubmit="handleFormSubmit(event)" class="financial-form">
+            <!-- Category Toggle -->
+        
+            
+  <!-- Batch & Summary Card -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body p-2 p-md-3">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-nowrap"><i class="fas fa-hashtag me-1"></i> Batch No</th>
+                        <th class="text-nowrap"><i class="far fa-calendar-alt me-1"></i> Date</th>
+                        <th class="text-nowrap"><i class="fas fa-coins me-1"></i> Total Income</th>
+                        <th class="text-nowrap"><i class="fas fa-receipt me-1"></i> Total Expenses</th>
+                        <th class="text-nowrap"><i class="fas fa-chart-line me-1"></i> Net Profit</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr>
+                        <td class="align-middle">
+                            <select class="form-select form-select-sm" name="batch" id="batchSelect" required onchange="updateTrays()">
+                                <option value="">Select Batch</option>
+                                <% allBatches.forEach(batch => { %>
+                                    <option value="<%= batch._id %>"><%= batch.batchNo %></option>
+                                <% }) %>
+                            </select>
+                        </td>
+                        <td class="align-middle">
+                            <input type="date" class="form-control form-control-sm" name="date" required>
+                        </td>
+                        <td class="align-middle">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">TZS</span>
+                                <input type="number" class="form-control text-success fw-bold" name="totalIncome" readonly value="0">
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">TZS</span>
+                                <input type="number" class="form-control text-danger fw-bold" name="totalExpenses" readonly value="0">
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">TZS</span>
+                                <input type="number" class="form-control text-primary fw-bold" name="profit" readonly value="0">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+        
+            <!-- Tray Information Card -->
+            <div class="card shadow-sm mb-4" id="inventory-summary">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-boxes me-2"></i>Inventory Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="fw-bold">Trays Produced</label>
+                                <input type="number" name="traysProducedDisplay" id="traysProducedDisplay" class="form-control bg-light" placeholder="Auto" readonly value="0">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="fw-bold">Trays Sold</label>
+                                <input type="number" name="traysSoldDisplay" id="traysSoldDisplay" class="form-control bg-light" placeholder="Auto" readonly value="0">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="fw-bold">Available Stock</label>
+                                <input type="number" name="traysRemainingDisplay" id="traysRemainingDisplay" class="form-control bg-light" placeholder="Auto" readonly value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Hidden inputs for traysProduced and traysSold -->
+            <input type="hidden" id="traysProduced" name="traysProduced" value="0">
+            <input type="hidden" id="traysSold" name="traysSold" value="0">
+            <div class="category-toggle mb-4">
+                <button type="button" class="btn btn-success active" id="incomeBtn" onclick="toggleCategory('income')">
+                    <i class="fas fa-money-bill-wave me-2"></i>Record Income
+                </button>
+                <button type="button" class="btn btn-danger" id="expenseBtn" onclick="toggleCategory('expense')">
+                    <i class="fas fa-receipt me-2"></i>Record Expense
+                </button>
+            </div>
+            <!-- INCOME SECTION -->
+            <div class="card shadow-sm mb-4 income-section" id="income-sources">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-arrow-circle-down me-2"></i>Income Sources</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Egg Sales -->
+                    <div class="row mb-3 border-bottom pb-3">
+                        <div class="col-md-12">
+                            <h6 class="text-success"><i class="fas fa-egg me-2"></i>Egg Sales</h6>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Quantity (Trays)</label>
+                                <input type="number" name="eggQty" class="form-control" placeholder="Trays Sold" oninput="calculateFinancials()" value="0">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Price per Tray</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">tzsh</span>
+                                    </div>
+                                    <input type="number" name="eggPrice" class="form-control" placeholder="Price" oninput="calculateFinancials()" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Total Income</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" name="eggIncome" class="form-control bg-light" placeholder="Auto" readonly value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Payment Method</label>
+                                <select name="eggPaymentMethod" class="form-control select2">
+                                    <option value="">-- Select Payment Method --</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="mobile_money">Mobile Money</option>
+                                    <option value="credit">Credit</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Customer Name</label>
+                                <input type="text" name="eggCustomer" class="form-control" placeholder="Enter customer name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Account Type</label>
+                                <select name="eggAccountType" class="form-control select2">
+                                    <option value="">-- Select Account Type --</option>
+                                    <option value="receivable">Accounts Receivable</option>
+                                    <option value="cash">Cash Account</option>
+                                    <option value="bank">Bank Account</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Old Layer Sales -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="text-success"><i class="fas fa-kiwi-bird me-2"></i>Old Layer Sales</h6>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Quantity (Birds)</label>
+                                <input type="number" name="culledQty" class="form-control" placeholder="Birds Sold" oninput="calculateFinancials()" value="0">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Price per Bird</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" name="culledPrice" class="form-control" placeholder="Price" oninput="calculateFinancials()" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Total Income</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" name="culledIncome" class="form-control bg-light" placeholder="Auto" readonly value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Payment Method</label>
+                                <select name="culledPaymentMethod" class="form-control select2">
+                                    <option value="">-- Select Payment Method --</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="mobile_money">Mobile Money</option>
+                                    <option value="credit">Credit</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Customer Name</label>
+                                <input type="text" name="culledCustomer" class="form-control" placeholder="Enter customer name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Account Type</label>
+                                <select name="culledAccountType" class="form-control select2">
+                                    <option value="">-- Select Account Type --</option>
+                                    <option value="receivable">Accounts Receivable</option>
+                                    <option value="cash">Cash Account</option>
+                                    <option value="bank">Bank Account</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- EXPENSE SECTION -->
+            <div class="card shadow-sm mb-4 expense-section" id="expense-items" style="display: none;">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0"><i class="fas fa-arrow-circle-up me-2"></i>Expense Items</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Feed Cost -->
+                    <div class="row mb-3 border-bottom pb-3">
+                        <div class="col-md-12">
+                            <h6 class="text-danger"><i class="fas fa-seedling me-2"></i>Feed Cost</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" name="feedCost" class="form-control" placeholder="Enter Amount" oninput="calculateFinancials()" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Payment Method</label>
+                                <select name="feedPaymentMethod" class="form-control select2">
+                                    <option value="">-- Select Payment Method --</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="mobile_money">Mobile Money</option>
+                                    <option value="credit">Credit</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Supplier Name</label>
+                                <input type="text" name="feedSupplier" class="form-control" placeholder="Enter supplier name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Account Type</label>
+                                <select name="feedAccountType" class="form-control select2">
+                                    <option value="">-- Select Account Type --</option>
+                                    <option value="payable">Accounts Payable</option>
+                                    <option value="cash">Cash Account</option>
+                                    <option value="bank">Bank Account</option>
+                                    <option value="expense">Direct Expense</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Chick Purchase Cost -->
+                    <div class="row mb-3 border-bottom pb-3">
+                        <div class="col-md-12">
+                            <h6 class="text-danger"><i class="fas fa-kiwi-bird me-2"></i>Chick Purchase</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" name="chickCost" class="form-control" placeholder="Enter Amount" oninput="calculateFinancials()" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Payment Method</label>
+                                <select name="chickPaymentMethod" class="form-control select2">
+                                    <option value="">-- Select Payment Method --</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="mobile_money">Mobile Money</option>
+                                    <option value="credit">Credit</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Supplier Name</label>
+                                <input type="text" name="chickSupplier" class="form-control" placeholder="Enter supplier name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Account Type</label>
+                                <select name="chickAccountType" class="form-control select2">
+                                    <option value="">-- Select Account Type --</option>
+                                    <option value="payable">Accounts Payable</option>
+                                    <option value="cash">Cash Account</option>
+                                    <option value="bank">Bank Account</option>
+                                    <option value="expense">Direct Expense</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Medication Cost -->
+                    <div class="row mb-3 border-bottom pb-3">
+                        <div class="col-md-12">
+                            <h6 class="text-danger"><i class="fas fa-syringe me-2"></i>Medication/Vaccine</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" name="medicationCost" class="form-control" placeholder="Enter Amount" oninput="calculateFinancials()" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Payment Method</label>
+                                <select name="medicationPaymentMethod" class="form-control select2">
+                                    <option value="">-- Select Payment Method --</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="mobile_money">Mobile Money</option>
+                                    <option value="credit">Credit</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Supplier Name</label>
+                                <input type="text" name="medicationSupplier" class="form-control" placeholder="Enter supplier name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Account Type</label>
+                                <select name="medicationAccountType" class="form-control select2">
+                                    <option value="">-- Select Account Type --</option>
+                                    <option value="payable">Accounts Payable</option>
+                                    <option value="cash">Cash Account</option>
+                                    <option value="bank">Bank Account</option>
+                                    <option value="expense">Direct Expense</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Labor Cost -->
+                    <div class="row mb-3 border-bottom pb-3">
+                        <div class="col-md-12">
+                            <h6 class="text-danger"><i class="fas fa-user-tie me-2"></i>Labor/Wages</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" name="laborCost" class="form-control" placeholder="Enter Amount" oninput="calculateFinancials()" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Payment Method</label>
+                                <select name="laborPaymentMethod" class="form-control select2">
+                                    <option value="">-- Select Payment Method --</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="mobile_money">Mobile Money</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Staff Name</label>
+                                <input type="text" name="laborStaff" class="form-control" placeholder="Enter staff name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Account Type</label>
+                                <select name="laborAccountType" class="form-control select2">
+                                    <option value="">-- Select Account Type --</option>
+                                    <option value="payable">Accrued Salary</option>
+                                    <option value="cash">Cash Account</option>
+                                    <option value="bank">Bank Account</option>
+                                    <option value="expense">Direct Expense</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Transport Cost -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="text-danger"><i class="fas fa-truck me-2"></i>Transport Cost</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" name="transportCost" class="form-control" placeholder="Enter Amount" oninput="calculateFinancials()" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Payment Method</label>
+                                <select name="transportPaymentMethod" class="form-control select2">
+                                    <option value="">-- Select Payment Method --</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="mobile_money">Mobile Money</option>
+                                    <option value="credit">Credit</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Supplier/Driver Name</label>
+                                <input type="text" name="transportSupplier" class="form-control" placeholder="Enter name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Account Type</label>
+                                <select name="transportAccountType" class="form-control select2">
+                                    <option value="">-- Select Account Type --</option>
+                                    <option value="payable">Accounts Payable</option>
+                                    <option value="cash">Cash Account</option>
+                                    <option value="bank">Bank Account</option>
+                                    <option value="expense">Direct Expense</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Submit Button -->
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary btn-lg" type="submit">
+                    <i class="fas fa-save me-2"></i> Save Financial Record
+                </button>
+            </div>
+        </form>
+        
+        <script>
+        // Toggle between income and expense sections
+        function toggleCategory(category) {
+            const incomeBtn = document.getElementById('incomeBtn');
+            const expenseBtn = document.getElementById('expenseBtn');
+            const incomeSection = document.querySelector('.income-section');
+            const expenseSection = document.querySelector('.expense-section');
+            
+            if (category === 'income') {
+                incomeBtn.classList.add('active');
+                expenseBtn.classList.remove('active');
+                incomeSection.style.display = 'block';
+                expenseSection.style.display = 'none';
+            } else {
+                incomeBtn.classList.remove('active');
+                expenseBtn.classList.add('active');
+                incomeSection.style.display = 'none';
+                expenseSection.style.display = 'block';
+            }
+        }
+        
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // Convert empty selects to null before submission
+            document.querySelectorAll('select').forEach(select => {
+                if (select.value === '') {
+                    // Create a hidden input to send null value
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = select.name;
+                    hiddenInput.value = '';
+                    select.parentNode.insertBefore(hiddenInput, select);
+                    select.disabled = true; // Disable the original select
+                }
+            });
+            
+            // Convert empty text inputs to empty strings
+            document.querySelectorAll('input[type="text"]').forEach(input => {
+                if (input.value.trim() === '') {
+                    input.value = '';
+                }
+            });
+            
+            event.target.submit();
+        }
+        
+        function calculateFinancials() {
+            // Income calculations
+            const eggQty = parseFloat(document.querySelector('[name="eggQty"]').value) || 0;
+            const eggPrice = parseFloat(document.querySelector('[name="eggPrice"]').value) || 0;
+            const culledQty = parseFloat(document.querySelector('[name="culledQty"]').value) || 0;
+            const culledPrice = parseFloat(document.querySelector('[name="culledPrice"]').value) || 0;
+        
+            const eggIncome = eggQty * eggPrice;
+            const culledIncome = culledQty * culledPrice;
+            const totalIncome = eggIncome + culledIncome;
+        
+            // Expense calculations
+            const feedCost = parseFloat(document.querySelector('[name="feedCost"]').value) || 0;
+            const chickCost = parseFloat(document.querySelector('[name="chickCost"]').value) || 0;
+            const medicationCost = parseFloat(document.querySelector('[name="medicationCost"]').value) || 0;
+            const laborCost = parseFloat(document.querySelector('[name="laborCost"]').value) || 0;
+            const transportCost = parseFloat(document.querySelector('[name="transportCost"]').value) || 0;
+        
+            const totalExpenses = feedCost + chickCost + medicationCost + laborCost + transportCost;
+        
+            // Profit calculation
+            const profit = totalIncome - totalExpenses;
+        
+            // Update the form fields with calculated values
+            document.querySelector('[name="eggIncome"]').value = eggIncome.toFixed(2);
+            document.querySelector('[name="culledIncome"]').value = culledIncome.toFixed(2);
+            document.querySelector('[name="totalIncome"]').value = totalIncome.toFixed(2);
+            document.querySelector('[name="totalExpenses"]').value = totalExpenses.toFixed(2);
+            document.querySelector('[name="profit"]').value = profit.toFixed(2);
+        
+            // Update trays sold and remaining trays
+            const traysProduced = parseFloat(document.querySelector('#traysProduced').value) || 0;
+            const traysSold = parseFloat(document.querySelector('#traysSold').value) || 0;
+            const traysRemaining = traysProduced - traysSold;
+        
+            document.querySelector('#traysSoldDisplay').value = traysSold;
+            document.querySelector('#traysRemainingDisplay').value = traysRemaining;
+        }
+        
+        // Initialize Select2 if using it
+        $(document).ready(function() {
+            $('.select2').select2({
+                theme: 'bootstrap4'
+            });
+        });
+        </script>
+        
+        <style>
+        /* Category toggle styles */
+        .category-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .category-toggle .btn {
+            border-radius: 0;
+            flex: 1;
+            max-width: 200px;
+            transition: all 0.3s ease;
+        }
+        
+        .category-toggle .btn:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .category-toggle .btn:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .category-toggle .btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .category-toggle {
+                flex-direction: column;
+            }
+            
+            .category-toggle .btn {
+                max-width: 100%;
+                border-radius: 8px !important;
+                margin-bottom: 5px;
+            }
+        }
+        
+        /* Existing styles */
+        .financial-form {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            border-radius: 8px 8px 0 0 !important;
+            padding: 15px 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .select2 {
+            width: 100% !important;
+        }
+        
+        .border-bottom {
+            border-bottom: 1px solid #e0e0e0 !important;
+        }
+        
+        input[readonly] {
+            background-color: #f8f9fa !important;
+        }
+        
+        .input-group-text {
+            background-color: #e9ecef;
+        }
+        
+        .table th {
+            white-space: nowrap;
+        }
+        
+        h5, h6 {
+            font-weight: 600;
+        }
+        </style>
+      </div>
+      <section class="container mt-4">
+        <h2 class="text-center">
+            <i class="fas fa-dove text-primary"></i> Top 5 Current Flocks
+        </h2>
+        
+        <!-- Filter Controls -->
+        <div class="d-flex flex-column flex-md-row justify-content-between mb-3 gap-2">
+            <!-- Batch Selection and Search -->
+            <div class="input-group flex-grow-1" style="max-width: 100%;">
+                <!-- Batch Filter -->
+                <select id="batchFilter" class="form-select">
+                    <option value="all">All Batches</option>
+                    <% allBatches.forEach(batch => { %>
+                        <option value="<%= batch._id %>"><%= batch.batchNo %></option>
+                    <% }) %>
+                </select>
+                
+                <!-- Search Input -->
+                <input type="text" id="financialSearchInput" class="form-control" placeholder="Search records...">
+                <button class="btn btn-success" type="button" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+    
+            <!-- Rows Display Control -->
+            <div class="input-group" style="max-width: 200px;">
+                <span class="input-group-text">Show</span>
+                <select id="rowsPerPage" class="form-select">
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="all">All</option>
+                </select>
+            </div>
+        </div>
+    
+        <!-- Financial Records Table -->
+        <div class="grid-table-container">
+            <div class="grid-header">
+                <div data-label="Batch"><i class="fas fa-hashtag"></i> Batch No</div>
+                <div data-label="Date"><i class="fas fa-calendar-alt"></i> Date</div>
+                <div data-label="Income"><i class="fas fa-money-bill-wave"></i> Income</div>
+                <div data-label="Expenses"><i class="fas fa-money-bill-wave"></i> Expenses</div>
+                <div data-label="Profit"><i class="fas fa-calculator"></i> Profit</div>
+                <div data-label="Produced"><i class="fas fa-box-open"></i> Trays Produced</div>
+                <div data-label="Sold"><i class="fas fa-boxes"></i> Trays Sold</div>
+                <div data-label="Remaining"><i class="fas fa-boxes"></i> Trays Remaining</div>
+                <div data-label="Actions"><i class="fas fa-cogs"></i> Actions</div>
+            </div>
+            
+            <div class="grid-content" id="financialTableContent">
+                <% if (financialRecords.length > 0) { %>
+                    <% financialRecords.forEach(record => { 
+                        const income = record.totalIncome || 0;
+                        const expenses = record.totalExpenses || 0;
+                        const profit = income - expenses;
+                        const traysRemaining = (record.traysProduced || 0) - (record.traysSold || 0);
+                    %>
+                        <div class="grid-row" data-batch="<%= record.batch?._id %>" data-record-id="<%= record._id %>">
+                            <div data-label="Batch"><%= record.batch?.batchNo || 'N/A' %></div>
+                            <div data-label="Date"><%= record.date ? record.date.toISOString().split('T')[0] : 'N/A' %></div>
+                            <div data-label="Income">₹<%= income.toLocaleString('en-IN') %></div>
+                            <div data-label="Expenses">₹<%= expenses.toLocaleString('en-IN') %></div>
+                            <div data-label="Profit">₹<%= profit.toLocaleString('en-IN') %></div>
+                            <div data-label="Produced"><%= record.traysProduced || 0 %></div>
+                            <div data-label="Sold"><%= record.traysSold || 0 %></div>
+                            <div data-label="Remaining"><%= traysRemaining >= 0 ? traysRemaining : 0 %></div>
+                            <div data-label="Actions">
+                                <!-- Edit Button -->
+                                <button class="btn btn-sm btn-warning me-1 edit-btn" 
+                                        onclick="window.location.href='/financials/edit/<%= record._id %>'"
+                                        title="Edit Record">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                
+                                <!-- Delete Button -->
+                                <button class="btn btn-sm btn-danger delete-btn" 
+                                        onclick="if(confirm('Are you sure you want to delete this financial record?')) { deleteFinancialRecord('<%= record._id %>', this) }"
+                                        title="Delete Record">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="alert alert-warning mt-3">No financial records found</div>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script to auto-calculate profit -->
+    
+    
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript to Add Rows and Calculate Profit -->
+ 
+
+
+
+
+<script> 
+
+
+
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('querySidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        function logout() {
+            alert('Logout clicked!');
+        }
+        function calculateFinancials() {
+    // Income calculations
+    const eggQty = parseFloat(document.querySelector('[name="eggQty"]').value) || 0;
+    const eggPrice = parseFloat(document.querySelector('[name="eggPrice"]').value) || 0;
+    const culledQty = parseFloat(document.querySelector('[name="culledQty"]').value) || 0;
+    const culledPrice = parseFloat(document.querySelector('[name="culledPrice"]').value) || 0;
+
+    const eggIncome = eggQty * eggPrice;
+    const culledIncome = culledQty * culledPrice;
+    const totalIncome = eggIncome + culledIncome;
+
+    // Expense calculations
+    const feedCost = parseFloat(document.querySelector('[name="feedCost"]').value) || 0;
+    const chickCost = parseFloat(document.querySelector('[name="chickCost"]').value) || 0;
+    const medicationCost = parseFloat(document.querySelector('[name="medicationCost"]').value) || 0;
+    const laborCost = parseFloat(document.querySelector('[name="laborCost"]').value) || 0;
+    const transportCost = parseFloat(document.querySelector('[name="transportCost"]').value) || 0;
+
+    const totalExpenses = feedCost + chickCost + medicationCost + laborCost + transportCost;
+
+    // Profit calculation
+    const profit = totalIncome - totalExpenses;
+
+    // Update the form fields with calculated values
+    document.querySelector('[name="eggIncome"]').value = eggIncome.toFixed(2);
+    document.querySelector('[name="culledIncome"]').value = culledIncome.toFixed(2);
+    document.querySelector('[name="totalIncome"]').value = totalIncome.toFixed(2);
+    document.querySelector('[name="totalExpenses"]').value = totalExpenses.toFixed(2);
+    document.querySelector('[name="profit"]').value = profit.toFixed(2);
+
+    // Update trays sold and remaining trays
+    const traysProduced = parseFloat(document.querySelector('#traysProduced').value) || 0;
+    const traysSold = parseFloat(document.querySelector('#traysSold').value) || 0;
+    const traysRemaining = traysProduced - traysSold;
+
+    document.querySelector('#traysSoldDisplay').value = traysSold;
+    document.querySelector('#traysRemainingDisplay').value = traysRemaining;
+}
+async function updateTrays(batchId) {
+    try {
+        // Fetch tray information for the selected batch
+        const response = await fetch(`/api/batch/${batchId}/trays`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch tray data');
+        }
+        const data = await response.json();
+
+        // Log the fetched data for debugging
+        console.log('Fetched Tray Data:', data);
+
+        // Update the form fields
+        document.querySelector('#traysProducedDisplay').value = data.traysProduced || 0;
+        document.querySelector('#traysSoldDisplay').value = data.traysSold || 0;
+        document.querySelector('#traysRemainingDisplay').value = data.traysRemaining || 0;
+
+        // Update hidden fields
+        document.querySelector('#traysProduced').value = data.traysProduced || 0;
+        document.querySelector('#traysSold').value = data.traysSold || 0;
+
+        // Update the "Egg Sales (Qty in Trays)" field
+        document.querySelector('[name="eggQty"]').value = data.traysSold || 0;
+
+        // Recalculate financials to update the form
+        calculateFinancials();
+    } catch (err) {
+        console.error('Error updating tray information:', err);
+    }
+}
+document.querySelector('#batchSelect').addEventListener('change', function () {
+    const batchId = this.value;
+    console.log('Selected Batch ID:', batchId); // Debugging
+    if (batchId) {
+        updateTrays(batchId);
+    } else {
+        // Reset fields if no batch is selected
+        document.querySelector('#traysProducedDisplay').value = 0;
+        document.querySelector('#traysSoldDisplay').value = 0;
+        document.querySelector('#traysRemainingDisplay').value = 0;
+    }
+});
+async function updateTrays(batchId) {
+    try {
+        // Fetch tray information for the selected batch
+        const response = await fetch(`/api/batch/${batchId}/trays`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch tray data');
+        }
+        const data = await response.json();
+
+        // Log the fetched data for debugging
+        console.log('Fetched Tray Data:', data);
+
+        // Update the form fields
+        document.querySelector('#traysProducedDisplay').value = data.traysProduced || 0;
+        document.querySelector('#traysSoldDisplay').value = data.traysSold || 0;
+        document.querySelector('#traysRemainingDisplay').value = data.traysRemaining || 0;
+
+        // Update hidden fields
+        document.querySelector('#traysProduced').value = data.traysProduced || 0;
+        document.querySelector('#traysSold').value = data.traysSold || 0;
+
+        // Recalculate financials to update the form
+        calculateFinancials();
+    } catch (err) {
+        console.error('Error updating tray information:', err);
+    }
+}
+
+
+
+
+
+
+
+ 
+document.addEventListener('DOMContentLoaded', function() {
+    const batchFilter = document.getElementById('batchFilter');
+    const searchInput = document.getElementById('financialSearchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const rowsPerPage = document.getElementById('rowsPerPage');
+    const tableRows = document.querySelectorAll('.grid-row');
+    
+    function applyFilters() {
+        const selectedBatch = batchFilter.value;
+        const searchTerm = searchInput.value.toLowerCase();
+        const rowsToShow = rowsPerPage.value === 'all' ? tableRows.length : parseInt(rowsPerPage.value);
+        let visibleCount = 0;
+
+        tableRows.forEach(row => {
+            const batchId = row.getAttribute('data-batch');
+            const rowText = row.textContent.toLowerCase();
+            
+            // Check filters
+            const batchMatch = selectedBatch === 'all' || batchId === selectedBatch;
+            const searchMatch = searchTerm === '' || rowText.includes(searchTerm);
+            
+            if (batchMatch && searchMatch) {
+                row.style.display = visibleCount < rowsToShow ? '' : 'none';
+                if (visibleCount < rowsToShow) visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // Event listeners
+    batchFilter.addEventListener('change', applyFilters);
+    searchInput.addEventListener('input', applyFilters);
+    searchBtn.addEventListener('click', applyFilters);
+    rowsPerPage.addEventListener('change', applyFilters);
+});
+
+function deleteFinancialRecord(recordId, buttonElement) {
+    fetch(`/financials/${recordId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Remove the row from the UI
+            buttonElement.closest('.grid-row').remove();
+            // Show success message
+            alert('Financial record deleted successfully');
+        } else {
+            alert('Failed to delete financial record');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting financial record');
+    });
+}
+
+
+</script>
+
+
+
+
+
+
+
+ 
+</body>
+</html>

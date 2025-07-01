@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    
+    
+    <style>
+        /* Main Container with Side Margins */
+        .main-container {
+            max-width: 90%;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        
+        /* General Section Styling */
+        .section-container {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .header-section {
+  background-color: #003B4A;
+  color: white;
+  border-radius: 5px;
+  height: 10vh;                    /* responsive height */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 2vh;
+  text-align: center;
+  font-size: 1.2rem;               /* base font size */
+  line-height: 1.4;
+}
+
+/* Better visibility and spacing for small screens */
+@media (max-width: 576px) {
+  .header-section {
+    height: 10vh;               /* auto height for wrapping */
+    padding: 10px;
+    font-size: 1rem;              /* slightly smaller text for small screen */
+    flex-direction: column;      /* ensure stacking if needed */
+    align-items: center;
+  }
+
+  .header-section p {
+    margin: 20;
+  }
+}
+
+
+       
+
+        /* Trial Balance Table */
+        .trial-balance-table th {
+            background-color: #0b2136;
+            font-weight: 600;
+            padding: auto;
+        }
+        .debit-col {
+            background-color: #fff8f8;
+        }
+        .credit-col {
+            background-color: #f8fff8;
+        }
+        .total-row {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .account-title {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Form and Details Sections */
+        .selection-form {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .batch-details {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border-radius: 5px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .main-container {
+                max-width: 100%;
+                padding: 0 10px;
+            }
+            
+            .header-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header-section .col-md-6.text-end {
+                text-align: center !important;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+
+    <div class="header">
+        <!-- Query Action Button -->
+        <div class="query-action">
+            <button class="btn btn-info" onclick="toggleSidebar()">Query Action</button>
+        </div>
+        <!-- Logo -->
+        <div class="logo">
+            <i class="bi bi-egg"></i> Layers
+        </div>
+        <!-- User Info and Logout -->
+        <div>
+            <span id="currentUser">Hello, User</span>
+            <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="querySidebar" class="query-sidebar">
+        <ul>
+          <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+
+          <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+          <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+      
+          <li><a href="/financials"><i class="fas fa-dollar-sign"></i> Financials</a></li>
+         
+          <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+          <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+          <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+      
+          <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+          <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+      
+          <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+ 
+        </ul>
+    </div>
+    <div class="main-container"> <!-- Changed from container-fluid -->
+        <!-- Header Section -->
+     <div class="row header-section">
+
+             
+            <div class="col-md-6 text-end">
+ 
+                <% if (!isBatchSelection) { %>
+                    <button class="btn btn-sm btn-outline-primary" onclick="window.print()">
+                        <i class="fas fa-print me-1"></i>Print Report
+                    </button>
+                <% } %>
+            </div>
+        </div>
+
+        <% if (isBatchSelection) { %>
+            <!-- Batch Selection Form -->
+            <div class="section-container">
+                <% if (typeof message !== 'undefined' && message) { %>
+                    <div class="alert alert-info"><%= message %></div>
+                <% } %>
+                
+                <% if (batches && batches.length > 0) { %>
+                    <div class="form-group">
+                        <label for="batchSelect" class="form-label">Select Batch:</label>
+                        <select class="form-control" name="batch" id="batchSelect" required>
+                            <option value="">Select Batch</option>
+                            <% batches.forEach(batch => { %>
+                                <option value="<%= batch._id %>" 
+                                        data-start="<%= new Date(batch.startDate).toLocaleDateString() %>"
+                                        data-end="<%= batch.endDate ? new Date(batch.endDate).toLocaleDateString() : 'Present' %>">
+                                    <%= batch.batchNo %> - <%= batch.name %>
+                                </option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="batch-details" id="batchDetails">
+                        <h5>Batch Details</h5>
+                        <p><strong>Period:</strong> <span id="batchPeriod"></span></p>
+                        <a href="#" class="btn btn-primary" id="viewReportBtn">View Trial Balance</a>
+                    </div>
+                <% } else { %>
+                    <div class="alert alert-warning">No batches available</div>
+                <% } %>
+            </div>
+
+            <script>
+                const batchSelect = document.getElementById('batchSelect');
+                const batchDetails = document.getElementById('batchDetails');
+                const batchPeriod = document.getElementById('batchPeriod');
+                const viewReportBtn = document.getElementById('viewReportBtn');
+
+                batchSelect.addEventListener('change', function() {
+                    if (this.value) {
+                        const selectedOption = this.options[this.selectedIndex];
+                        const startDate = selectedOption.getAttribute('data-start');
+                        const endDate = selectedOption.getAttribute('data-end');
+                        
+                        batchPeriod.textContent = `${startDate} - ${endDate}`;
+                        batchDetails.style.display = 'block';
+                        
+                        // Update view button link
+                        viewReportBtn.href = `/trial-balance/${this.value}`;
+                    } else {
+                        batchDetails.style.display = 'none';
+                    }
+                });
+            </script>
+        <% } else { %>
+            <!-- Trial Balance Content -->
+            <div class="section-container">
+                <div class="table-responsive">
+                    <table class="table trial-balance-table mb-0">
+                        <thead>
+                            <tr>
+                                <th width="40%">Account</th>
+                                <th class="text-end debit-col" width="30%">Debit</th>
+                                <th class="text-end credit-col" width="30%">Credit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Cash Account -->
+                            <tr>
+                                <td class="account-title">Cash Account</td>
+                                <td class="text-end debit-col"><%= helpers.formatCurrency(trialBalance.cash.debit) %></td>
+                                <td class="text-end credit-col"><%= helpers.formatCurrency(trialBalance.cash.credit) %></td>
+                            </tr>
+                            
+                            <!-- Bank Account -->
+                            <tr>
+                                <td class="account-title">Bank Account</td>
+                                <td class="text-end debit-col"><%= helpers.formatCurrency(trialBalance.bank.debit) %></td>
+                                <td class="text-end credit-col"><%= helpers.formatCurrency(trialBalance.bank.credit) %></td>
+                            </tr>
+                            
+                            <!-- Accounts Receivable -->
+                            <tr>
+                                <td class="account-title">Accounts Receivable</td>
+                                <td class="text-end debit-col"><%= helpers.formatCurrency(trialBalance.accountsReceivable.debit) %></td>
+                                <td class="text-end credit-col"><%= helpers.formatCurrency(trialBalance.accountsReceivable.credit) %></td>
+                            </tr>
+                            
+                            <!-- Accounts Payable -->
+                            <tr>
+                                <td class="account-title">Accounts Payable</td>
+                                <td class="text-end debit-col"><%= helpers.formatCurrency(trialBalance.accountsPayable.debit) %></td>
+                                <td class="text-end credit-col"><%= helpers.formatCurrency(trialBalance.accountsPayable.credit) %></td>
+                            </tr>
+                            
+                            <!-- Egg Sales Revenue -->
+                            <tr>
+                                <td class="account-title">Egg Sales Revenue</td>
+                                <td class="text-end debit-col">-</td>
+                                <td class="text-end credit-col"><%= helpers.formatCurrency(trialBalance.revenue.credit) %></td>
+                            </tr>
+                            
+                            <!-- Feed Expenses -->
+                            <tr>
+                                <td class="account-title">Feed Expenses</td>
+                                <td class="text-end debit-col"><%= helpers.formatCurrency(trialBalance.expenses.feed) %></td>
+                                <td class="text-end credit-col">-</td>
+                            </tr>
+                            
+                            <!-- Medication Expenses -->
+                            <tr>
+                                <td class="account-title">Medication Expenses</td>
+                                <td class="text-end debit-col"><%= helpers.formatCurrency(trialBalance.expenses.medication) %></td>
+                                <td class="text-end credit-col">-</td>
+                            </tr>
+                            
+                            <!-- Labor Expenses -->
+                            <tr>
+                                <td class="account-title">Labor Expenses</td>
+                                <td class="text-end debit-col"><%= helpers.formatCurrency(trialBalance.expenses.labor) %></td>
+                                <td class="text-end credit-col">-</td>
+                            </tr>
+                            
+                            <!-- Transport Expenses -->
+                            <tr>
+                                <td class="account-title">Transport Expenses</td>
+                                <td class="text-end debit-col"><%= helpers.formatCurrency(trialBalance.expenses.transport) %></td>
+                                <td class="text-end credit-col">-</td>
+                            </tr>
+                            
+                            <!-- Total Row -->
+                            <tr class="total-row">
+                                <td class="account-title">TOTAL</td>
+                                <td class="text-end debit-col"><%= helpers.formatCurrency(
+                                    trialBalance.cash.debit +
+                                    trialBalance.bank.debit +
+                                    trialBalance.accountsReceivable.debit +
+                                    trialBalance.accountsPayable.debit +
+                                    trialBalance.expenses.feed +
+                                    trialBalance.expenses.medication +
+                                    trialBalance.expenses.labor +
+                                    trialBalance.expenses.transport
+                                ) %></td>
+                                <td class="text-end credit-col"><%= helpers.formatCurrency(
+                                    trialBalance.cash.credit +
+                                    trialBalance.bank.credit +
+                                    trialBalance.accountsReceivable.credit +
+                                    trialBalance.accountsPayable.credit +
+                                    trialBalance.revenue.credit
+                                ) %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Transaction Details -->
+            <% if (transactions && transactions.length > 0) { %>
+                <div class="section-container">
+                    <h5 class="mb-3"><i class="fas fa-list me-2"></i>Supporting Transactions</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Batch</th>
+                                    <th>Description</th>
+                                    <th>Account</th>
+                                    <th class="text-end">Debit</th>
+                                    <th class="text-end">Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% transactions.forEach(transaction => { %>
+                                    <tr>
+                                        <td><%= helpers.formatDate(transaction.date) %></td>
+                                        <td><%= transaction.batch.batchNo %></td>
+                                        <td><%= transaction.description %></td>
+                                        <td><%= transaction.account %></td>
+                                        <td class="text-end"><%= transaction.debit > 0 ? helpers.formatCurrency(transaction.debit) : '-' %></td>
+                                        <td class="text-end"><%= transaction.credit > 0 ? helpers.formatCurrency(transaction.credit) : '-' %></td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+
+        <!-- Report Footer -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <p class="text-muted small">Generated on <%= new Date().toLocaleString() %></p>
+            </div>
+            <div class="col-md-6 text-end">
+                <p class="text-muted small">Poultry Farm Management System</p>
+            </div>
+        </div>
+    </div>
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+             
+function toggleSidebar() {
+    const sidebar = document.getElementById('querySidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+
+
+
+
+
+
+ // for report scrolling arrow 
+ document.addEventListener('DOMContentLoaded', function() {
+    const tableContainer = document.querySelector('.table-container');
+    const tableWrapper = document.querySelector('.table-wrapper');
+    const leftButton = document.querySelector('.scroll-button.left');
+    const rightButton = document.querySelector('.scroll-button.right');
+    
+    // Check if elements exist (for pages without the table)
+    if (!tableContainer) return;
+    
+    // Update button states based on scroll position
+    function updateButtonStates() {
+        const scrollLeft = tableWrapper.scrollLeft;
+        const maxScroll = tableWrapper.scrollWidth - tableWrapper.clientWidth;
+        
+        leftButton.disabled = scrollLeft <= 0;
+        rightButton.disabled = scrollLeft >= maxScroll - 1; // -1 to account for rounding
+    }
+    
+    // Scroll left
+    leftButton.addEventListener('click', function() {
+        tableWrapper.scrollBy({
+            left: -200,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Scroll right
+    rightButton.addEventListener('click', function() {
+        tableWrapper.scrollBy({
+            left: 200,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Update on scroll
+    tableWrapper.addEventListener('scroll', updateButtonStates);
+    
+    // Initial check
+    updateButtonStates();
+    
+    // Update on window resize
+    window.addEventListener('resize', updateButtonStates);
+});
+</script>
+</body>
+
+</html>

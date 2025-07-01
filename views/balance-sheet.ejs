@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .main-container {
+            max-width: 90%;
+            margin: 20px auto;
+            padding: 0 15px;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        /* General Section Styling */
+        .section-container {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .header1 {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+        }
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .report-title {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+        .report-period {
+            font-size: 16px;
+        }
+        .section-title {
+            font-weight: bold;
+            font-size: 18px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .financial-table th, .financial-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .financial-table th {
+            background-color: #f2f2f2;
+        }
+        .amount {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+        .total-row {
+            font-weight: bold;
+            border-top: 2px solid #333;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            text-align: center;
+            color: #666;
+        }
+        .accounting-equation {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-left: 4px solid <%= accountingEquationValid ? '#4CAF50' : '#F44336' %>;
+        }
+        .fixed-assets {
+            margin-top: 15px;
+        }
+        .selection-form {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .batch-details {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                max-width: 95%;
+                padding: 0 10px;
+            }
+            
+            .financial-table th, 
+            .financial-table td {
+                padding: 6px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <!-- Query Action Button -->
+        <div class="query-action">
+            <button class="btn btn-info" onclick="toggleSidebar()">Query Action</button>
+        </div>
+        <!-- Logo -->
+        <div class="logo">
+            <i class="bi bi-egg"></i> Layers
+        </div>
+        <!-- User Info and Logout -->
+        <div>
+            <span id="currentUser">Hello, User</span>
+            <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="querySidebar" class="query-sidebar">
+        <ul>
+          <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+    
+          <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+          <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+      
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="financialsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-dollar-sign"></i> Financials
+            </a>
+            <div class="dropdown-menu" aria-labelledby="financialsDropdown">
+                <a class="dropdown-item" href="/financials">All Financials</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/financials#inventory-summary">Inventory Summary</a>
+                <a class="dropdown-item" href="/financials#income-sources">Income Sources</a>
+                <a class="dropdown-item" href="/financials#expense-items">Expense Items</a>
+                <a class="dropdown-item" href="/financials#current-flocks">Current Flocks</a>
+            </div>
+        </li>
+          <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+          <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+          <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+      
+          <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+          <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+      
+          <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+        </ul>
+    </div>
+    <div class="main-container">
+        <div class="header1">
+            <h1><%= title %></h1>
+            <% if (typeof message !== 'undefined' && message) { %>
+                <p class="no-batches"><%= message %></p>
+            <% } %>
+        </div>
+
+        <% if (isBatchSelection) { %>
+            <% if (batches && batches.length > 0) { %>
+                <div class="section-container">
+                    <div class="selection-form">
+                        <div class="form-group">
+                            <label for="batchSelect">Select Batch:</label>
+                            <select class="form-control" name="batch" id="batchSelect" required>
+                                <option value="">Select Batch</option>
+                                <% batches.forEach(batch => { %>
+                                    <option value="<%= batch._id %>" 
+                                            data-start="<%= new Date(batch.startDate).toLocaleDateString() %>"
+                                            data-end="<%= batch.endDate ? new Date(batch.endDate).toLocaleDateString() : 'Present' %>">
+                                        <%= batch.batchNo || batch.name %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="batch-details" id="batchDetails">
+                            <h3>Batch Details</h3>
+                            <p><strong>Period:</strong> <span id="batchPeriod"></span></p>
+                            <a href="#" class="btn" id="viewReportBtn">View Balance Sheet</a>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    const batchSelect = document.getElementById('batchSelect');
+                    const batchDetails = document.getElementById('batchDetails');
+                    const batchPeriod = document.getElementById('batchPeriod');
+                    const viewReportBtn = document.getElementById('viewReportBtn');
+
+                    batchSelect.addEventListener('change', function() {
+                        if (this.value) {
+                            const selectedOption = this.options[this.selectedIndex];
+                            const startDate = selectedOption.getAttribute('data-start');
+                            const endDate = selectedOption.getAttribute('data-end');
+                            
+                            batchPeriod.textContent = `${startDate} - ${endDate}`;
+                            batchDetails.style.display = 'block';
+                            
+                            viewReportBtn.href = `/balance-sheet/${this.value}`;
+                        } else {
+                            batchDetails.style.display = 'none';
+                        }
+                    });
+                </script>
+            <% } else { %>
+                <div class="section-container">
+                    <p>No batches available</p>
+                </div>
+            <% } %>
+        <% } else { %>
+            <div class="section-container">
+                <div class="header">
+                    <div class="company-name">Poultry Farm Accounting System</div>
+                    <div class="report-title">Professional Balance Sheet</div>
+                    <div class="report-period">
+                        For Batch: <%= balanceSheet.batchInfo.batchName %> | 
+                        Period: <%= helpers.formatDate(balanceSheet.batchInfo.startDate) %> - 
+                        <%= helpers.formatDate(balanceSheet.batchInfo.endDate) %>
+                    </div>
+                    <div>Generated on: <%= helpers.formatDate(generatedAt) %></div>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <div class="section-title">Assets</div>
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cash</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.assets.currentAssets.cash) %></td>
+                        </tr>
+                        <tr>
+                            <td>Bank</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.assets.currentAssets.bank) %></td>
+                        </tr>
+                        <tr>
+                            <td>Accounts Receivable</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.assets.currentAssets.accountsReceivable) %></td>
+                        </tr>
+                        <tr>
+                            <td>Inventory (Eggs)</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.assets.currentAssets.eggInventory) %></td>
+                        </tr>
+                        <tr>
+                            <td>Other Inventory</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.assets.currentAssets.otherInventory) %></td>
+                        </tr>
+                        
+                        <tr class="fixed-assets">
+                            <td><strong>Fixed Assets</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Equipment</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.assets.fixedAssets.equipment) %></td>
+                        </tr>
+                        <tr>
+                            <td>Vehicles</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.assets.fixedAssets.vehicles) %></td>
+                        </tr>
+                        
+                        <tr class="total-row">
+                            <td>Total Assets</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.assets.totalAssets) %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-container">
+                <div class="section-title">Liabilities</div>
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Accounts Payable</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.liabilities.currentLiabilities.accountsPayable) %></td>
+                        </tr>
+                        <tr>
+                            <td>Short Term Loans</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.liabilities.currentLiabilities.shortTermLoans) %></td>
+                        </tr>
+                        
+                        <tr class="fixed-assets">
+                            <td><strong>Long Term Liabilities</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Loans</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.liabilities.longTermLiabilities.loans) %></td>
+                        </tr>
+                        
+                        <tr class="total-row">
+                            <td>Total Liabilities</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.liabilities.totalLiabilities) %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-container">
+                <div class="section-title">Equity</div>
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Capital</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.equity.capital) %></td>
+                        </tr>
+                        <tr>
+                            <td>Retained Earnings</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.equity.retainedEarnings) %></td>
+                        </tr>
+                        <tr>
+                            <td>Current Year Profit</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.equity.currentYearProfit) %></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Total Equity</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.equity.totalEquity) %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-container">
+                <div class="accounting-equation">
+                    Accounting Equation: 
+                    Assets (<%= helpers.formatCurrency(balanceSheet.assets.totalAssets) %>) 
+                    = Liabilities (<%= helpers.formatCurrency(balanceSheet.liabilities.totalLiabilities) %>) 
+                    + Equity (<%= helpers.formatCurrency(balanceSheet.equity.totalEquity) %>)
+                    <br>
+                    Status: <strong><%= accountingEquationValid ? 'BALANCED ✓' : 'NOT BALANCED ✗' %></strong>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <div class="section-title">Income Statement Summary</div>
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Egg Sales</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.incomeStatement.revenues.eggSales) %></td>
+                        </tr>
+                        <tr>
+                            <td>Other Sales</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.incomeStatement.revenues.otherSales) %></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Total Revenue</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.incomeStatement.revenues.totalRevenue) %></td>
+                        </tr>
+                        <tr>
+                            <td>Feed Expenses</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.incomeStatement.expenses.feed) %></td>
+                        </tr>
+                        <tr>
+                            <td>Labor Expenses</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.incomeStatement.expenses.labor) %></td>
+                        </tr>
+                        <tr>
+                            <td>Medication Expenses</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.incomeStatement.expenses.medication) %></td>
+                        </tr>
+                        <tr>
+                            <td>Transportation Expenses</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.incomeStatement.expenses.transportation) %></td>
+                        </tr>
+                        <tr>
+                            <td>Other Expenses</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.incomeStatement.expenses.otherExpenses) %></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Total Expenses</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.incomeStatement.expenses.totalExpenses) %></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Net Profit</td>
+                            <td class="amount"><%= helpers.formatCurrency(balanceSheet.incomeStatement.netProfit) %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-container">
+                <div class="section-title">Transaction Summary</div>
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total Egg Trays Produced</td>
+                            <td class="amount"><%= balanceSheet.transactionSummary.totalEggTraysProduced %></td>
+                        </tr>
+                        <tr>
+                            <td>Total Egg Trays Sold</td>
+                            <td class="amount"><%= balanceSheet.transactionSummary.totalEggTraysSold %></td>
+                        </tr>
+                        <tr>
+                            <td>Egg Trays Remaining</td>
+                            <td class="amount"><%= balanceSheet.transactionSummary.totalEggTraysRemaining %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+
+        <div class="footer">
+            This report was generated automatically by the Poultry Farm Accounting System.
+            <br>
+            For any discrepancies, please contact the accounting department.
+        </div>
+    </div>
+</body>
+</html>

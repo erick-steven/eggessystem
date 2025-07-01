@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  
+  <!-- Minified Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Minified Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f6f9; }
+    
+    .container { margin-top: 30px; }
+    .card { margin-bottom: 20px; }
+    .graph { width: 90%; height: 2500px; }
+    .card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 200px;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .card i {
+            color: #070650;
+        }
+        .card h5 {
+            color: #0c0758;
+            font-weight: 500;
+        }
+        .card a {
+    background: rgb(3, 64, 85);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    transition: all 0.3s ease; /* Transition all properties */
+    width: 50%;
+    max-width: 70px;
+    display: block; /* Changed to block for better centering */
+    margin: 0 auto; /* Horizontal centering */
+    padding: 3px 7px; /* Comfortable padding */
+    text-align: center; /* Text centering */
+    border-radius: 4px; /* Subtle rounded corners */
+    text-decoration: none; /* Remove underline */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.card a:hover {
+    background: rgba(8, 44, 202, 0.514);
+    width: 80%;
+    max-width: 200px;
+}
+body {
+    background-color: #f8f9fa; /* Light gray background */
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Query Action Button */
+/* Query Action Button - adjusted positioning */
+.query-action {
+  position: relative; /* Changed from absolute */
+  left: 0;
+  z-index: 1000;
+}
+
+
+.query-action button {
+    background-color:red; /* Teal color */
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.query-action button:hover {
+    background-color: #d11e1e; /* Darker teal on hover */
+}
+/* Base Header Styles */
+.header {
+  background: #003B4A;
+  color: white;
+  padding: 0.1rem 0.5rem; /* Almost no vertical padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  gap: 0.2rem; /* Minimal gap */
+  line-height: 1; /* Prevents extra height from text */
+  font-size: 0.9rem; /* Smaller text (adjust if needed) */
+}
+/* Logo Section */
+
+/* Logo Section - fixed alignment */
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: orange;
+  z-index: 1;
+  margin-left: 0; /* Remove previous margin */
+}
+.logo i {
+  font-size: 1.1rem;
+}
+
+/* User Controls - ensure proper spacing */
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto; /* Push to the right */
+  z-index: 1;
+}
+
+#currentUser {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.btn-danger {
+  background: red;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* Menu Button */
+.menu-button {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 769px) {
+  .header {
+    padding: 0.8rem 1.5rem;
+  }
+  .logo {
+    font-size: 1.2rem;
+    margin-left: 3rem;
+  }
+  .logo i {
+    font-size: 1.2rem;
+  }
+  .btn-danger, 
+  .menu-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 480px) {
+  .header {
+    padding: 0.6rem;
+    gap: 0.5rem;
+  }
+  .logo {
+    font-size: 1rem;
+  }
+  .user-controls {
+    gap: 0.5rem;
+  }
+  #currentUser {
+    display: none; /* Hide on smallest screens if needed */
+  }
+}
+
+/* Sidebar */
+.query-sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Initially hidden */
+    height: 100%;
+    width: 250px;
+    background-color: rgba(0, 0, 0, 0.9); /* Dark semi-transparent background */
+    color: white;
+    transition: left 0.3s ease;
+    z-index: 999;
+    padding-top: 60px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.query-sidebar.open {
+    left: 0; /* Show sidebar */
+}
+
+.query-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.query-sidebar li {
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.query-sidebar li:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effect */
+}
+
+.query-sidebar a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.query-sidebar a i {
+    font-size: 18px;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    z-index: 998;
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+}
+/* Active state for sidebar */
+.query-sidebar.open {
+  left: 0;
+}
+/* Card Styles */
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.card-header {
+  background-color: #4e73df;
+  color: #fff;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  padding: 15px;
+  font-size: 1.25rem;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+
+
+.container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .chart-row {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-row {
+                flex-direction: row;
+            }
+        }
+        .chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-height: 90vh; /* Limits height within the viewport */
+    overflow-y: auto; /* Enables scrolling if content exceeds limit */
+}
+
+canvas {
+    width: 100% !important;
+    height: 250px !important; /* Ensure fixed height */
+}
+
+        h5 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .buttons {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .buttons button {
+            background-color: #008CFF;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .buttons button:hover {
+            background-color: #005f99;
+        }
+
+
+
+
+
+
+    /* Base Footer Styles */
+    .dashboard-footer {
+      background-color:rgb(3, 64, 85); 
+      color: #aaa;
+      padding: 1.2rem 0;
+      border-top: 1px solid #333;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      width: 100%;
+      margin-top: 2rem;
+    }
+    
+    .footer-container {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      gap: 1.5rem;
+    }
+    
+    /* Copyright Section */
+    .footer-copyright {
+      justify-self: start;
+    }
+    
+    .footer-text {
+      font-size: 0.85rem;
+      color: #888;
+    }
+    
+    /* Navigation Links */
+    .footer-nav {
+      justify-self: center;
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      gap: 1rem;
+    }
+    
+    .nav-link {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+    
+    .nav-link:hover {
+      color: #008CFF;
+    }
+    
+    .link-divider {
+      color: #444;
+      user-select: none;
+    }
+    
+
+  </style>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+    <!-- Query Action Button -->
+    <div class="query-action">
+        <button class="btn btn-info" onclick="toggleSidebar()">Queqky Action</button>
+    </div>
+    <!-- Logo -->
+    <div class="logo" style="margin-right: auto; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-egg" style="color: orange;"></i> Layers
+      </div>
+    <!-- User Info and Logout -->
+    <div>
+      <span id="currentUser">Hello, <%= user.username %></span>
+
+        <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+    </div>
+</div><!-- Sidebar -->
+<div id="querySidebar" class="query-sidebar">
+    <ul>
+        <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+        <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+        <li><a href="/financials"><i class="fas fa-dollar-sign"></i> Financials</a></li>
+      
+        <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+        <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+        <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+        <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+    <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+
+    <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+    </ul>
+    
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="container mt-4">
+    <!-- Time Filter Dropdown -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+        
+             
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row text-center">
+        <!-- Total Batch Card -->
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card p-3">
+          
+                <h5 class="mt-2"> Total Flock</h5>
+                <p><%= totalFlock %></p> <!-- Dynamic total flock count -->
+                <a href="flock.html" class="btn btn-primary btn-sm"> view all</a>
+            </div>
+        </div>
+
+        <!-- Total Egg Production Card -->
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card p-3">
+          
+                <h5 class="mt-2"> Total Egg Production</h5>
+                <p><%= totalEggs %></p> <!-- Dynamic total eggs count -->
+                <a href="eggs.html" class="btn btn-primary btn-sm"> view all  </a>
+            </div>
+        </div>
+
+        <!-- Financials Review Card -->
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card p-3">
+             
+                <h5 class="mt-2"> Financials Review</h5>
+                <p>Income: <%= income %>, Expenses: <%= expenses %>, Profit: <%= profit %></p>
+                <a href="Financials.html" class="btn btn-primary btn-sm">view all</a>
+            </div>
+        </div>
+
+        <!-- Peak Production Card -->
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card p-3">
+               
+                <h5 class="mt-2"> Peak Production</h5>
+                <p><%= peakEggs %></p> <!-- Dynamic peak egg production -->
+                <a href="#" class="btn btn-primary btn-sm"> view all  </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <!-- Dashboard Header with Batch Number -->
+    <h2 class="text-center mb-4" style="color: #fff;">
+        Batch Performance Dashboard 
+        <% if (batches && batches.length > 0) { %>
+            <span style="background-color: #008CFF; color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.8em; vertical-align: middle;">
+                Batch <%= batches[0].batchNo %> 
+                (<%= batches[0].age %> days, <%= batches[0].totalNumber %> birds)
+            </span>
+        <% } %>
+        </span>
+    </h2>
+
+    <!-- Charts Container -->
+    <div class="d-flex flex-column flex-md-row gap-4 justify-content-center">
+        <!-- Egg Production Chart -->
+        <div class="chart-card" style="flex: 1; padding: 20px; border-radius: 10px; background-color: rgba(244, 246, 255, 0.993); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
+            <h3 class="text-center mb-3" style="color: #000000; font-weight: 600;">Egg Production Trend</h3>
+            <canvas id="eggChart" height="280"></canvas>
+        </div>
+        
+        <!-- Financial Chart -->
+        <div class="chart-card" style="flex: 1; padding: 20px; border-radius: 10px; background-color: rgb(255, 255, 255); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
+            <h3 class="text-center mb-3" style="color: #000000; font-weight: 600;">Financial Performance</h3>
+            <canvas id="financialChart" height="280"></canvas>
+        </div>
+    </div>
+<!-- Footer Section -->
+
+  
+  <!-- Footer Styles -->
+  
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Prepare data
+    const eggLabels = <%- JSON.stringify(eggGraph.map(e => e.date)) %>;
+const eggData = <%- JSON.stringify(eggGraph.map(e => e.totalEggs)) %>;
+const financialLabels = <%- JSON.stringify(financialGraph.map(f => f.date)) %>;
+const financialData = <%- JSON.stringify(financialGraph.map(f => f.profit)) %>;
+
+// Enhanced chart configuration for better visibility
+const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: { 
+            display: true,
+            labels: {
+                color: '#000000', // Black for better contrast
+                font: {
+                    weight: 'bold'
+                }
+            }
+        },
+        tooltip: {
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            titleColor: '#000',
+            bodyColor: '#333',
+            borderColor: 'rgba(9, 30, 128, 1)',
+            borderWidth: 1,
+            padding: 12,
+            cornerRadius: 6,
+            displayColors: true,
+            callbacks: {
+                label: function(context) {
+                    return `${context.dataset.label}: ${context.parsed.y}`;
+                }
+            }
+        }
+    },
+    scales: {
+        x: {
+            grid: { 
+                display: false,
+                color: 'rgba(0, 0, 0, 0.1)'
+            },
+            ticks: { 
+                color: '#000000',
+                font: {
+                    weight: 'bold'
+                }
+            }
+        },
+        y: {
+            grid: { 
+                color: 'rgba(0, 0, 0, 0.1)',
+                borderDash: [3, 3]
+            },
+            ticks: { 
+                color: '#000000',
+                font: {
+                    weight: 'bold'
+                },
+                callback: function(value) {
+                    return value.toLocaleString(); // Format numbers
+                }
+            },
+            beginAtZero: true
+        }
+    },
+    animation: {
+        duration: 1200,
+        easing: 'easeOutQuart'
+    }
+};
+
+// Initialize Egg Production Chart (Line)
+new Chart(
+    document.getElementById('eggChart').getContext('2d'),
+    {
+        type: 'line',
+        data: {
+            labels: eggLabels,
+            datasets: [{
+                label: 'Eggs Produced',
+                data: eggData,
+                borderColor: '#FF6B00', // Orange for high contrast
+                backgroundColor: 'rgba(255, 107, 0, 0.2)',
+                borderWidth: 3,
+                tension: 0.3,
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                pointBackgroundColor: '#FF6B00',
+                pointBorderColor: '#FFF',
+                pointBorderWidth: 2,
+                fill: true
+            }]
+        },
+        options: chartOptions
+    }
+);
+
+// Initialize Financial Chart (Bar)
+new Chart(
+    document.getElementById('financialChart').getContext('2d'),
+    {
+        type: 'bar',
+        data: {
+            labels: financialLabels,
+            datasets: [{
+                label: 'Profit ($)',
+                data: financialData,
+                backgroundColor: 'rgba(0, 168, 107, 0.8)', // Green for positive financials
+                hoverBackgroundColor: 'rgba(0, 168, 107, 1)',
+                borderColor: 'rgba(0, 0, 0, 0.2)',
+                borderWidth: 1,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            ...chartOptions,
+            scales: {
+                ...chartOptions.scales,
+                y: {
+                    ...chartOptions.scales.y,
+                    ticks: {
+                        ...chartOptions.scales.y.ticks,
+                        callback: function(value) {
+                            return '$' + value.toLocaleString(); // Currency format
+                        }
+                    }
+                }
+            }
+        }
+    }
+);
+
+    function toggleSidebar() {
+            const sidebar = document.getElementById('querySidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+
+
+</script>
+
+  <!-- Bootstrap JS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
