@@ -83,49 +83,74 @@
 .form-control, .form-select {
     min-height: 38px;
 }
-
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .card-body {
-        padding: 0.75rem;
+    .table-responsive {
+        overflow-x: hidden;
     }
     
-    .table thead th {
-        padding: 8px 10px;
-        font-size: 0.85rem;
+    .table {
+        display: block;
+        width: 100%;
+    }
+    
+    .table thead {
+        display: none;
+    }
+    
+    .table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        background: #f8f9fa;
     }
     
     .table tbody td {
-        padding: 6px 8px;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0;
+        border: none !important;
     }
     
-    .form-control, .form-select,
-    .input-group-text {
+    .table tbody td::before {
+        content: attr(data-label);
+        flex: 0 0 40%;
+        font-weight: bold;
         font-size: 0.85rem;
+        color: #495057;
+        padding-right: 1rem;
     }
     
-    .input-group-sm > .form-control,
-    .input-group-sm > .form-select,
-    .input-group-sm > .input-group-text {
-        padding: 0.25rem 0.5rem;
+    .table tbody td > * {
+        flex: 1;
     }
-}
-
-/* For very small screens */
-@media (max-width: 480px) {
-    .table thead th {
-        padding: 6px 8px;
+    
+    .table tbody td .form-control,
+    .table tbody td .form-select,
+    .table tbody td .input-group {
+        width: 100%;
+        min-width: 0;
+    }
+    
+    .table tbody td .input-group-text {
+        padding: 0.375rem 0.5rem;
         font-size: 0.8rem;
     }
     
-    .table tbody td {
-        padding: 4px 6px;
+    /* Hide icons on mobile */
+    .table thead th i {
+        display: none;
     }
-    
-    .fas, .far {
-        font-size: 0.9rem;
+}
+
+/* Desktop styling */
+@media (min-width: 769px) {
+    .table tbody td::before {
+        display: none;
     }
-}/* Grid Table Container - Professional Mobile Version */
+}
+/* Grid Table Container - Professional Mobile Version */
 .grid-table-container {
     overflow-x: auto;
     border: 1px solid #e0e0e0;
@@ -381,60 +406,58 @@
         <form action="/financials" method="POST" onsubmit="handleFormSubmit(event)" class="financial-form">
             <!-- Category Toggle -->
         
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-2 p-md-3">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-nowrap"><i class="fas fa-hashtag me-1"></i> Batch No</th>
+                                    <th class="text-nowrap"><i class="far fa-calendar-alt me-1"></i> Date</th>
+                                    <th class="text-nowrap"><i class="fas fa-coins me-1"></i> Total Income</th>
+                                    <th class="text-nowrap"><i class="fas fa-receipt me-1"></i> Total Expenses</th>
+                                    <th class="text-nowrap"><i class="fas fa-chart-line me-1"></i> Net Profit</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <tr>
+                                    <td class="align-middle" data-label="Batch No">
+                                        <select class="form-select form-select-sm" name="batch" id="batchSelect" required onchange="updateTrays()">
+                                            <option value="">Select Batch</option>
+                                            <% allBatches.forEach(batch => { %>
+                                                <option value="<%= batch._id %>"><%= batch.batchNo %></option>
+                                            <% }) %>
+                                        </select>
+                                    </td>
+                                    <td class="align-middle" data-label="Date">
+                                        <input type="date" class="form-control form-control-sm" name="date" required>
+                                    </td>
+                                    <td class="align-middle" data-label="Total Income">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">TZS</span>
+                                            <input type="number" class="form-control text-success fw-bold" name="totalIncome" readonly value="0">
+                                        </div>
+                                    </td>
+                                    <td class="align-middle" data-label="Total Expenses">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">TZS</span>
+                                            <input type="number" class="form-control text-danger fw-bold" name="totalExpenses" readonly value="0">
+                                        </div>
+                                    </td>
+                                    <td class="align-middle" data-label="Net Profit">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">TZS</span>
+                                            <input type="number" class="form-control text-primary fw-bold" name="profit" readonly value="0">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             
-  <!-- Batch & Summary Card -->
-<div class="card shadow-sm mb-4">
-    <div class="card-body p-2 p-md-3">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover mb-0">
-                <thead class="table-dark">
-                    <tr>
-                        <th class="text-nowrap"><i class="fas fa-hashtag me-1"></i> Batch No</th>
-                        <th class="text-nowrap"><i class="far fa-calendar-alt me-1"></i> Date</th>
-                        <th class="text-nowrap"><i class="fas fa-coins me-1"></i> Total Income</th>
-                        <th class="text-nowrap"><i class="fas fa-receipt me-1"></i> Total Expenses</th>
-                        <th class="text-nowrap"><i class="fas fa-chart-line me-1"></i> Net Profit</th>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                    <tr>
-                        <td class="align-middle">
-                            <select class="form-select form-select-sm" name="batch" id="batchSelect" required onchange="updateTrays()">
-                                <option value="">Select Batch</option>
-                                <% allBatches.forEach(batch => { %>
-                                    <option value="<%= batch._id %>"><%= batch.batchNo %></option>
-                                <% }) %>
-                            </select>
-                        </td>
-                        <td class="align-middle">
-                            <input type="date" class="form-control form-control-sm" name="date" required>
-                        </td>
-                        <td class="align-middle">
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text">TZS</span>
-                                <input type="number" class="form-control text-success fw-bold" name="totalIncome" readonly value="0">
-                            </div>
-                        </td>
-                        <td class="align-middle">
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text">TZS</span>
-                                <input type="number" class="form-control text-danger fw-bold" name="totalExpenses" readonly value="0">
-                            </div>
-                        </td>
-                        <td class="align-middle">
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text">TZS</span>
-                                <input type="number" class="form-control text-primary fw-bold" name="profit" readonly value="0">
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-        
             <!-- Tray Information Card -->
             <div class="card shadow-sm mb-4" id="inventory-summary">
                 <div class="card-header bg-info text-white">

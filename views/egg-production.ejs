@@ -22,92 +22,7 @@
 
   <style>
  /* Egg Production Form - Soft Modern Style */
-#egg-production-container {
-  padding: 24px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 24px;
-  border: 1px solid #eaeaea;
-}
-
-#egg-production-container h2 {
-  color: #2d3748;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-  font-size: 1.3rem;
-}
-
-#egg-production-container h2 .icon {
-  color: #4299e1;
-}
-
-/* Table Styling */
-.table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  
-}.table thead {
-  border-radius: 5px 5px 0 0; /* Top-left and top-right only */
-  overflow: hidden; /* This is crucial to make the radius visible */
-}
-
-.table thead th {
-  background-color: rgb(3, 64, 85);
-  color: #ffffff;
-  padding: 12px 16px;
-  text-align: left;
-  font-weight: 500;
-  border-bottom: 2px solid #e2e8f0;
-}
-
-/* Optional: Perfect rounded corners for first and last cells */
-.table thead th:first-child {
-  border-top-left-radius: 5px;
-}
-.table thead th:last-child {
-  border-top-right-radius: 5px;
-}
-
-.table tbody tr {
-  transition: background-color 0.2s ease;
-}
-
-.table tbody tr:hover {
-  background-color: #f8fafc;
-}
-
-.table tbody td {
-  padding: 14px 16px;
-  vertical-align: middle;
-  color: #4a5568;
-  border-bottom: 1px solid #edf2f7;
-}
-
-/* Input Fields */
-.table tbody td input,
-.table tbody td select {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  color: #4a5568;
-  background-color: #ffffff;
-  transition: all 0.2s;
-}
-
-.table tbody td input:focus,
-.table tbody td select:focus {
-  border-color: #4299e1;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-}
-
+ 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   #egg-production-container {
@@ -320,29 +235,30 @@
 </div>
 <!-- views/egg-production.ejs -->
 <div class="container my-5">
-    <div id="egg-production-container">
+  <div class="card shadow-sm">
+    <div class="card-body p-2 p-md-3">
       <form method="POST" action="/egg-production">
-        <h2 class="mb-4">  Record Egg Production</h2>
+ 
         <div class="table-responsive">
-          <table class="table table-striped">  <!-- Removed table-bordered -->
-            <thead>
+          <table class="table table-bordered table-hover mb-0">
+            <thead class="table-dark">
               <tr>
-                <th>Batch No</th>
-                <th>Date</th>
-                <th>Total</th>
-                <th>Bad</th>
-                <th>Good(%)</th>
-                <th>Weight(kg)</th>
-                <th>Production (%)</th>
-                <th>Trays Produced</th>
-                <th>Stock</th>
+                <th class="text-nowrap"><i class="fas fa-hashtag me-1"></i> Batch No</th>
+                <th class="text-nowrap"><i class="far fa-calendar-alt me-1"></i> Date</th>
+                <th class="text-nowrap"><i class="fas fa-egg me-1"></i> Total</th>
+                <th class="text-nowrap"><i class="fas fa-times-circle me-1"></i> Bad</th>
+                <th class="text-nowrap"><i class="fas fa-check-circle me-1"></i> Good(%)</th>
+                <th class="text-nowrap"><i class="fas fa-weight-hanging me-1"></i> Weight(kg)</th>
+                <th class="text-nowrap"><i class="fas fa-percentage me-1"></i> Production (%)</th>
+                <th class="text-nowrap"><i class="fas fa-boxes me-1"></i> Trays Produced</th>
+                <th class="text-nowrap"><i class="fas fa-warehouse me-1"></i> Stock</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <!-- Batch Select -->
-                <td data-label="Batch No">
-                  <select class="form-control" name="batch" id="batchSelect" required onchange="updateFlockDetails()">
+                <td class="align-middle" data-label="Batch No">
+                  <select class="form-select form-select-sm" name="batch" id="batchSelect" required onchange="updateFlockDetails()">
                     <option value="">Select Batch</option>
                     <% batches.forEach(batch => { %>
                       <option value="<%= batch._id %>" data-total="<%= batch.totalNumber %>">
@@ -353,26 +269,42 @@
                 </td>
                 
                 <!-- Date -->
-                <td data-label="Date"><input type="date" name="date" class="form-control" required></td>
+                <td class="align-middle" data-label="Date">
+                  <input type="date" name="date" class="form-control form-control-sm" required>
+                </td>
                 
                 <!-- Total Eggs -->
-                <td data-label="Total Eggs"><input type="number" name="totalEggs" id="totalEggs" class="form-control" required oninput="calculateProductionPercent()"></td>
+                <td class="align-middle" data-label="Total Eggs">
+                  <input type="number" name="totalEggs" id="totalEggs" class="form-control form-control-sm" required oninput="calculateProductionPercent()">
+                </td>
                 
                 <!-- Bad & Good Eggs -->
-                <td data-label="Bad Eggs"><input type="number" name="badEggsPercent" id="badEggsPercent" class="form-control" required oninput="calculateGoodEggs()"></td>
-                <td data-label="Good Eggs (%)"><input type="number" name="goodEggsPercent" id="goodEggsPercent" class="form-control" readonly required></td>
+                <td class="align-middle" data-label="Bad Eggs">
+                  <input type="number" name="badEggsPercent" id="badEggsPercent" class="form-control form-control-sm" required oninput="calculateGoodEggs()">
+                </td>
+                <td class="align-middle" data-label="Good Eggs (%)">
+                  <input type="number" name="goodEggsPercent" id="goodEggsPercent" class="form-control form-control-sm" readonly required>
+                </td>
                 
                 <!-- Weight -->
-                <td data-label="Weight (kg)"><input type="number" name="weight" step="0.01" class="form-control" required></td>
+                <td class="align-middle" data-label="Weight (kg)">
+                  <input type="number" name="weight" step="0.01" class="form-control form-control-sm" required>
+                </td>
                 
                 <!-- Egg Production % -->
-                <td data-label="Egg Production (%)"><input type="text" id="eggProductionPercent" class="form-control" readonly></td>
+                <td class="align-middle" data-label="Egg Production (%)">
+                  <input type="text" id="eggProductionPercent" class="form-control form-control-sm" readonly>
+                </td>
                 
                 <!-- Trays Produced -->
-                <td data-label="Trays Produced"><input type="text" id="traysProduced" class="form-control" readonly></td>
+                <td class="align-middle" data-label="Trays Produced">
+                  <input type="text" id="traysProduced" class="form-control form-control-sm" readonly>
+                </td>
                 
                 <!-- Available Tray Stock -->
-                <td data-label="Available Tray Stock"><input type="text" id="traysRemaining" class="form-control" readonly></td>
+                <td class="align-middle" data-label="Available Tray Stock">
+                  <input type="text" id="traysRemaining" class="form-control form-control-sm" readonly>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -381,14 +313,86 @@
         <!-- Hidden field to store total flock -->
         <input type="hidden" id="totalFlock">
   
-        <div class="d-flex justify-content-end mt-3">
-          <button class="btn btn-submit" type="submit">
-            <i class="fas fa-plus icon"></i> Add Record
+        <div class="text-end mt-3">
+          <button class="btn btn-primary btn-sm" type="submit">
+            <i class="fas fa-save me-1"></i> Save egges production 
           </button>
         </div>
       </form>
     </div>
   </div>
+</div>
+
+<style>
+  /* Match financial form header exactly */
+  .table thead th {
+    background-color: rgb(3, 64, 85);
+    color: white;
+    padding: 10px 12px;
+    text-align: center;
+    border: none;
+    white-space: nowrap;
+  }
+  
+  /* Rounded corners for header */
+  .table thead tr:first-child th:first-child {
+    border-top-left-radius: 5px;
+  }
+  
+  .table thead tr:first-child th:last-child {
+    border-top-right-radius: 5px;
+  }
+  
+  /* Mobile responsive styles from financial form */
+  @media (max-width: 768px) {
+    .table-responsive {
+      overflow-x: hidden;
+    }
+    
+    .table {
+      display: block;
+      width: 100%;
+    }
+    
+    .table thead {
+      display: none;
+    }
+    
+    .table tbody tr {
+      display: block;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #dee2e6;
+      border-radius: 0.5rem;
+      background: #f8f9fa;
+    }
+    
+    .table tbody td {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 0;
+      border: none !important;
+    }
+    
+    .table tbody td::before {
+      content: attr(data-label);
+      flex: 0 0 40%;
+      font-weight: bold;
+      font-size: 0.85rem;
+      color: #495057;
+      padding-right: 1rem;
+    }
+    
+    .table tbody td > * {
+      flex: 1;
+    }
+    
+    /* Hide icons on mobile */
+    .table thead th i {
+      display: none;
+    }
+  }
+</style>
 <section class="container mt-4">
     <h2 class="text-center"><i class="fas fa-dove text-primary"></i> Latest Egg Production Records</h2>
 
@@ -526,6 +530,26 @@ function logout() {
         window.location.href = '/logout'; // Example redirect
     }
 }
+
+function calculateGoodEggs() {
+    const badEggsInput = document.getElementById('badEggsPercent');
+    const goodEggsInput = document.getElementById('goodEggsPercent');
+    
+    if (!badEggsInput || !goodEggsInput) return;
+
+    const badEggsPercent = parseFloat(badEggsInput.value) || 0;
+    
+    if (badEggsPercent < 0 || badEggsPercent > 100) {
+        goodEggsInput.value = '';
+        alert('Bad eggs percentage must be between 0 and 100');
+        return;
+    }
+    
+    goodEggsInput.value = (100 - badEggsPercent).toFixed(2);
+    calculateProductionPercent();
+}
+
+
 async function calculateProductionPercent() {
     try {
         // Get and validate inputs
