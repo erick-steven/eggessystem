@@ -94,106 +94,7 @@
 .btn-submit:active {
   transform: translateY(0);
 }
-.grid-table {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(100px, 1fr));
-    gap: 1px;
-    background-color: #ddd;
-    border-radius: 8px 8px 0 0; /* Top corners only */
-    overflow: hidden; /* Ensures rounded corners are visible */
-}
-
-.grid-header {
-    display: contents; /* Allows header to participate in grid layout */
-}
-
-.grid-header > div {
-    position: relative; /* Needed for z-index */
-    z-index: 1; /* Ensures header stays above other elements */
-    padding: 0.75rem;
-    background-color: rgb(3, 64, 85);
-    color: #fff;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.grid-row {
-    display: contents;
-}
-
-.grid-row > div {
-    padding: 0.75rem;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* First and last header cells for perfect rounded corners */
-.grid-header > div:first-child {
-    border-top-left-radius: 8px;
-}
-
-.grid-header > div:last-child {
-    border-top-right-radius: 8px;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .grid-table {
-        grid-template-columns: 1fr;
-        border-radius: 0.25rem; /* Full rounded corners for mobile cards */
-    }
-
-    .grid-header {
-        display: none;
-    }
-
-    .grid-row {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        padding: 1rem;
-        background-color: #f8f9fa;
-        border: 1px solid #ddd;
-        border-radius: 0.25rem;
-    }
-
-    .grid-row > div {
-        justify-content: space-between;
-        padding: 0.5rem;
-    }
-
-    .grid-row > div::before {
-        content: attr(data-label);
-        font-weight: bold;
-        margin-right: 1rem;
-        background-color: #343a40;
-        color: #fff;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-    }
-
-    .grid-row > div:last-child::before {
-        display: none;
-    }
-}
-
-/* Button Styles */
-.btn-sm {
-    margin: 0.1rem;
-}
-
-@media (max-width: 576px) {
-    .btn-sm {
-        display: block;
-        width: 100%;
-        margin: 0.25rem 0;
-    }
-}
+ 
 </style>
 </head>
 <body>
@@ -393,129 +294,414 @@
     }
   }
 </style>
-<section class="container mt-4">
-    <h2 class="text-center"><i class="fas fa-dove text-primary"></i> Latest Egg Production Records</h2>
-
-    <!-- Search Bar, Batch Selection, and Rows Display Control -->
-    <div class="d-flex justify-content-between mb-3">
-        <!-- Batch Selection -->
-        <div class="input-group" style="max-width: 500px;">
-            <select id="batchFilter" class="form-control">
-                <option value="all">All Batches</option>
-                <% batches.forEach(batch => { %>
-                    <option value="<%= batch._id %>"><%= batch.batchNo %></option>
-                <% }) %>
-            </select>
-            
-            <!-- Search Bar -->
-            <input type="text" id="eggSearchInput" class="form-control" placeholder="Search...">
-            <button class="btn btn-success" type="button"><i class="fas fa-search"></i></button>
+<section class="container-fluid px-lg-4 py-3">
+  <!-- Header Section -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3 mb-3">
+    <h2 class="h5 mb-0 d-flex align-items-center">
+      <i class="fas fa-egg text-primary me-2"></i>
+      <span class="d-none d-sm-inline">Egg Production Records</span>
+      <span class="d-inline d-sm-none">Egg Records</span>
+    </h2>
+    
+    <!-- Controls Container -->
+    <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto">
+      <!-- Batch Filter -->
+      <div class="flex-grow-1">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light border-end-0"><i class="fas fa-filter text-muted"></i></span>
+          <select class="form-select form-select-sm border-start-0" id="batchFilter">
+            <option value="all">All Batches</option>
+            <% batches.forEach(batch => { %>
+              <option value="<%= batch._id %>"><%= batch.batchNo %></option>
+            <% }) %>
+          </select>
         </div>
-
-        <!-- Select number of rows to display -->
-        <div class="input-group" style="max-width: 200px;">
-            <select id="rowsPerPage" class="form-control">
-                <option value="5">show 5 rows</option>
-                <option value="10">10 rows</option>
-                <option value="15">15 rows</option>
-                <option value="20">20 rows</option>
-            </select>
+      </div>
+      
+      <!-- Search -->
+      <div class="flex-grow-1">
+        <div class="input-group input-group-sm">
+          <input type="text" id="eggSearchInput" class="form-control form-control-sm" placeholder="Search records...">
+          <button class="btn btn-sm btn-outline-secondary" type="button" id="searchButton">
+            <i class="fas fa-search"></i>
+          </button>
         </div>
+      </div>
+      
+      <!-- Rows Selector -->
+      <div class="d-none d-sm-flex" style="min-width: 120px;">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light"><i class="fas fa-list text-muted"></i></span>
+          <select id="rowsPerPage" class="form-select form-select-sm">
+            <option value="5">5 rows</option>
+            <option value="10" selected>10 rows</option>
+            <option value="20">20 rows</option>
+            <option value="all">All rows</option>
+          </select>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Table Display -->
-    <div class="grid-table mt-3" id="eggProductionTable">
-        <div class="grid-header">
-            <div><i class="fas fa-hashtag"></i> Batch No</div>
-            <div><i class="fas fa-calendar-alt"></i> Date</div>
-            <div><i class="fas fa-egg"></i> Total Eggs</div>
-            <div><i class="fas fa-check-circle text-success"></i> Good Eggs (%)</div>
-            <div><i class="fas fa-times-circle text-danger"></i> Bad Eggs (%)</div>
-            <div><i class="fas fa-percentage"></i> Egg Production (%)</div> <!-- NEW -->
-            <div><i class="fas fa-cogs"></i> Actions</div>
-        </div>
-
-        <% if (records && records.length > 0) { %>
-            <% records.forEach((record) => { %>
-                <div class="grid-row" data-batch="<%= record.batch?._id %>" data-record-id="<%= record._id %>">
-                    <div data-label="Batch No"> <%= record.batch?.batchNo || 'N/A' %> </div>
-                    <div data-label="Date">
+  <!-- Table Card -->
+  <div class="card border-0 shadow-sm mb-3">
+    <div class="card-body p-0">
+      <!-- Desktop Table -->
+      <div class="d-none d-md-block">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0" id="desktopTable">
+            <thead class="bg-light">
+              <tr>
+                <th><i class="fas fa-hashtag fa-fw me-1 text-muted"></i>Batch</th>
+                <th><i class="fas fa-calendar-alt fa-fw me-1 text-muted"></i>Date</th>
+                <th><i class="fas fa-egg fa-fw me-1 text-muted"></i>Total</th>
+                <th><i class="fas fa-check-circle fa-fw me-1 text-success"></i>Good</th>
+                <th><i class="fas fa-times-circle fa-fw me-1 text-danger"></i>Bad</th>
+                <th><i class="fas fa-percentage fa-fw me-1 text-muted"></i>Production</th>
+                <th width="100">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="desktopTableBody">
+              <% if (records && records.length > 0) { %>
+                <% records.forEach((record) => { %>
+                  <tr data-batch="<%= record.batch?._id %>" data-record-id="<%= record._id %>">
+                    <td><span class="fw-semibold"><%= record.batch?.batchNo || 'N/A' %></span></td>
+                    <td>
+                      <span class="text-muted small">
                         <%= record.date ? record.date.toISOString().split('T')[0] : 'No date' %>
-                    </div>
-                    <div data-label="Total Eggs"> <%= record.totalEggs %> </div>
-                    <div data-label="Good Eggs (%)"> <%= record.goodEggsPercent %> </div>
-                    <div data-label="Bad Eggs (%)"> <%= record.badEggsPercent %> </div>
-                    <div data-label="Egg Production (%)"> <%= record.productionPercent || 'N/A' %> </div>
-                    <div data-label="Actions">
-                        <!-- Edit Button -->
-                        <button class="btn btn-warning btn-sm edit-btn" 
+                      </span>
+                    </td>
+                    <td><%= record.totalEggs %></td>
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="progress flex-grow-1" style="height: 6px;">
+                          <div class="progress-bar bg-success" style="width: <%= record.goodEggsPercent %>%"></div>
+                        </div>
+                        <span><%= record.goodEggsPercent %>%</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="progress flex-grow-1" style="height: 6px;">
+                          <div class="progress-bar bg-danger" style="width: <%= record.badEggsPercent %>%"></div>
+                        </div>
+                        <span><%= record.badEggsPercent %>%</span>
+                      </div>
+                    </td>
+                    <td>
+                      <% if (record.productionPercent) { %>
+                        <span class="badge bg-<%= record.productionPercent >= 80 ? 'success' : record.productionPercent >= 50 ? 'warning' : 'danger' %> bg-opacity-10 text-<%= record.productionPercent >= 80 ? 'success' : record.productionPercent >= 50 ? 'warning' : 'danger' %>">
+                          <%= record.productionPercent %>%
+                        </span>
+                      <% } else { %>
+                        <span class="text-muted">N/A</span>
+                      <% } %>
+                    </td>
+                    <td>
+                      <div class="d-flex gap-1">
+                        <button class="btn btn-sm btn-outline-primary rounded-circle p-1 edit-btn" 
                                 onclick="window.location.href='/egg-production/edit/<%= record._id %>'"
-                                title="Edit Record">
-                            <i class="fas fa-edit"></i>
+                                data-bs-toggle="tooltip" title="Edit">
+                          <i class="fas fa-pencil-alt fa-fw"></i>
                         </button>
-                        
-                        <!-- Delete Button -->
-                        <button class="btn btn-danger btn-sm delete-btn" 
+                        <button class="btn btn-sm btn-outline-danger rounded-circle p-1 delete-btn" 
                                 onclick="if(confirm('Are you sure?')) { deleteRecord('<%= record._id %>', this) }"
-                                title="Delete Record">
-                            <i class="fas fa-trash"></i>
+                                data-bs-toggle="tooltip" title="Delete">
+                          <i class="fas fa-trash-alt fa-fw"></i>
                         </button>
-                    </div>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="7" class="text-center py-5 text-muted">
+                    <i class="fas fa-egg fa-2x mb-3 opacity-25"></i>
+                    <p class="mb-0">No production records found</p>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Mobile List -->
+      <div class="d-block d-md-none" id="mobileList">
+        <% if (records && records.length > 0) { %>
+          <div class="list-group list-group-flush">
+            <% records.forEach((record) => { %>
+              <div class="list-group-item p-3" data-batch="<%= record.batch?._id %>" data-record-id="<%= record._id %>">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-bold text-primary"><%= record.batch?.batchNo || 'N/A' %></span>
+                  <span class="text-muted small">
+                    <%= record.date ? record.date.toISOString().split('T')[0] : 'No date' %>
+                  </span>
                 </div>
+                
+                <div class="row g-2 small">
+                  <div class="col-6">
+                    <div class="text-muted">Total Eggs</div>
+                    <div class="fw-medium"><%= record.totalEggs %></div>
+                  </div>
+                  <div class="col-6">
+                    <div class="text-muted">Production</div>
+                    <div>
+                      <% if (record.productionPercent) { %>
+                        <span class="badge bg-<%= record.productionPercent >= 80 ? 'success' : record.productionPercent >= 50 ? 'warning' : 'danger' %> bg-opacity-10 text-<%= record.productionPercent >= 80 ? 'success' : record.productionPercent >= 50 ? 'warning' : 'danger' %>">
+                          <%= record.productionPercent %>%
+                        </span>
+                      <% } else { %>
+                        <span class="text-muted">N/A</span>
+                      <% } %>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="text-muted">Good Eggs</div>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="progress flex-grow-1" style="height: 4px;">
+                        <div class="progress-bar bg-success" style="width: <%= record.goodEggsPercent %>%"></div>
+                      </div>
+                      <span><%= record.goodEggsPercent %>%</span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="text-muted">Bad Eggs</div>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="progress flex-grow-1" style="height: 4px;">
+                        <div class="progress-bar bg-danger" style="width: <%= record.badEggsPercent %>%"></div>
+                      </div>
+                      <span><%= record.badEggsPercent %>%</span>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-flex justify-content-end gap-2 mt-2">
+                      <button class="btn btn-sm btn-outline-primary" 
+                              onclick="window.location.href='/egg-production/edit/<%= record._id %>'">
+                        <i class="fas fa-pencil-alt me-1"></i> Edit
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" 
+                              onclick="if(confirm('Are you sure?')) { deleteRecord('<%= record._id %>', this) }">
+                        <i class="fas fa-trash-alt me-1"></i> Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <% }); %>
+          </div>
         <% } else { %>
-            <div class="alert alert-warning text-center mt-3 w-100">No egg production records found.</div>
+          <div class="text-center py-5 text-muted">
+            <i class="fas fa-egg fa-2x mb-3 opacity-25"></i>
+            <p class="mb-0">No production records found</p>
+          </div>
         <% } %>
-        
-        
+      </div>
     </div>
+    
+    <!-- Footer -->
+    <% if (records && records.length > 0) { %>
+      <div class="card-footer bg-light py-2">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+          <div class="small text-muted mb-2 mb-sm-0">
+            Showing <span id="showingCount">1</span> to <span id="totalCount"><%= records.length > 10 ? 10 : records.length %></span> of <span id="totalRecords"><%= records.length %></span>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary" id="prevPage" disabled>
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="btn-group" id="pageNumbers">
+              <button class="btn btn-sm btn-outline-secondary active">1</button>
+              <% if (records.length > 10) { %>
+                <button class="btn btn-sm btn-outline-secondary">2</button>
+              <% } %>
+              <% if (records.length > 20) { %>
+                <button class="btn btn-sm btn-outline-secondary">3</button>
+              <% } %>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary" id="nextPage">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
 </section>
 
-<!-- JavaScript for Filtering, Searching, and Row Control -->
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const searchInput = document.getElementById("eggSearchInput");
-        const batchFilter = document.getElementById("batchFilter");
-        const rowsPerPage = document.getElementById("rowsPerPage");
-        const eggRows = document.querySelectorAll("#eggProductionTable .grid-row");
-
-        function filterTable() {
-            const searchValue = searchInput.value.toLowerCase();
-            const selectedBatch = batchFilter.value;
-            let visibleRows = 0;
-
-            eggRows.forEach((row) => {
-                const batchId = row.getAttribute("data-batch");
-                const rowText = row.innerText.toLowerCase();
-                const matchesSearch = rowText.includes(searchValue);
-                const matchesBatch = selectedBatch === "all" || batchId === selectedBatch;
-
-                if (matchesSearch && matchesBatch) {
-                    row.style.display = visibleRows < rowsPerPage.value ? "" : "none";
-                    visibleRows++;
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        }
-
-        searchInput.addEventListener("input", filterTable);
-        batchFilter.addEventListener("change", filterTable);
-        rowsPerPage.addEventListener("change", filterTable);
-
-        // Initialize filter on page load
-        filterTable();
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize variables
+  const batchFilter = document.getElementById("batchFilter");
+  const eggSearchInput = document.getElementById("eggSearchInput");
+  const searchButton = document.getElementById("searchButton");
+  const rowsPerPage = document.getElementById("rowsPerPage");
+  const showingCount = document.getElementById("showingCount");
+  const totalCount = document.getElementById("totalCount");
+  const totalRecords = document.getElementById("totalRecords");
+  const prevPage = document.getElementById("prevPage");
+  const nextPage = document.getElementById("nextPage");
+  const pageNumbers = document.getElementById("pageNumbers");
+  
+  let currentPage = 1;
+  let filteredRecords = [];
+  
+  // Get all records (both desktop and mobile)
+  function getAllRecords() {
+    const desktopRows = Array.from(document.querySelectorAll("#desktopTableBody tr"));
+    const mobileItems = Array.from(document.querySelectorAll("#mobileList .list-group-item"));
+    
+    // Combine and deduplicate records
+    const allRecords = [];
+    const seenIds = new Set();
+    
+    desktopRows.forEach(row => {
+      const id = row.getAttribute("data-record-id");
+      if (!seenIds.has(id)) {
+        seenIds.add(id);
+        allRecords.push({
+          id,
+          batch: row.getAttribute("data-batch"),
+          element: row,
+          mobileElement: mobileItems.find(item => item.getAttribute("data-record-id") === id)
+        });
+      }
     });
+    
+    mobileItems.forEach(item => {
+      const id = item.getAttribute("data-record-id");
+      if (!seenIds.has(id)) {
+        seenIds.add(id);
+        allRecords.push({
+          id,
+          batch: item.getAttribute("data-batch"),
+          element: desktopRows.find(row => row.getAttribute("data-record-id") === id),
+          mobileElement: item
+        });
+      }
+    });
+    
+    return allRecords;
+  }
+  
+  // Filter records based on search and batch filter
+  function filterRecords() {
+    const searchValue = eggSearchInput.value.toLowerCase();
+    const selectedBatch = batchFilter.value;
+    
+    return getAllRecords().filter(record => {
+      const matchesBatch = selectedBatch === "all" || record.batch === selectedBatch;
+      const elementText = record.element ? record.element.textContent.toLowerCase() : 
+                        record.mobileElement.textContent.toLowerCase();
+      const matchesSearch = elementText.includes(searchValue);
+      
+      return matchesBatch && matchesSearch;
+    });
+  }
+  
+  // Update the displayed records
+  function updateDisplay() {
+    filteredRecords = filterRecords();
+    const rowsToShow = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
+    const totalPages = Math.ceil(filteredRecords.length / rowsToShow);
+    
+    // Update pagination controls
+    updatePagination(totalPages);
+    
+    // Calculate start and end indices
+    const startIndex = (currentPage - 1) * rowsToShow;
+    const endIndex = Math.min(startIndex + rowsToShow, filteredRecords.length);
+    
+    // Hide all records first
+    getAllRecords().forEach(record => {
+      if (record.element) record.element.style.display = "none";
+      if (record.mobileElement) record.mobileElement.style.display = "none";
+    });
+    
+    // Show only the records for the current page
+    for (let i = startIndex; i < endIndex; i++) {
+      const record = filteredRecords[i];
+      if (record.element) record.element.style.display = "";
+      if (record.mobileElement) record.mobileElement.style.display = "";
+    }
+    
+    // Update showing counts
+    showingCount.textContent = Math.min(startIndex + 1, filteredRecords.length);
+    totalCount.textContent = endIndex;
+    totalRecords.textContent = filteredRecords.length;
+  }
+  
+  // Update pagination controls
+  function updatePagination(totalPages) {
+    // Clear existing page numbers
+    pageNumbers.innerHTML = "";
+    
+    // Add page number buttons
+    for (let i = 1; i <= totalPages; i++) {
+      const pageBtn = document.createElement("button");
+      pageBtn.className = `btn btn-sm btn-outline-secondary ${i === currentPage ? 'active' : ''}`;
+      pageBtn.textContent = i;
+      pageBtn.addEventListener("click", () => {
+        currentPage = i;
+        updateDisplay();
+      });
+      pageNumbers.appendChild(pageBtn);
+    }
+    
+    // Update prev/next buttons
+    prevPage.disabled = currentPage === 1;
+    nextPage.disabled = currentPage === totalPages;
+  }
+  
+  // Event listeners
+  batchFilter.addEventListener("change", () => {
+    currentPage = 1;
+    updateDisplay();
+  });
+  
+  eggSearchInput.addEventListener("input", () => {
+    currentPage = 1;
+    updateDisplay();
+  });
+  
+  searchButton.addEventListener("click", () => {
+    currentPage = 1;
+    updateDisplay();
+  });
+  
+  rowsPerPage.addEventListener("change", () => {
+    currentPage = 1;
+    updateDisplay();
+  });
+  
+  prevPage.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      updateDisplay();
+    }
+  });
+  
+  nextPage.addEventListener("click", () => {
+    const rowsToShow = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
+    const totalPages = Math.ceil(filteredRecords.length / rowsToShow);
+    
+    if (currentPage < totalPages) {
+      currentPage++;
+      updateDisplay();
+    }
+  });
+  
+  // Initialize
+  updateDisplay();
+  
+  // Initialize tooltips
+  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+});
 </script>
-
-<!-- Bootstrap JS and dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-
-<!-- JavaScript to Add Rows -->
- 
 <script>
-
 function toggleSidebar() {
     const sidebar = document.getElementById('querySidebar');
     const overlay = document.getElementById('overlay');

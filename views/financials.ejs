@@ -150,208 +150,6 @@
         display: none;
     }
 }
-/* Grid Table Container - Professional Mobile Version */
-.grid-table-container {
-    overflow-x: auto;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    margin-bottom: 1.5rem;
-}
-
-/* Header Row - Professional Styling */
-.grid-header {
-    display: grid;
-    grid-template-columns: repeat(9, minmax(100px, 1fr));
-    background: #003B4A;
-    color: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.grid-header > div {
-    padding: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    border-right: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.82rem;
-    text-transform: uppercase;
-}
-
-/* Body Rows - Professional Styling */
-.grid-row {
-    display: grid;
-    grid-template-columns: repeat(9, minmax(100px, 1fr));
-    transition: all 0.2s ease;
-}
-
-.grid-row > div {
-    padding: 0.85rem;
-    font-size: 0.9rem;
-    color: #444;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-/* Zebra Striping for Better Readability */
-.grid-row:nth-child(even) {
-    background-color: #fafafa;
-}
-
-.grid-row:hover {
-    background-color: #f5f5f5;
-}
-
-/* Professional Mobile View */
-@media (max-width: 768px) {
-    .grid-table-container {
-        border: none;
-        background: transparent;
-        box-shadow: none;
-        overflow-x: visible;
-    }
-    
-    .grid-header {
-        display: none; /* Hide header in mobile */
-    }
-    
-    .grid-row {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 1.5rem;
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        border: 1px solid #eaeaea;
-        padding: 0;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .grid-row > div {
-        display: grid;
-        grid-template-columns: 120px 1fr;
-        align-items: center;
-        padding: 0.85rem 1rem;
-        border-bottom: 1px solid #f0f0f0;
-        text-align: left;
-        gap: 1rem;
-    }
-    
-    .grid-row > div:last-child {
-        border-bottom: none;
-    }
-    
-    .grid-row > div::before {
-        content: attr(data-label);
-        font-weight: 500;
-        color: #666;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-    }
-    
-    /* Special styling for action buttons */
-    .grid-row > div[data-label="Actions"] {
-        background: #f8f9fa;
-        padding: 1rem;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-    
-    .grid-row > div[data-label="Actions"]::before {
-        display: none;
-    }
-    
-    /* Batch number gets highlighted */
-    .grid-row > div[data-label="Batch"] {
-        background: #003B4A;
-        color: white;
-        grid-column: 1 / -1;
-    }
-    
-    .grid-row > div[data-label="Batch"]::before {
-        color: rgba(255,255,255,0.7);
-    }
-    
-    /* Financial values get special treatment */
-    .grid-row > div[data-label="Income"],
-    .grid-row > div[data-label="Expenses"],
-    .grid-row > div[data-label="Profit"] {
-        font-family: 'Courier New', monospace;
-        font-weight: 600;
-    }
-    
-    /* Responsive buttons */
-    .btn-sm {
-        min-width: 80px;
-        padding: 0.4rem 0.75rem;
-        font-size: 0.8rem;
-        margin: 0 0.25rem;
-    }
-}
-
-/* Extra Small Devices */
-@media (max-width: 480px) {
-    .grid-row > div {
-        grid-template-columns: 100px 1fr;
-        padding: 0.75rem 1rem;
-        gap: 0.75rem;
-    }
-    
-    .btn-sm {
-        width: 100%;
-        margin: 0.25rem 0 !important;
-    }
-    
-    /* Filter controls */
-    .d-flex.flex-column.flex-md-row {
-        flex-direction: column;
-    }
-    
-    .input-group {
-        margin-bottom: 0.75rem;
-    }
-    
-    #rowsPerPage {
-        width: 100%;
-    }
-}
-
-/* Professional Enhancements */
-.grid-row > div[data-label="Profit"] {
-    font-weight: 600;
-    color: #2a7f2a;
-}
-
-.grid-row > div[data-label="Expenses"] {
-    color: #c23b22;
-}
-
-/* Smooth transitions */
-.grid-row, .grid-row > div {
-    transition: all 0.25s ease;
-}
-
-/* Professional dropdown */
-.dropdown-menu {
-    border: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border-radius: 6px;
-    padding: 0.5rem 0;
-}
-
-.dropdown-item {
-    padding: 0.65rem 1.25rem;
-    font-size: 0.85rem;
-}
-
-.dropdown-item:hover {
-    background: #f8f9fa;
-    color: #003B4A;
-}
     </style>
 
 <body>
@@ -1071,98 +869,525 @@
         }
         </style>
       </div>
-      <section class="container mt-4">
-        <h2 class="text-center">
-            <i class="fas fa-dove text-primary"></i> Top 5 Current Flocks
-        </h2>
+  <!-- financial-records.tzsh -->
+<section class="container-fluid px-lg-4 py-3">
+    <!-- Header Section -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3 mb-3">
+      <h2 class="h5 mb-0 d-flex align-items-center">
+        <i class="fas fa-money-bill-wave text-primary me-2"></i>
+        <span class="d-none d-sm-inline">Financial Records</span>
+        <span class="d-inline d-sm-none">Finances</span>
+      </h2>
+      
+      <!-- Controls Container -->
+      <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto">
+        <!-- Batch Filter -->
+        <div class="flex-grow-1">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light border-end-0"><i class="fas fa-filter text-muted"></i></span>
+            <select class="form-select form-select-sm border-start-0" id="batchFilter">
+              <option value="all">All Batches</option>
+              <% allBatches.forEach(batch => { %>
+                <option value="<%= batch._id %>"><%= batch.batchNo %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
         
-        <!-- Filter Controls -->
-        <div class="d-flex flex-column flex-md-row justify-content-between mb-3 gap-2">
-            <!-- Batch Selection and Search -->
-            <div class="input-group flex-grow-1" style="max-width: 100%;">
-                <!-- Batch Filter -->
-                <select id="batchFilter" class="form-select">
-                    <option value="all">All Batches</option>
-                    <% allBatches.forEach(batch => { %>
-                        <option value="<%= batch._id %>"><%= batch.batchNo %></option>
-                    <% }) %>
-                </select>
-                
-                <!-- Search Input -->
-                <input type="text" id="financialSearchInput" class="form-control" placeholder="Search records...">
-                <button class="btn btn-success" type="button" id="searchBtn">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-    
-            <!-- Rows Display Control -->
-            <div class="input-group" style="max-width: 200px;">
-                <span class="input-group-text">Show</span>
-                <select id="rowsPerPage" class="form-select">
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="all">All</option>
-                </select>
-            </div>
+        <!-- Search -->
+        <div class="flex-grow-1">
+          <div class="input-group input-group-sm">
+            <input type="text" id="financialSearchInput" class="form-control form-control-sm" placeholder="Search records...">
+            <button class="btn btn-sm btn-outline-secondary" type="button" id="searchBtn">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
         </div>
-    
-        <!-- Financial Records Table -->
-        <div class="grid-table-container">
-            <div class="grid-header">
-                <div data-label="Batch"><i class="fas fa-hashtag"></i> Batch No</div>
-                <div data-label="Date"><i class="fas fa-calendar-alt"></i> Date</div>
-                <div data-label="Income"><i class="fas fa-money-bill-wave"></i> Income</div>
-                <div data-label="Expenses"><i class="fas fa-money-bill-wave"></i> Expenses</div>
-                <div data-label="Profit"><i class="fas fa-calculator"></i> Profit</div>
-                <div data-label="Produced"><i class="fas fa-box-open"></i> Trays Produced</div>
-                <div data-label="Sold"><i class="fas fa-boxes"></i> Trays Sold</div>
-                <div data-label="Remaining"><i class="fas fa-boxes"></i> Trays Remaining</div>
-                <div data-label="Actions"><i class="fas fa-cogs"></i> Actions</div>
-            </div>
-            
-            <div class="grid-content" id="financialTableContent">
+        
+        <!-- Rows Selector -->
+        <div class="d-none d-sm-flex" style="min-width: 120px;">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light"><i class="fas fa-list text-muted"></i></span>
+            <select id="rowsPerPage" class="form-select form-select-sm">
+              <option value="5">5 rows</option>
+              <option value="10" selected>10 rows</option>
+              <option value="20">20 rows</option>
+              <option value="all">All rows</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Table Card -->
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body p-0">
+        <!-- Desktop Table -->
+        <div class="d-none d-md-block">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="desktopTable">
+              <thead class="bg-light">
+                <tr>
+                  <th><i class="fas fa-hashtag fa-fw me-1 text-muted"></i>Batch</th>
+                  <th><i class="fas fa-calendar-alt fa-fw me-1 text-muted"></i>Date</th>
+                  <th><i class="fas fa-money-bill-wave fa-fw me-1 text-muted"></i>Income</th>
+                  <th><i class="fas fa-money-bill-wave fa-fw me-1 text-muted"></i>Expenses</th>
+                  <th><i class="fas fa-calculator fa-fw me-1 text-muted"></i>Profit</th>
+                  <th><i class="fas fa-box-open fa-fw me-1 text-muted"></i>Produced</th>
+                  <th><i class="fas fa-boxes fa-fw me-1 text-muted"></i>Sold</th>
+                  <th><i class="fas fa-boxes fa-fw me-1 text-muted"></i>Remaining</th>
+                  <th width="120">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="desktopTableBody">
                 <% if (financialRecords.length > 0) { %>
-                    <% financialRecords.forEach(record => { 
-                        const income = record.totalIncome || 0;
-                        const expenses = record.totalExpenses || 0;
-                        const profit = income - expenses;
-                        const traysRemaining = (record.traysProduced || 0) - (record.traysSold || 0);
-                    %>
-                        <div class="grid-row" data-batch="<%= record.batch?._id %>" data-record-id="<%= record._id %>">
-                            <div data-label="Batch"><%= record.batch?.batchNo || 'N/A' %></div>
-                            <div data-label="Date"><%= record.date ? record.date.toISOString().split('T')[0] : 'N/A' %></div>
-                            <div data-label="Income">₹<%= income.toLocaleString('en-IN') %></div>
-                            <div data-label="Expenses">₹<%= expenses.toLocaleString('en-IN') %></div>
-                            <div data-label="Profit">₹<%= profit.toLocaleString('en-IN') %></div>
-                            <div data-label="Produced"><%= record.traysProduced || 0 %></div>
-                            <div data-label="Sold"><%= record.traysSold || 0 %></div>
-                            <div data-label="Remaining"><%= traysRemaining >= 0 ? traysRemaining : 0 %></div>
-                            <div data-label="Actions">
-                                <!-- Edit Button -->
-                                <button class="btn btn-sm btn-warning me-1 edit-btn" 
-                                        onclick="window.location.href='/financials/edit/<%= record._id %>'"
-                                        title="Edit Record">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                
-                                <!-- Delete Button -->
-                                <button class="btn btn-sm btn-danger delete-btn" 
-                                        onclick="if(confirm('Are you sure you want to delete this financial record?')) { deleteFinancialRecord('<%= record._id %>', this) }"
-                                        title="Delete Record">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
+                  <% financialRecords.forEach(record => { 
+                    const income = record.totalIncome || 0;
+                    const expenses = record.totalExpenses || 0;
+                    const profit = income - expenses;
+                    const traysRemaining = (record.traysProduced || 0) - (record.traysSold || 0);
+                  %>
+                    <tr data-batch="<%= record.batch?._id %>" data-record-id="<%= record._id %>">
+                      <td><span class="fw-semibold"><%= record.batch?.batchNo || 'N/A' %></span></td>
+                      <td>
+                        <span class="text-muted small">
+                          <%= record.date ? record.date.toISOString().split('T')[0] : 'N/A' %>
+                        </span>
+                      </td>
+                      <td class="text-success fw-medium">tzsh<%= income.toLocaleString('en-IN') %></td>
+                      <td class="text-danger fw-medium">tzsh<%= expenses.toLocaleString('en-IN') %></td>
+                      <td class="fw-bold <%= profit >= 0 ? 'text-success' : 'text-danger' %>">
+                        tzsh<%= Math.abs(profit).toLocaleString('en-IN') %>
+                      </td>
+                      <td><%= record.traysProduced || 0 %></td>
+                      <td><%= record.traysSold || 0 %></td>
+                      <td><%= traysRemaining >= 0 ? traysRemaining : 0 %></td>
+                      <td>
+                        <div class="d-flex gap-1">
+                          <button class="btn btn-sm btn-outline-primary rounded-circle p-1 edit-btn" 
+                                  onclick="window.location.href='/financials/edit/<%= record._id %>'"
+                                  data-bs-toggle="tooltip" title="Edit">
+                            <i class="fas fa-pencil-alt fa-fw"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-danger rounded-circle p-1 delete-btn" 
+                                  onclick="if(confirm('Are you sure?')) { deleteFinancialRecord('<%= record._id %>', this) }"
+                                  data-bs-toggle="tooltip" title="Delete">
+                            <i class="fas fa-trash-alt fa-fw"></i>
+                          </button>
                         </div>
-                    <% }) %>
+                      </td>
+                    </tr>
+                  <% }); %>
                 <% } else { %>
-                    <div class="alert alert-warning mt-3">No financial records found</div>
+                  <tr>
+                    <td colspan="9" class="text-center py-5 text-muted">
+                      <i class="fas fa-money-bill-wave fa-2x mb-3 opacity-25"></i>
+                      <p class="mb-0">No financial records found</p>
+                    </td>
+                  </tr>
                 <% } %>
-            </div>
+              </tbody>
+            </table>
+          </div>
         </div>
-    </section>
-
+        
+        <!-- Mobile List -->
+        <div class="d-block d-md-none" id="mobileList">
+          <% if (financialRecords.length > 0) { %>
+            <div class="list-group list-group-flush">
+              <% financialRecords.forEach(record => { 
+                const income = record.totalIncome || 0;
+                const expenses = record.totalExpenses || 0;
+                const profit = income - expenses;
+                const traysRemaining = (record.traysProduced || 0) - (record.traysSold || 0);
+              %>
+                <div class="list-group-item p-3" data-batch="<%= record.batch?._id %>" data-record-id="<%= record._id %>">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold text-primary"><%= record.batch?.batchNo || 'N/A' %></span>
+                    <span class="text-muted small">
+                      <%= record.date ? record.date.toISOString().split('T')[0] : 'N/A' %>
+                    </span>
+                  </div>
+                  
+                  <div class="row g-2 small">
+                    <div class="col-6">
+                      <div class="text-muted">Income</div>
+                      <div class="text-success fw-medium">tzsh<%= income.toLocaleString('en-IN') %></div>
+                    </div>
+                    <div class="col-6">
+                      <div class="text-muted">Expenses</div>
+                      <div class="text-danger fw-medium">tzsh<%= expenses.toLocaleString('en-IN') %></div>
+                    </div>
+                    <div class="col-6">
+                      <div class="text-muted">Profit</div>
+                      <div class="fw-bold <%= profit >= 0 ? 'text-success' : 'text-danger' %>">
+                        tzsh<%= Math.abs(profit).toLocaleString('en-IN') %>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="text-muted">Produced</div>
+                      <div><%= record.traysProduced || 0 %></div>
+                    </div>
+                    <div class="col-6">
+                      <div class="text-muted">Sold</div>
+                      <div><%= record.traysSold || 0 %></div>
+                    </div>
+                    <div class="col-6">
+                      <div class="text-muted">Remaining</div>
+                      <div><%= traysRemaining >= 0 ? traysRemaining : 0 %></div>
+                    </div>
+                    <div class="col-12">
+                      <div class="d-flex justify-content-end gap-2 mt-2">
+                        <button class="btn btn-sm btn-outline-primary" 
+                                onclick="window.location.href='/financials/edit/<%= record._id %>'">
+                          <i class="fas fa-pencil-alt me-1"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" 
+                                onclick="if(confirm('Are you sure?')) { deleteFinancialRecord('<%= record._id %>', this) }">
+                          <i class="fas fa-trash-alt me-1"></i> Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <div class="text-center py-5 text-muted">
+              <i class="fas fa-money-bill-wave fa-2x mb-3 opacity-25"></i>
+              <p class="mb-0">No financial records found</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <% if (financialRecords.length > 0) { %>
+        <div class="card-footer bg-light py-2">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+            <div class="small text-muted mb-2 mb-sm-0">
+              Showing <span id="showingCount">1</span> to <span id="totalCount"><%= financialRecords.length > 10 ? 10 : financialRecords.length %></span> of <span id="totalRecords"><%= financialRecords.length %></span>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-secondary" id="prevPage" disabled>
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="btn-group" id="pageNumbers">
+                <button class="btn btn-sm btn-outline-secondary active">1</button>
+                <% if (financialRecords.length > 10) { %>
+                  <button class="btn btn-sm btn-outline-secondary">2</button>
+                <% } %>
+                <% if (financialRecords.length > 20) { %>
+                  <button class="btn btn-sm btn-outline-secondary">3</button>
+                <% } %>
+              </div>
+              <button class="btn btn-sm btn-outline-secondary" id="nextPage">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </section>
+  
+  <style>
+    /* Custom responsive styles */
+    .table {
+      --bs-table-bg: transparent;
+      --bs-table-striped-bg: rgba(0, 59, 74, 0.02);
+      --bs-table-hover-bg: rgba(0, 59, 74, 0.04);
+      font-size: 0.875rem;
+    }
+    
+    .table th {
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      color: #6c757d;
+      border-bottom-width: 1px;
+    }
+    
+    .table td {
+      vertical-align: middle;
+      padding: 0.75rem 1rem;
+    }
+    
+    .input-group-borderless {
+      border: 1px solid #e9ecef;
+      border-radius: 0.375rem;
+      overflow: hidden;
+    }
+    
+    /* Mobile specific styles */
+    @media (max-width: 768px) {
+      .card {
+        border-radius: 0;
+        box-shadow: none;
+        border: 1px solid #eee;
+      }
+      
+      .list-group-item {
+        border-left: 0;
+        border-right: 0;
+        padding: 1rem;
+      }
+      
+      .list-group-item:first-child {
+        border-top: 0;
+      }
+      
+      .list-group-item:last-child {
+        border-bottom: 0;
+      }
+    }
+    
+    /* Financial value styling */
+    .text-success {
+      color: #2a7f2a !important;
+    }
+    
+    .text-danger {
+      color: #c23b22 !important;
+    }
+    
+    /* Smooth transitions */
+    .table-responsive, .list-group-item {
+      transition: all 0.25s ease;
+    }
+  </style>
+  
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Initialize variables
+    const batchFilter = document.getElementById("batchFilter");
+    const financialSearchInput = document.getElementById("financialSearchInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const rowsPerPage = document.getElementById("rowsPerPage");
+    const showingCount = document.getElementById("showingCount");
+    const totalCount = document.getElementById("totalCount");
+    const totalRecords = document.getElementById("totalRecords");
+    const prevPage = document.getElementById("prevPage");
+    const nextPage = document.getElementById("nextPage");
+    const pageNumbers = document.getElementById("pageNumbers");
+    
+    let currentPage = 1;
+    let filteredRecords = [];
+    
+    // Get all records (both desktop and mobile)
+    function getAllRecords() {
+      const desktopRows = Array.from(document.querySelectorAll("#desktopTableBody tr"));
+      const mobileItems = Array.from(document.querySelectorAll("#mobileList .list-group-item"));
+      
+      // Combine and deduplicate records
+      const allRecords = [];
+      const seenIds = new Set();
+      
+      desktopRows.forEach(row => {
+        const id = row.getAttribute("data-record-id");
+        if (!seenIds.has(id)) {
+          seenIds.add(id);
+          allRecords.push({
+            id,
+            batch: row.getAttribute("data-batch"),
+            element: row,
+            mobileElement: mobileItems.find(item => item.getAttribute("data-record-id") === id)
+          });
+        }
+      });
+      
+      mobileItems.forEach(item => {
+        const id = item.getAttribute("data-record-id");
+        if (!seenIds.has(id)) {
+          seenIds.add(id);
+          allRecords.push({
+            id,
+            batch: item.getAttribute("data-batch"),
+            element: desktopRows.find(row => row.getAttribute("data-record-id") === id),
+            mobileElement: item
+          });
+        }
+      });
+      
+      return allRecords;
+    }
+    
+    // Filter records based on search and batch filter
+    function filterRecords() {
+      const searchValue = financialSearchInput.value.toLowerCase();
+      const selectedBatch = batchFilter.value;
+      
+      return getAllRecords().filter(record => {
+        const matchesBatch = selectedBatch === "all" || record.batch === selectedBatch;
+        const elementText = record.element ? record.element.textContent.toLowerCase() : 
+                          record.mobileElement.textContent.toLowerCase();
+        const matchesSearch = elementText.includes(searchValue);
+        
+        return matchesBatch && matchesSearch;
+      });
+    }
+    
+    // Update the displayed records
+    function updateDisplay() {
+      filteredRecords = filterRecords();
+      const rowsToShow = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
+      const totalPages = Math.ceil(filteredRecords.length / rowsToShow);
+      
+      // Update pagination controls
+      updatePagination(totalPages);
+      
+      // Calculate start and end indices
+      const startIndex = (currentPage - 1) * rowsToShow;
+      const endIndex = Math.min(startIndex + rowsToShow, filteredRecords.length);
+      
+      // Hide all records first
+      getAllRecords().forEach(record => {
+        if (record.element) record.element.style.display = "none";
+        if (record.mobileElement) record.mobileElement.style.display = "none";
+      });
+      
+      // Show only the records for the current page
+      for (let i = startIndex; i < endIndex; i++) {
+        const record = filteredRecords[i];
+        if (record.element) record.element.style.display = "";
+        if (record.mobileElement) record.mobileElement.style.display = "";
+      }
+      
+      // Update showing counts
+      showingCount.textContent = Math.min(startIndex + 1, filteredRecords.length);
+      totalCount.textContent = endIndex;
+      totalRecords.textContent = filteredRecords.length;
+    }
+    
+    // Update pagination controls
+    function updatePagination(totalPages) {
+      // Clear existing page numbers
+      pageNumbers.innerHTML = "";
+      
+      // Add page number buttons
+      for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement("button");
+        pageBtn.className = `btn btn-sm btn-outline-secondary ${i === currentPage ? 'active' : ''}`;
+        pageBtn.textContent = i;
+        pageBtn.addEventListener("click", () => {
+          currentPage = i;
+          updateDisplay();
+        });
+        pageNumbers.appendChild(pageBtn);
+      }
+      
+      // Update prev/next buttons
+      prevPage.disabled = currentPage === 1;
+      nextPage.disabled = currentPage === totalPages || totalPages === 0;
+    }
+    
+    // Event listeners
+    batchFilter.addEventListener("change", () => {
+      currentPage = 1;
+      updateDisplay();
+    });
+    
+    financialSearchInput.addEventListener("input", () => {
+      currentPage = 1;
+      updateDisplay();
+    });
+    
+    searchBtn.addEventListener("click", () => {
+      currentPage = 1;
+      updateDisplay();
+    });
+    
+    rowsPerPage.addEventListener("change", () => {
+      currentPage = 1;
+      updateDisplay();
+    });
+    
+    prevPage.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        updateDisplay();
+      }
+    });
+    
+    nextPage.addEventListener("click", () => {
+      const rowsToShow = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
+      const totalPages = Math.ceil(filteredRecords.length / rowsToShow);
+      
+      if (currentPage < totalPages) {
+        currentPage++;
+        updateDisplay();
+      }
+    });
+    
+    // Initialize
+    updateDisplay();
+    
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  });
+  
+  function deleteFinancialRecord(recordId, buttonElement) {
+    if (!confirm('Are you sure you want to delete this financial record?')) {
+      return;
+    }
+  
+    fetch(`/financials/${recordId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        // Remove the row from both desktop and mobile views
+        const recordElement = document.querySelector(`[data-record-id="${recordId}"]`);
+        const mobileElement = document.querySelector(`.list-group-item[data-record-id="${recordId}"]`);
+        
+        if (recordElement) recordElement.remove();
+        if (mobileElement) mobileElement.remove();
+        
+        // Show success toast
+        const toastEl = document.getElementById('deleteToast');
+        if (toastEl) {
+          const toast = new bootstrap.Toast(toastEl);
+          toast.show();
+        }
+        
+        // Update the display count
+        const totalEl = document.getElementById('totalRecords');
+        if (totalEl) {
+          totalEl.textContent = parseInt(totalEl.textContent) - 1;
+        }
+        
+        // Refresh the display
+        document.dispatchEvent(new Event('DOMContentLoaded'));
+      } else {
+        alert('Failed to delete financial record');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Error deleting financial record');
+    });
+  }
+  </script>
+  
+  <!-- Success Toast (add this to your layout file) -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="deleteToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-success text-white">
+        <strong class="me-auto">Success</strong>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        Financial record deleted successfully
+      </div>
+    </div>
+  </div>
     <!-- Script to auto-calculate profit -->
     
     
@@ -1306,66 +1531,6 @@ async function updateTrays(batchId) {
 
 
  
-document.addEventListener('DOMContentLoaded', function() {
-    const batchFilter = document.getElementById('batchFilter');
-    const searchInput = document.getElementById('financialSearchInput');
-    const searchBtn = document.getElementById('searchBtn');
-    const rowsPerPage = document.getElementById('rowsPerPage');
-    const tableRows = document.querySelectorAll('.grid-row');
-    
-    function applyFilters() {
-        const selectedBatch = batchFilter.value;
-        const searchTerm = searchInput.value.toLowerCase();
-        const rowsToShow = rowsPerPage.value === 'all' ? tableRows.length : parseInt(rowsPerPage.value);
-        let visibleCount = 0;
-
-        tableRows.forEach(row => {
-            const batchId = row.getAttribute('data-batch');
-            const rowText = row.textContent.toLowerCase();
-            
-            // Check filters
-            const batchMatch = selectedBatch === 'all' || batchId === selectedBatch;
-            const searchMatch = searchTerm === '' || rowText.includes(searchTerm);
-            
-            if (batchMatch && searchMatch) {
-                row.style.display = visibleCount < rowsToShow ? '' : 'none';
-                if (visibleCount < rowsToShow) visibleCount++;
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
-
-    // Event listeners
-    batchFilter.addEventListener('change', applyFilters);
-    searchInput.addEventListener('input', applyFilters);
-    searchBtn.addEventListener('click', applyFilters);
-    rowsPerPage.addEventListener('change', applyFilters);
-});
-
-function deleteFinancialRecord(recordId, buttonElement) {
-    fetch(`/financials/${recordId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            // Remove the row from the UI
-            buttonElement.closest('.grid-row').remove();
-            // Show success message
-            alert('Financial record deleted successfully');
-        } else {
-            alert('Failed to delete financial record');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error deleting financial record');
-    });
-}
-
 
 </script>
 

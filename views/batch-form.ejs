@@ -203,211 +203,7 @@
 
 
 
-
-
-
-/* Grid Table */
-.grid-table {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(100px, 1fr));
-  gap: 1px;
-  background: #003B4A;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.grid-header, .grid-row {
-  display: contents;
-}
-
-.grid-header > div, .grid-row > div {
-  padding: 0.75rem;
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.grid-header > div {
-  background-color: rgba(3, 3, 3, 0.24);
-  color: #fff;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 5px;
-  justify-content: center;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 992px) {
-  .form-cell {
-    min-width: 120px;
-  }
-  
-  .grid-header > div, .grid-row > div {
-    padding: 0.5rem;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 768px) {
-  /* Form Section */
-  .form-row {
-    flex-direction: column;
-  }
-
-  .form-cell::before {
-    content: attr(data-label);
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
-  }
-
-  .header {
-    display: none;
-  }
-
-  /* Grid Table */
-  .grid-table {
-    grid-template-columns: 1fr;
-    background: transparent;
-  }
-
-  .grid-header {
-    display: none;
-  }
-
-  .grid-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 0.5rem;
-  }
-
-  .grid-row > div {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem;
-    background-color: transparent;
-    border-bottom: 1px solid #eee;
-  }
-
-  .grid-row > div:last-child {
-    border-bottom: none;
-  }
-
-  .grid-row > div::before {
-    content: attr(data-label);
-    font-weight: bold;
-    margin-right: 1rem;
-    color: #003B4A;
-  }
-
-  .action-buttons {
-    justify-content: flex-end;
-    padding-top: 0.5rem;
-    border-top: 1px solid #eee;
-    margin-top: 0.5rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .input-group {
-    width: 100%;
-    max-width: 100% !important;
-  }
-  
-  .action-buttons .btn {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.8rem;
-  }
-} 
-
-/* Mobile Styles (small screens only) */
-@media (max-width: 768px) {
-  #batch-form-container {
-    padding: 15px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-
-  #batch-form-table {
-    gap: 0;
-  }
-
-  .batch-form-row {
-    flex-direction: column;
-    gap: 12px;
-    background: white;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 16px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e9ecef;
-  }
-
-  .batch-form-header {
-    display: none;
-  }
-
-  .batch-form-cell {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #f0f0f0;
-    padding-bottom: 10px;
-  }
-
-  .batch-form-cell:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 0;
-  }
-
-  .batch-form-cell[data-label]::before {
-    content: attr(data-label);
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #003B4A;
-    font-size: 0.85rem;
-  }
-
-  .batch-form-cell input,
-  .batch-form-cell select {
-    padding: 10px 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 0.9rem;
-  }
-
-  .batch-form-cell .input-group {
-    width: 100%;
-  }
-
-  .batch-form-cell .input-group-text {
-    background-color: #f8f9fa;
-    color: #495057;
-    font-weight: 500;
-    padding: 0 12px;
-  }
-
-  .batch-form-cell input[type="number"] {
-    text-align: right;
-    font-weight: 600;
-  }
-}
+ 
     </style>
 </head>
 <body>
@@ -581,90 +377,354 @@
         }
       }
     </style>
-      <section class="container mt-4">
-        <h2 class="text-center mb-4">
-          <i class="fas fa-dove text-primary me-2"></i>Top 5 Current Flocks
-        </h2>
+  <section class="container-fluid px-lg-4 py-3">
+    <!-- Header Section -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3 mb-3">
+      <h2 class="h5 mb-0 d-flex align-items-center">
+        <i class="fas fa-dove text-primary me-2"></i>
+        <span class="d-none d-sm-inline">Current Flock Management</span>
+        <span class="d-inline d-sm-none">Flocks</span>
+      </h2>
       
-        <div class="d-flex flex-wrap justify-content-between mb-3 gap-2">
-          <!-- Batch Selection -->
-          <div class="input-group flex-grow-1" style="min-width: 250px; max-width: 500px;">
-            <select class="form-control" id="batchNo" name="batchNo" required>
-              <option value="">-- Select a Batch --</option>
+      <!-- Controls Container -->
+      <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto">
+        <!-- Batch Filter -->
+        <div class="flex-grow-1">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light border-end-0"><i class="fas fa-filter text-muted"></i></span>
+            <select class="form-select form-select-sm border-start-0" id="batchFilter">
+              <option value="all">All Batches</option>
               <% if (batches && batches.length) { %>
-                  <% batches.forEach(batch => { %>
-                      <option value="<%= batch._id %>"
-                              data-total="<%= batch.totalNumber %>"
-                              data-current="<%= batch.currentCount %>">
-                          <%= batch.batchNo %> (Current: <%= batch.currentCount %>/Total: <%= batch.totalNumber %>)
-                      </option>
-                  <% }); %>
-              <% } else { %>
-                  <option value="" disabled>No active batches available</option>
+                <% batches.forEach(batch => { %>
+                  <option value="<%= batch._id %>">
+                    <%= batch.batchNo %> (<%= batch.currentCount %>/<%= batch.totalNumber %>)
+                  </option>
+                <% }); %>
               <% } %>
-          </select>
-            
-            <!-- Search Bar -->
-            <input type="text" id="eggSearchInput" class="form-control" placeholder="Search...">
-            <button class="btn btn-success" type="button"><i class="fas fa-search"></i></button>
+            </select>
           </div>
-      
-          <!-- Select number of rows to display -->
-          <div class="input-group" style="min-width: 150px; max-width: 200px;">
-            <select id="rowsPerPage" class="form-control">
-              <option value="5">show 5 rows</option>
-              <option value="10">10 rows</option>
-              <option value="15">15 rows</option>
+        </div>
+        
+        <!-- Search -->
+        <div class="flex-grow-1">
+          <div class="input-group input-group-sm">
+            <input type="text" id="eggSearchInput" class="form-control form-control-sm" placeholder="Search...">
+            <button class="btn btn-sm btn-outline-secondary" type="button">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Rows Selector - Hidden on smallest screens -->
+        <div class="d-none d-sm-flex" style="min-width: 120px;">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light"><i class="fas fa-list text-muted"></i></span>
+            <select id="rowsPerPage" class="form-select form-select-sm">
+              <option value="5">5 rows</option>
+              <option value="10" selected>10 rows</option>
               <option value="20">20 rows</option>
             </select>
           </div>
         </div>
-      
-        <!-- Grid Table -->
-        <div class="grid-table">
-          <div class="grid-header">
-            <div>#</div>
-            <div><i class="fas fa-hashtag me-1"></i>Batch Number</div>
-            <div><i class="fas fa-star me-1"></i>Breed</div>
-            <div><i class="fas fa-hourglass-half me-1"></i>Age in week</div>
-            <div><i class="fas fa-boxes me-1"></i> CurrentCount  </div>
-            <div><i class="fas fa-calendar-alt me-1"></i>Date</div>
-            <div><i class="fas fa-cogs me-1"></i>Actions</div>
+      </div>
+    </div>
+  
+    <!-- Table Card -->
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body p-0">
+        <!-- Desktop Table (shown on md and up) -->
+        <div class="d-none d-md-block">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="bg-light">
+                <tr>
+                  <th width="50">#</th>
+                  <th><i class="fas fa-hashtag fa-fw me-1 text-muted"></i>Batch</th>
+                  <th><i class="fas fa-star fa-fw me-1 text-muted"></i>Breed</th>
+                  <th><i class="fas fa-hourglass-half fa-fw me-1 text-muted"></i>Age</th>
+                  <th><i class="fas fa-boxes fa-fw me-1 text-muted"></i>Count</th>
+                  <th><i class="fas fa-calendar-alt fa-fw me-1 text-muted"></i>Date</th>
+                  <th width="120">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (batches && batches.length > 0) { %>
+                  <% batches.forEach((batch, index) => { %>
+                    <tr data-batch-id="<%= batch._id %>">
+                      <td class="text-muted"><%= index + 1 %></td>
+                      <td><span class="fw-semibold"><%= batch.batchNo %></span></td>
+                      <td><span class="badge bg-primary bg-opacity-10 text-primary"><%= batch.grade %></span></td>
+                      <td>
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="progress flex-grow-1" style="height: 6px;">
+                            <div class="progress-bar bg-warning" style="width: <%= Math.min(100, (batch.currentAgeWeeks / 52) * 100) %>%"></div>
+                          </div>
+                          <span><%= batch.currentAgeWeeks %>w</span>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="fw-medium"><%= batch.currentCount %></span>
+                        <span class="text-muted small">/ <%= batch.totalNumber %></span>
+                      </td>
+                      <td class="text-muted small">
+                        <%= batch.creationDate ? batch.creationDate.toISOString().split('T')[0] : 'N/A' %>
+                      </td>
+                      <td>
+                        <div class="d-flex gap-1">
+                          <button class="btn btn-sm btn-outline-primary rounded-circle p-1" onclick="editBatch('<%= batch._id %>')">
+                            <i class="fas fa-pencil-alt fa-fw"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-danger rounded-circle p-1" onclick="deleteBatch('<%= batch._id %>', this)">
+                            <i class="fas fa-trash-alt fa-fw"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="7" class="text-center py-5 text-muted">
+                      <i class="fas fa-dove fa-2x mb-3 opacity-25"></i>
+                      <p class="mb-0">No batches found</p>
+                    </td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
           </div>
-      
-          <% if (batches && batches.length > 0) { %>
-            <% batches.forEach((batch, index) => { %>
-                <div class="grid-row" data-batch-id="<%= batch._id %>">
-                    <div data-label="#"> <%= index + 1 %> </div>
-                    <div data-label="Batch Number"> <%= batch.batchNo %> </div>
-                    <div data-label="Grade"> <%= batch.grade %> </div>
-        
-                    <!-- Display current age in weeks -->
-                    <div data-label="Age"> <%= batch.currentAgeWeeks %> Weeks </div>
-        
-                    <div data-label="Current Count"> <%= batch.currentCount %> </div>
-        
-                    <div data-label="Date">
-                        <%= batch.creationDate ? batch.creationDate.toISOString().split('T')[0] : 'No date' %>
-                    </div>
-                    
-                    <div data-label="Actions" class="action-buttons">
-                        <button class="btn btn-warning btn-sm edit-btn" onclick="editBatch('<%= batch._id %>')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-danger btn-sm delete-btn" onclick="deleteBatch('<%= batch._id %>', this)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            <% }); %>
-        <% } else { %>
-            <div class="alert alert-warning text-center mt-3 w-100">No batches found.</div>
-        <% } %>
-        
         </div>
-      </section>
+        
+        <!-- Mobile List (shown on sm and down) -->
+        <div class="d-block d-md-none">
+          <% if (batches && batches.length > 0) { %>
+            <div class="list-group list-group-flush">
+              <% batches.forEach((batch, index) => { %>
+                <div class="list-group-item p-3" data-batch-id="<%= batch._id %>">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold text-primary"><%= batch.batchNo %></span>
+                    <span class="badge bg-primary bg-opacity-10 text-primary"><%= batch.grade %></span>
+                  </div>
+                  
+                  <div class="row g-2 small">
+                    <div class="col-6">
+                      <div class="text-muted">Age</div>
+                      <div>
+                        <span class="me-2"><%= batch.currentAgeWeeks %> weeks</span>
+                        <div class="progress d-inline-block" style="width: 60px; height: 4px;">
+                          <div class="progress-bar bg-warning" style="width: <%= Math.min(100, (batch.currentAgeWeeks / 52) * 100) %>%"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="text-muted">Count</div>
+                      <div>
+                        <span class="fw-medium"><%= batch.currentCount %></span>
+                        <span class="text-muted">/ <%= batch.totalNumber %></span>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="text-muted">Date Added</div>
+                      <div class="text-truncate">
+                        <%= batch.creationDate ? batch.creationDate.toISOString().split('T')[0] : 'N/A' %>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="text-muted">Actions</div>
+                      <div class="d-flex gap-1">
+                        <button class="btn btn-sm btn-outline-primary rounded-circle p-1" onclick="editBatch('<%= batch._id %>')">
+                          <i class="fas fa-pencil-alt fa-fw"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger rounded-circle p-1" onclick="deleteBatch('<%= batch._id %>', this)">
+                          <i class="fas fa-trash-alt fa-fw"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <div class="text-center py-5 text-muted">
+              <i class="fas fa-dove fa-2x mb-3 opacity-25"></i>
+              <p class="mb-0">No batches found</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <% if (batches && batches.length > 0) { %>
+        <div class="card-footer bg-light py-2">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+            <div class="small text-muted mb-2 mb-sm-0">
+              Showing <span id="showingCount">1</span> to <span id="totalCount"><%= batches.length > 10 ? 10 : batches.length %></span> of <span id="totalRecords"><%= batches.length %></span>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-secondary" disabled>
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-secondary active">1</button>
+                <% if (batches.length > 10) { %>
+                  <button class="btn btn-sm btn-outline-secondary">2</button>
+                <% } %>
+                <% if (batches.length > 20) { %>
+                  <button class="btn btn-sm btn-outline-secondary">3</button>
+                <% } %>
+              </div>
+              <button class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </section>
+  
+  <style>
+    /* Custom responsive styles */
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
     
+    /* Mobile list items */
+    .list-group-item {
+      border-left: 0;
+      border-right: 0;
+    }
+    
+    .list-group-item:first-child {
+      border-top: 0;
+    }
+    
+    .list-group-item:last-child {
+      border-bottom: 0;
+    }
+    
+    /* Progress bar in mobile view */
+    .progress {
+      background-color: #f0f3f5;
+      min-width: 40px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 576px) {
+      .card-body {
+        padding: 0;
+      }
+      
+      .input-group {
+        flex-wrap: nowrap;
+      }
+      
+      .input-group .form-control,
+      .input-group .form-select {
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .container-fluid {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+      
+      .card {
+        border-radius: 0;
+        box-shadow: none;
+        border: 1px solid #eee;
+      }
+    }
+    
+    @media (min-width: 768px) and (max-width: 992px) {
+      .table td, .table th {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+  
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  
+    // Filter functionality
+    const batchFilter = document.getElementById("batchFilter");
+    const eggSearchInput = document.getElementById("eggSearchInput");
+    const rowsPerPage = document.getElementById("rowsPerPage");
+    const showingCount = document.getElementById("showingCount");
+    const totalCount = document.getElementById("totalCount");
+    
+    function filterRows() {
+      const selectedBatch = batchFilter.value;
+      const searchValue = eggSearchInput.value.toLowerCase();
+      const rowsToShow = parseInt(rowsPerPage.value);
+      let visibleCount = 0;
+      
+      // Filter desktop rows
+      const desktopRows = document.querySelectorAll(".d-md-block tbody tr");
+      desktopRows.forEach(row => {
+        const batchId = row.getAttribute("data-batch-id");
+        const rowText = row.textContent.toLowerCase();
+        
+        const matchesBatch = selectedBatch === "all" || batchId === selectedBatch;
+        const matchesSearch = rowText.includes(searchValue);
+        
+        if (matchesBatch && matchesSearch) {
+          if (visibleCount < rowsToShow) {
+            row.style.display = "";
+            visibleCount++;
+          } else {
+            row.style.display = "none";
+          }
+        } else {
+          row.style.display = "none";
+        }
+      });
+      
+      // Filter mobile items
+      const mobileItems = document.querySelectorAll(".d-md-none .list-group-item");
+      mobileItems.forEach(item => {
+        const batchId = item.getAttribute("data-batch-id");
+        const itemText = item.textContent.toLowerCase();
+        
+        const matchesBatch = selectedBatch === "all" || batchId === selectedBatch;
+        const matchesSearch = itemText.includes(searchValue);
+        
+        if (matchesBatch && matchesSearch) {
+          if (visibleCount < rowsToShow) {
+            item.style.display = "";
+            visibleCount++;
+          } else {
+            item.style.display = "none";
+          }
+        } else {
+          item.style.display = "none";
+        }
+      });
+      
+      // Update showing counts
+      showingCount.textContent = visibleCount;
+      totalCount.textContent = Math.min(visibleCount, rowsToShow);
+    }
+    
+    // Event listeners
+    batchFilter.addEventListener("change", filterRows);
+    eggSearchInput.addEventListener("input", filterRows);
+    if (rowsPerPage) {
+      rowsPerPage.addEventListener("change", filterRows);
+    }
+    
+    // Initialize
+    filterRows();
+  });
+  </script>
     <!-- Font Awesome for icons -->
     <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
     
@@ -681,45 +741,7 @@
 
 <script>
 
-
-
-document.addEventListener("DOMContentLoaded", function () {
-        const batchFilter = document.getElementById("batchFilter");
-        const eggSearchInput = document.getElementById("eggSearchInput");
-        const rowsPerPage = document.getElementById("rowsPerPage");
-        const batchRows = document.querySelectorAll(".grid-row");
-
-        function filterRows() {
-            const selectedBatch = batchFilter.value; // Get selected batch ID
-            const searchValue = eggSearchInput.value.toLowerCase(); // Get search text
-            let visibleCount = 0; // Count of displayed rows
-
-            batchRows.forEach(row => {
-                const batchId = row.getAttribute("data-batch-id"); // Get batch ID from row
-                const rowText = row.textContent.toLowerCase();
-                
-                const matchesBatch = selectedBatch === "all" || batchId === selectedBatch;
-                const matchesSearch = rowText.includes(searchValue);
-
-                if (matchesBatch && matchesSearch) {
-                    if (visibleCount < parseInt(rowsPerPage.value)) {
-                        row.style.display = "";
-                        visibleCount++;
-                    } else {
-                        row.style.display = "none";
-                    }
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        }
-
-        batchFilter.addEventListener("change", filterRows);
-        eggSearchInput.addEventListener("input", filterRows);
-        rowsPerPage.addEventListener("change", filterRows);
-
-        filterRows(); // Initialize filtering on page load
-    });
+ 
 
 
 
