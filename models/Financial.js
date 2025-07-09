@@ -1,45 +1,80 @@
- 
-// Financial.js
-
-
 const mongoose = require('mongoose');
-const EggProduction = require('./EggProduction'); // Correct relative path
+const EggProduction = require('./EggProduction');
+
 const financialSchema = new mongoose.Schema({
     // Core financial data
-    batch: { type: mongoose.Schema.Types.ObjectId, ref: 'Batch', required: true },
-    date: { type: Date, required: true },
+    batch: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Batch', 
+        required: true 
+    },
+    date: { 
+        type: Date, 
+        required: true 
+    },
     
     // Financial summary
-    totalIncome: { type: Number, default: 0 },
-    totalExpenses: { type: Number, default: 0 },
-    profit: { type: Number, default: 0 },
+    totalIncome: { 
+        type: Number, 
+        default: 0 
+    },
+    totalExpenses: { 
+        type: Number, 
+        default: 0 
+    },
+    profit: { 
+        type: Number, 
+        default: 0 
+    },
     
     // Tray information
-    traysProduced: { type: Number, default: 0 },
-    traysSold: { type: Number, default: 0 },
-    traysRemaining: { type: Number, default: 0 },
-    traysProducedDisplay: { type: Number, default: 0 },
-    traysSoldDisplay: { type: Number, default: 0 },
-    traysRemainingDisplay: { type: Number, default: 0 },
+    traysProduced: { 
+        type: Number, 
+        default: 0 
+    },
+    traysSold: { 
+        type: Number, 
+        default: 0 
+    },
+    traysRemaining: { 
+        type: Number, 
+        default: 0 
+    },
+    traysProducedDisplay: { 
+        type: Number, 
+        default: 0 
+    },
+    traysSoldDisplay: { 
+        type: Number, 
+        default: 0 
+    },
+    traysRemainingDisplay: { 
+        type: Number, 
+        default: 0 
+    },
     
-    // Transactions array for all financial activities
+    // Transactions array
     transactions: [{
-        // Common fields
         type: { 
             type: String, 
             required: true,
-            enum: ['income', 'expense']
+            enum: ['income', 'expense'] 
         },
         category: {
             type: String,
             required: true,
             enum: ['egg', 'culled', 'feed', 'chick', 'medication', 'labor', 'transport']
         },
-        date: { type: Date, default: Date.now },
-        amount: { type: Number, required: true },
+        date: { 
+            type: Date, 
+            default: Date.now 
+        },
+        amount: { 
+            type: Number, 
+            required: true 
+        },
         description: String,
         
-        // Payment information
         payment: {
             method: { 
                 type: String, 
@@ -51,85 +86,137 @@ const financialSchema = new mongoose.Schema({
                 enum: ['receivable', 'payable', 'cash', 'bank'],
                 required: true
             },
-            counterparty: { type: String }, // Customer or supplier name
+            counterparty: { 
+                type: String 
+            },
             status: {
                 type: String,
                 enum: ['pending', 'partial', 'paid'],
                 default: 'pending'
             },
-            payments: [{ // Track partial payments
+            payments: [{
                 date: Date,
                 amount: Number,
                 reference: String
             }]
         },
         
-        // Category-specific fields
         details: {
-            // For sales (egg, culled)
             qty: Number,
             unitPrice: Number,
-            
-            // For purchases (feed, chicks, etc)
             supplier: String,
             unitCost: Number
         }
-    }],
-    
-    // Timestamps
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    }]
 }, {
     timestamps: true
 });
-// Add index for better query performance
+
+// Indexes
 financialSchema.index({ batch: 1, date: 1 });
-financialSchema.pre('save', async function (next) {
+
+// Pre-save hook for tray calculations
+financialSchema.pre('save', async function(next) {
     try {
-        // Get the latest egg production data for reference
-        const eggProduction = await EggProduction.findOne({ batch: this.batch }).sort({ date: -1 });
+        // Calculate totals from transactions
+        this.calculateFinancials();
         
-        // Set traysProduced from EggProduction (for reference)
-        this.traysProduced = eggProduction ? eggProduction.traysProduced : 0;
+        // Get accurate production totals
+        const productionSummary = await EggProduction.aggregate([
+            { $match: { batch: this.batch } },
+            { $group: { _id: null, total: { $sum: "$traysDecimal" } } }
+        ]);
         
-        // If this is a new record (not update)
-        if (this.isNew) {
-            // Get the previous financial record
-            const previousRecord = await Financial.findOne({ batch: this.batch })
-                .sort({ date: -1 });
-                
-            // Calculate trays sold and remaining
-            const previousSold = previousRecord ? previousRecord.traysSold : 0;
-            const previousRemaining = previousRecord ? previousRecord.traysRemaining : this.traysProduced;
-            
-            // For new records, traysSold should include previous sold + current sale
-            // (current sale is calculated from transactions in the route)
-            // traysRemaining is calculated in the route before saving
-            
-            // These are just fallbacks in case route didn't set them
-            this.traysSold = this.traysSold || previousSold;
-            this.traysRemaining = this.traysRemaining || (previousRemaining - (this.traysSold - previousSold));
-        }
+        this.traysProduced = productionSummary[0]?.total || 0;
+        
+        // Calculate remaining trays
+        this.traysRemaining = this.traysProduced - this.traysSold;
+        
+        // Update display fields
+        this.traysProducedDisplay = this.traysProduced.toFixed(2);
+        this.traysSoldDisplay = this.traysSold.toFixed(2);
+        this.traysRemainingDisplay = this.traysRemaining.toFixed(2);
         
         next();
     } catch (err) {
         next(err);
     }
 });
-financialSchema.statics.getTotalTraysSold = async function (batchId) {
-    const result = await this.aggregate([
-        { $match: { batch: mongoose.Types.ObjectId(batchId) } },
-        { $group: { _id: null, totalTraysSold: { $sum: "$traysSold" } } }
-    ]);
 
-    return result.length > 0 ? result[0].totalTraysSold : 0;
+// Method to calculate financial totals from transactions
+financialSchema.methods.calculateFinancials = function() {
+    this.totalIncome = this.transactions
+        .filter(t => t.type === 'income')
+        .reduce((sum, t) => sum + t.amount, 0);
+        
+    this.totalExpenses = this.transactions
+        .filter(t => t.type === 'expense')
+        .reduce((sum, t) => sum + t.amount, 0);
+        
+    this.profit = this.totalIncome - this.totalExpenses;
+    
+    // Calculate trays sold from egg transactions
+    this.traysSold = this.transactions
+        .filter(t => t.type === 'income' && t.category === 'egg')
+        .reduce((sum, t) => sum + (t.details.qty || 0), 0);
+};
+
+// Static method to get current stock
+financialSchema.statics.getCurrentStock = async function(batchId) {
+    const [production, sales] = await Promise.all([
+        EggProduction.aggregate([
+            { $match: { batch: mongoose.Types.ObjectId(batchId) } },
+            { $group: { _id: null, total: { $sum: "$traysDecimal" } } }
+        ]),
+        this.aggregate([
+            { $match: { batch: mongoose.Types.ObjectId(batchId) } },
+            { $group: { _id: null, total: { $sum: "$traysSold" } } }
+        ])
+    ]);
+    
+    return (production[0]?.total || 0) - (sales[0]?.total || 0);
+};
+
+// Static method to get financial summary for a batch
+financialSchema.statics.getBatchSummary = async function(batchId) {
+    return this.aggregate([
+        { $match: { batch: mongoose.Types.ObjectId(batchId) } },
+        { $group: {
+            _id: null,
+            totalIncome: { $sum: "$totalIncome" },
+            totalExpenses: { $sum: "$totalExpenses" },
+            totalProfit: { $sum: "$profit" },
+            totalTraysSold: { $sum: "$traysSold" }
+        }}
+    ]);
+};
+
+// Method to add transaction
+financialSchema.methods.addTransaction = function(transaction) {
+    this.transactions.push(transaction);
+    this.calculateFinancials();
+};
+
+// Method to update stock after production changes
+financialSchema.statics.updateStockFromProduction = async function(batchId) {
+    const productionSummary = await EggProduction.aggregate([
+        { $match: { batch: mongoose.Types.ObjectId(batchId) } },
+        { $group: { _id: null, total: { $sum: "$traysDecimal" } } }
+    ]);
+    
+    const totalProduced = productionSummary[0]?.total || 0;
+    
+    await this.updateOne(
+        { batch: batchId },
+        { 
+            $set: { 
+                traysProduced: totalProduced,
+                traysProducedDisplay: totalProduced.toFixed(2)
+            }
+        },
+        { sort: { date: -1 } }
+    );
 };
 
 const Financial = mongoose.model('Financial', financialSchema);
 module.exports = Financial;
-
-
-// Export the Financial model
-module.exports = mongoose.model('Financial', financialSchema);
-
- 
