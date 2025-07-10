@@ -131,12 +131,12 @@ router.post('/financials', async (req, res) => {
 
         // Validate required fields
         if (!batch || !date) {
-            return res.status(400).json({ error: 'Batch and date are required' });
+            return res.redirect('/financials');
         }
 
         // Validate batch ID format
         if (!mongoose.Types.ObjectId.isValid(batch)) {
-            return res.status(400).json({ error: 'Invalid batch ID format' });
+            return res.redirect('/financials');
         }
 
         // Convert to ObjectId
@@ -161,11 +161,7 @@ router.post('/financials', async (req, res) => {
 
         // Validate stock availability
         if (sanitizedEggQty > currentStock) {
-            return res.status(400).json({ 
-                error: `Not enough stock available. Current stock: ${currentStock.toFixed(2)} trays`,
-                availableStock: currentStock,
-                requested: sanitizedEggQty
-            });
+            return res.redirect('/financials');
         }
 
         // Prepare transactions array
@@ -243,52 +239,13 @@ router.post('/financials', async (req, res) => {
         // Save the record (pre-save hooks will handle calculations)
         await financialRecord.save();
 
-        // Successful response
-        res.status(201).json({
-            success: true,
-            message: 'Financial record saved successfully',
-            recordId: financialRecord._id,
-            financialSummary: {
-                totalIncome: financialRecord.totalIncome,
-                totalExpenses: financialRecord.totalExpenses,
-                profit: financialRecord.profit
-            },
-            inventorySummary: {
-                traysProduced: totalProduced,
-                traysSold: financialRecord.traysSold,
-                traysRemaining: financialRecord.traysRemaining,
-                lastProductionDate: financialRecord.date
-            },
-            transactions: {
-                count: financialRecord.transactions.length,
-                types: {
-                    income: financialRecord.transactions.filter(t => t.type === 'income').length,
-                    expense: financialRecord.transactions.filter(t => t.type === 'expense').length
-                }
-            }
-        });
+        // Successful response - simple redirect
+        res.redirect('/financials');
 
     } catch (err) {
         console.error('Error saving financial record:', err);
-        
-        // Handle specific error types
-        let errorMessage = 'Error saving financial record';
-        let statusCode = 500;
-        
-        if (err.name === 'ValidationError') {
-            statusCode = 400;
-            errorMessage = Object.values(err.errors).map(val => val.message).join(', ');
-        } else if (err.name === 'CastError') {
-            statusCode = 400;
-            errorMessage = 'Invalid data format';
-        }
-
-        res.status(statusCode).json({ 
-            success: false,
-            error: errorMessage,
-            details: process.env.NODE_ENV === 'development' ? err.message : undefined,
-            stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
-        });
+        // Simple redirect on error
+        res.redirect('/financials');
     }
 });
 // GET route to show edit form

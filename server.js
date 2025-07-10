@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
@@ -40,7 +41,9 @@ app.engine('ejs', async (path, data, cb) => {
     cb(err);
   }
 });
-
+ 
+console.log('Controller path exists:', 
+    require('fs').existsSync(path.join(__dirname, '../controllers/reportController.js')));
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB Connected'))
@@ -58,7 +61,7 @@ app.use('/balance-sheet', balanceSheetRouter);  // Note the hyphen
 app.use('/trial-balance', trialBalanceRoutes);
 app.use('/api/egg-replacements', eggReplacementRoutes);
 app.use('/api/financials', financialRoutes); // This is the critical line
-
+app.use(flash());
 
 
 

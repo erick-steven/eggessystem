@@ -7,31 +7,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/js/all.min.js"></script>
-
-
-
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Font Awesome for Icons -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<!-- Custom CSS -->
-
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-<!-- Minified Chart.js -->
-<link rel="stylesheet" href="/css/styles.css">
-</head>
-<style>
-
-
-
-
- 
- 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
         .container {
             background: #f9f9f9;
             padding: 30px;
@@ -39,97 +17,62 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             max-width: 1200px;
             margin: auto;
-            color: #f9f9f9;
-        }
-        .card {
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            transition: transform 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-10px); /* Hover effect */
-        }
-        h5 {
-            font-size: 20px;
-            font-weight: bold;
             color: #333;
         }
-        .d-flex {
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .card canvas {
-            border-radius: 10px;
-        }
-
-           
+        
         .chart-container {
             width: 100%;
             margin: 20px auto;
             padding: 20px;
-            background-color: #222;
+            background-color: white;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-
-        canvas {
-            max-width: 100%;
-        }
-
-        .buttons {
-            margin-top: 15px;
-        }
-
-        .buttons button {
-            background-color: #008CFF;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            margin: 5px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .buttons button:hover {
-            background-color: #005f99;
-        }
-
+        
         .batch-info {
-            background-color: #222;
+            background-color: #f8f9fa;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
+            border: 1px solid #eee;
         }
-
-        .batch-info h4 {
-            color: #008CFF;
-            margin-bottom: 15px;
+        
+        .time-filter-btn {
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: all 0.3s;
         }
-
-        .info-item {
-            margin-bottom: 10px;
-        } 
+        
+        .time-filter-btn:hover, .time-filter-btn.active {
+            background-color: #3a56d4;
+            transform: translateY(-2px);
+        }
+        
+        .search-controls {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .search-controls .col-md-4 {
+                margin-bottom: 10px;
+            }
+        }
     </style>
-    
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
+</head>
 <body>
+    <!-- Your existing header and sidebar -->
     <div class="header">
         <!-- Query Action Button -->
         <div class="query-action">
@@ -150,39 +93,63 @@
     <div id="querySidebar" class="query-sidebar">
         <ul>
             <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
-        <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
-        <li><a href="/financials"><i class="fas fa-dollar-sign"></i> Financials</a></li>
-      
-        <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
-        <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
-        <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
-        <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
-    <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
-
-    <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+            <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+            <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+            <li><a href="/financials"><i class="fas fa-dollar-sign"></i> Financials</a></li>
+            <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+            <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+            <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+            <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+            <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+            <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
         </ul>
     </div>
+
     <div class="container">
         <h2 class="text-center mb-4">Egg Production & Financial Dashboard</h2>
-
-        <!-- Batch Selection -->
-        <div class="row mb-4">
-            <div class="col-md-6 mx-auto">
-                <div class="input-group">
-                    <input type="text" id="batchSearch" class="form-control" placeholder="Search Batch No...">
-                    <select id="batchSelect" class="form-select">
-                        <% if (batches.length > 0) { %>
-                            <% batches.forEach(batch => { %>
-                                <option value="<%= batch._id %>" 
-                                    <%= selectedBatch && batch._id.equals(selectedBatch._id) ? 'selected' : '' %>>
-                                    <%= batch.batchNo %>
-                                </option>
-                            <% }) %>
-                        <% } else { %>
-                            <option>No batches found</option>
-                        <% } %>
-                    </select>
+        
+        <!-- Enhanced Search and Filter Controls -->
+        <div class="search-controls">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-filter"></i></span>
+                        <select id="batchSelect" class="form-select">
+                            <% if (batches.length > 0) { %>
+                                <% batches.forEach(batch => { %>
+                                    <option value="<%= batch._id %>" 
+                                        <%= selectedBatch && batch._id.equals(selectedBatch._id) ? 'selected' : '' %>>
+                                        <%= batch.batchNo %>
+                                    </option>
+                                <% }) %>
+                            <% } else { %>
+                                <option>No batches found</option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                        <select id="dateFilter" class="form-select">
+                            <option value="all">All Dates</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" id="dataSearch" class="form-control" placeholder="Search records...">
+                        <button class="btn btn-primary" type="button" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -190,7 +157,6 @@
         <% if (selectedBatch) { %>
             <!-- Batch Information -->
             <div class="batch-info">
-                <h4>Batch Details</h4>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="info-item">
@@ -216,12 +182,7 @@
             </div>
 
             <!-- Time Period Selector -->
-            <div class="buttons text-center mb-4">
-                <button onclick="updateCharts('month')">Month</button>
-                <button onclick="updateCharts('week')">Week</button>
-                <button onclick="updateCharts('day')">Day</button>
-            </div>
-
+            
             <!-- Egg Production Chart -->
             <div class="chart-container">
                 <h3>Egg Production Trend</h3>
@@ -243,6 +204,7 @@
     <script>
         // Initialize charts
         let eggChart, financialChart;
+        let currentTimeFilter = 'month';
         
         <% if (selectedBatch) { %>
             // Prepare data from server
@@ -264,158 +226,235 @@
                 type: 'line',
                 data: {
                     labels: eggData.labels,
-                    datasets: [
-                        {
-                            label: 'Eggs Produced',
-                            data: eggData.data,
-                            borderColor: '#008CFF',
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            pointRadius: 5,
-                            pointBackgroundColor: '#008CFF',
-                            tension: 0.4
-                        }
-                    ]
+                    datasets: [{
+                        label: 'Eggs Produced',
+                        data: eggData.data,
+                        borderColor: '#4361ee',
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#4361ee',
+                        tension: 0.4,
+                        fill: true
+                    }]
                 },
                 options: {
                     responsive: true,
                     plugins: {
-                        legend: { display: false }
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw.toLocaleString()}`;
+                                }
+                            }
+                        }
                     },
                     scales: {
                         x: { 
-                            grid: { display: false },
-                            ticks: { color: '#aaa' }
+                            grid: { display: false }
                         },
                         y: { 
-                            grid: { color: '#333' }, 
                             beginAtZero: true,
-                            ticks: { color: '#aaa' }
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
+                            }
                         }
                     }
                 }
             });
 
             // Create Financial Chart
-            // Create Financial Chart - Combined Bar and Line Chart
-const financialCtx = document.getElementById('financialChart').getContext('2d');
-financialChart = new Chart(financialCtx, {
-    type: 'bar',
-    data: {
-        labels: financialData.labels,
-        datasets: [
-            {
-                label: 'Profit',
-                data: financialData.profit,
-                backgroundColor: function(context) {
-                    return context.raw >= 0 ? 'rgba(0, 140, 255, 0.7)' : 'rgba(255, 99, 132, 0.7)';
+            const financialCtx = document.getElementById('financialChart').getContext('2d');
+            financialChart = new Chart(financialCtx, {
+                type: 'bar',
+                data: {
+                    labels: financialData.labels,
+                    datasets: [
+                        {
+                            label: 'Profit',
+                            data: financialData.profit,
+                            backgroundColor: function(context) {
+                                return context.raw >= 0 ? 'rgba(40, 167, 69, 0.7)' : 'rgba(220, 53, 69, 0.7)';
+                            },
+                            borderColor: function(context) {
+                                return context.raw >= 0 ? '#28a745' : '#dc3545';
+                            },
+                            borderWidth: 1,
+                            borderRadius: 3
+                        },
+                        {
+                            label: 'Income',
+                            data: financialData.income,
+                            borderColor: '#007bff',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            type: 'line',
+                            pointRadius: 4
+                        },
+                        {
+                            label: 'Expenses',
+                            data: financialData.expenses,
+                            borderColor: '#6c757d',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            type: 'line',
+                            pointRadius: 4,
+                            borderDash: [5, 5]
+                        }
+                    ]
                 },
-                borderColor: function(context) {
-                    return context.raw >= 0 ? '#008CFF' : '#ff6384';
-                },
-                borderWidth: 1,
-                borderRadius: 3,
-                yAxisID: 'y'
-            },
-            {
-                label: 'Income',
-                data: financialData.income,
-                borderColor: '#00C49F',
-                backgroundColor: 'transparent',
-                borderWidth: 2,
-                pointRadius: 5,
-                pointBackgroundColor: '#00C49F',
-                tension: 0.3,
-                type: 'line',
-                yAxisID: 'y'
-            },
-            {
-                label: 'Expenses',
-                data: financialData.expenses,
-                borderColor: '#FF8042',
-                backgroundColor: 'transparent',
-                borderWidth: 2,
-                pointRadius: 5,
-                pointBackgroundColor: '#FF8042',
-                tension: 0.3,
-                type: 'line',
-                yAxisID: 'y'
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        interaction: {
-            mode: 'index',
-            intersect: false
-        },
-        plugins: {
-            legend: { 
-                display: true,
-                labels: { 
-                    color: '#fff',
-                    usePointStyle: true,
-                    pointStyle: 'circle'
-                }
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return `${context.dataset.label}: ${context.raw.toLocaleString()}`;
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { 
+                            grid: { display: false }
+                        },
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        },
-        scales: {
-            x: { 
-                grid: { display: false },
-                ticks: { color: '#aaa' }
-            },
-            y: { 
-                grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                ticks: { 
-                    color: '#aaa',
-                    callback: function(value) {
-                        return value.toLocaleString();
-                    }
-                },
-                beginAtZero: true
-            }
-        }
-    }
-});
-            function updateCharts(timePeriod) {
-                // In a real app, you would fetch new data based on time period
-                // For now, we'll just simulate it with the existing data
-                
-                // For demo purposes - in a real app you would fetch new data
-                eggChart.update();
-                financialChart.update();
-                
-                // In a complete implementation, you would:
-                // 1. Make an API call to get data for the selected period
-                // 2. Update the chart data
-                // 3. Call chart.update()
-            }
+            });
         <% } %>
 
-        // Batch search filter
-        document.getElementById('batchSearch').addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
-            const options = document.querySelectorAll('#batchSelect option');
-            options.forEach(opt => {
-                opt.hidden = !opt.textContent.toLowerCase().includes(filter);
+        function updateTimeFilter(period) {
+            currentTimeFilter = period;
+            document.querySelectorAll('.time-filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(period));
             });
-        });
+            
+            // In a real implementation, you would fetch new data here
+            // For now, we'll just update the existing charts
+            if (eggChart) eggChart.update();
+            if (financialChart) financialChart.update();
+            
+            // Example of how you might implement this with actual data fetching:
+            // fetch(`/visualization/data?batchId=${currentBatchId}&period=${period}`)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         updateChartData(data);
+            //     });
+        }
 
         // Batch selector redirect
         document.getElementById('batchSelect').addEventListener('change', function() {
             const batchId = this.value;
             if (batchId) {
-                window.location.href = '/visualization?batchId=' + batchId;
+                window.location.href = `/visualization?batchId=${batchId}&period=${currentTimeFilter}`;
             }
         });
+
+        // Date filter handler
+        document.getElementById('dateFilter').addEventListener('change', function() {
+            if (this.value === 'custom') {
+                // You would implement a custom date range picker here
+                alert('Custom date range selection would be implemented here');
+            } else {
+                // Apply the selected date filter
+                // In a real implementation, you would fetch filtered data
+                if (eggChart) eggChart.update();
+                if (financialChart) financialChart.update();
+            }
+        });
+
+        // Search functionality
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('dataSearch').value.toLowerCase();
+            // Implement your search logic here
+            console.log('Searching for:', searchTerm);
+            // This would typically filter the displayed data or fetch new data from the server
+        });
+
+        // Initialize with month filter active
+        if (document.querySelector('.time-filter-btn')) {
+            document.querySelector('.time-filter-btn').classList.add('active');
+        }
+
+
+
+
+
+
+
+         
+        function toggleSidebar() {
+    const sidebar = document.getElementById('querySidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+
+
+
+
+
+
+ // for report scrolling arrow 
+ document.addEventListener('DOMContentLoaded', function() {
+    const tableContainer = document.querySelector('.table-container');
+    const tableWrapper = document.querySelector('.table-wrapper');
+    const leftButton = document.querySelector('.scroll-button.left');
+    const rightButton = document.querySelector('.scroll-button.right');
+    
+    // Check if elements exist (for pages without the table)
+    if (!tableContainer) return;
+    
+    // Update button states based on scroll position
+    function updateButtonStates() {
+        const scrollLeft = tableWrapper.scrollLeft;
+        const maxScroll = tableWrapper.scrollWidth - tableWrapper.clientWidth;
+        
+        leftButton.disabled = scrollLeft <= 0;
+        rightButton.disabled = scrollLeft >= maxScroll - 1; // -1 to account for rounding
+    }
+    
+    // Scroll left
+    leftButton.addEventListener('click', function() {
+        tableWrapper.scrollBy({
+            left: -200,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Scroll right
+    rightButton.addEventListener('click', function() {
+        tableWrapper.scrollBy({
+            left: 200,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Update on scroll
+    tableWrapper.addEventListener('scroll', updateButtonStates);
+    
+    // Initial check
+    updateButtonStates();
+    
+    // Update on window resize
+    window.addEventListener('resize', updateButtonStates);
+});
+
+
+
+
+
     </script>
-    <script src="/js/scripts.js"></script>
 </body>
 </html>

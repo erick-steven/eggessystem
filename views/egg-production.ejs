@@ -223,7 +223,6 @@
     </div>
   </div>
 </div>
-
 <style>
   /* Match financial form header exactly */
   .table thead th {
@@ -328,15 +327,38 @@
         </div>
       </div>
       
-      <!-- Rows Selector -->
-      <div class="d-none d-sm-flex" style="min-width: 120px;">
+      <!-- Date Filter -->
+      <div class="flex-grow-1">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light"><i class="fas fa-calendar text-muted"></i></span>
+          <select id="dateFilter" class="form-select form-select-sm">
+            <option value="all">All Dates</option>
+            <option value="today">Today</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="year">This Year</option>
+            <option value="custom">Custom Date</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Custom Date Picker (hidden by default) -->
+      <div id="customDateContainer" class="flex-grow-1" style="display: none;">
+        <div class="input-group input-group-sm">
+          <input type="date" id="customDateInput" class="form-control form-control-sm">
+        </div>
+      </div>
+      
+      <!-- Rows Selector - Now visible on all screens -->
+      <div class="flex-grow-1" style="min-width: 120px;">
         <div class="input-group input-group-sm">
           <span class="input-group-text bg-light"><i class="fas fa-list text-muted"></i></span>
           <select id="rowsPerPage" class="form-select form-select-sm">
             <option value="5">5 rows</option>
             <option value="10" selected>10 rows</option>
             <option value="20">20 rows</option>
-            <option value="all">All rows</option>
+            <option value="50">50 rows</option>
+            <option value="all">All</option>
           </select>
         </div>
       </div>
@@ -364,7 +386,9 @@
             <tbody id="desktopTableBody">
               <% if (records && records.length > 0) { %>
                 <% records.forEach((record) => { %>
-                  <tr data-batch="<%= record.batch?._id %>" data-record-id="<%= record._id %>">
+                  <tr data-batch="<%= record.batch?._id %>" 
+                      data-record-id="<%= record._id %>"
+                      data-date="<%= record.date ? record.date.toISOString().split('T')[0] : '' %>">
                     <td><span class="fw-semibold"><%= record.batch?.batchNo || 'N/A' %></span></td>
                     <td>
                       <span class="text-muted small">
@@ -431,7 +455,10 @@
         <% if (records && records.length > 0) { %>
           <div class="list-group list-group-flush">
             <% records.forEach((record) => { %>
-              <div class="list-group-item p-3" data-batch="<%= record.batch?._id %>" data-record-id="<%= record._id %>">
+              <div class="list-group-item p-3" 
+                   data-batch="<%= record.batch?._id %>" 
+                   data-record-id="<%= record._id %>"
+                   data-date="<%= record.date ? record.date.toISOString().split('T')[0] : '' %>">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span class="fw-bold text-primary"><%= record.batch?.batchNo || 'N/A' %></span>
                   <span class="text-muted small">
@@ -535,6 +562,9 @@ document.addEventListener("DOMContentLoaded", function() {
   const batchFilter = document.getElementById("batchFilter");
   const eggSearchInput = document.getElementById("eggSearchInput");
   const searchButton = document.getElementById("searchButton");
+  const dateFilter = document.getElementById("dateFilter");
+  const customDateContainer = document.getElementById("customDateContainer");
+  const customDateInput = document.getElementById("customDateInput");
   const rowsPerPage = document.getElementById("rowsPerPage");
   const showingCount = document.getElementById("showingCount");
   const totalCount = document.getElementById("totalCount");
@@ -545,6 +575,66 @@ document.addEventListener("DOMContentLoaded", function() {
   
   let currentPage = 1;
   let filteredRecords = [];
+  
+  // Date calculation functions
+  function getDateRange(filterValue) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    switch(filterValue) {
+      case 'today':
+        return {
+          start: today,
+          end: new Date(today.getTime() + 86400000) // +1 day
+        };
+      case 'week':
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay());
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 7);
+        return {
+          start: startOfWeek,
+          end: endOfWeek
+        };
+      case 'month':
+        return {
+          start: new Date(today.getFullYear(), today.getMonth(), 1),
+          end: new Date(today.getFullYear(), today.getMonth() + 1, 1)
+        };
+      case 'year':
+        return {
+          start: new Date(today.getFullYear(), 0, 1),
+          end: new Date(today.getFullYear() + 1, 0, 1)
+        };
+      case 'custom':
+        if (customDateInput.value) {
+          const customDate = new Date(customDateInput.value);
+          return {
+            start: customDate,
+            end: new Date(customDate.getTime() + 86400000)
+          };
+        }
+        return null;
+      default:
+        return null;
+    }
+  }
+  
+  // Date filter event listener
+  dateFilter.addEventListener("change", function() {
+    if (this.value === 'custom') {
+      customDateContainer.style.display = 'block';
+    } else {
+      customDateContainer.style.display = 'none';
+      updateDisplay();
+    }
+  });
+  
+  customDateInput.addEventListener("change", function() {
+    if (dateFilter.value === 'custom') {
+      updateDisplay();
+    }
+  });
   
   // Get all records (both desktop and mobile)
   function getAllRecords() {
@@ -562,6 +652,7 @@ document.addEventListener("DOMContentLoaded", function() {
         allRecords.push({
           id,
           batch: row.getAttribute("data-batch"),
+          date: row.getAttribute("data-date"),
           element: row,
           mobileElement: mobileItems.find(item => item.getAttribute("data-record-id") === id)
         });
@@ -575,6 +666,7 @@ document.addEventListener("DOMContentLoaded", function() {
         allRecords.push({
           id,
           batch: item.getAttribute("data-batch"),
+          date: item.getAttribute("data-date"),
           element: desktopRows.find(row => row.getAttribute("data-record-id") === id),
           mobileElement: item
         });
@@ -584,18 +676,30 @@ document.addEventListener("DOMContentLoaded", function() {
     return allRecords;
   }
   
-  // Filter records based on search and batch filter
+  // Filter records based on search, batch filter, and date filter
   function filterRecords() {
     const searchValue = eggSearchInput.value.toLowerCase();
     const selectedBatch = batchFilter.value;
+    const dateFilterValue = dateFilter.value;
+    const dateRange = getDateRange(dateFilterValue);
     
     return getAllRecords().filter(record => {
+      // Check batch filter
       const matchesBatch = selectedBatch === "all" || record.batch === selectedBatch;
+      
+      // Check search filter
       const elementText = record.element ? record.element.textContent.toLowerCase() : 
                         record.mobileElement.textContent.toLowerCase();
-      const matchesSearch = elementText.includes(searchValue);
+      const matchesSearch = searchValue === "" || elementText.includes(searchValue);
       
-      return matchesBatch && matchesSearch;
+      // Check date filter
+      let matchesDate = true;
+      if (dateRange && record.date) {
+        const recordDate = new Date(record.date);
+        matchesDate = recordDate >= dateRange.start && recordDate < dateRange.end;
+      }
+      
+      return matchesBatch && matchesSearch && matchesDate;
     });
   }
   
@@ -637,7 +741,40 @@ document.addEventListener("DOMContentLoaded", function() {
     pageNumbers.innerHTML = "";
     
     // Add page number buttons
-    for (let i = 1; i <= totalPages; i++) {
+    const maxVisiblePages = 5; // Maximum number of visible page buttons
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    // Adjust if we're at the beginning or end
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      if (currentPage < totalPages / 2) {
+        endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+      } else {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+    }
+    
+    // Add first page button if needed
+    if (startPage > 1) {
+      const firstBtn = document.createElement("button");
+      firstBtn.className = "btn btn-sm btn-outline-secondary";
+      firstBtn.textContent = "1";
+      firstBtn.addEventListener("click", () => {
+        currentPage = 1;
+        updateDisplay();
+      });
+      pageNumbers.appendChild(firstBtn);
+      
+      if (startPage > 2) {
+        const ellipsis = document.createElement("button");
+        ellipsis.className = "btn btn-sm btn-outline-secondary disabled";
+        ellipsis.textContent = "...";
+        pageNumbers.appendChild(ellipsis);
+      }
+    }
+    
+    // Add page buttons
+    for (let i = startPage; i <= endPage; i++) {
       const pageBtn = document.createElement("button");
       pageBtn.className = `btn btn-sm btn-outline-secondary ${i === currentPage ? 'active' : ''}`;
       pageBtn.textContent = i;
@@ -648,9 +785,28 @@ document.addEventListener("DOMContentLoaded", function() {
       pageNumbers.appendChild(pageBtn);
     }
     
+    // Add last page button if needed
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        const ellipsis = document.createElement("button");
+        ellipsis.className = "btn btn-sm btn-outline-secondary disabled";
+        ellipsis.textContent = "...";
+        pageNumbers.appendChild(ellipsis);
+      }
+      
+      const lastBtn = document.createElement("button");
+      lastBtn.className = "btn btn-sm btn-outline-secondary";
+      lastBtn.textContent = totalPages;
+      lastBtn.addEventListener("click", () => {
+        currentPage = totalPages;
+        updateDisplay();
+      });
+      pageNumbers.appendChild(lastBtn);
+    }
+    
     // Update prev/next buttons
     prevPage.disabled = currentPage === 1;
-    nextPage.disabled = currentPage === totalPages;
+    nextPage.disabled = currentPage === totalPages || totalPages === 0;
   }
   
   // Event listeners
