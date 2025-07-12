@@ -23,6 +23,201 @@
   <style>
  /* Egg Production Form - Soft Modern Style */
  
+/* Query Action Button */
+/* Query Action Button - adjusted positioning */
+.query-action {
+  position: relative; /* Changed from absolute */
+  left: 0;
+  z-index: 1000;
+}
+
+
+.query-action button {
+    background-color:red; /* Teal color */
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.query-action button:hover {
+    background-color: #d11e1e; /* Darker teal on hover */
+}
+/* Base Header Styles */
+.header {
+  background: #003B4A;
+  color: white;
+  padding: 0.1rem 0.5rem; /* Almost no vertical padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  gap: 0.2rem; /* Minimal gap */
+  line-height: 1; /* Prevents extra height from text */
+  font-size: 0.9rem; /* Smaller text (adjust if needed) */
+}
+/* Logo Section */
+
+/* Logo Section - fixed alignment */
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: orange;
+  z-index: 1;
+  margin-left: 0; /* Remove previous margin */
+}
+.logo i {
+  font-size: 1.1rem;
+}
+
+/* User Controls - ensure proper spacing */
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto; /* Push to the right */
+  z-index: 1;
+}
+
+#currentUser {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.btn-danger {
+  background: red;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* Menu Button */
+.menu-button {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 769px) {
+  .header {
+    padding: 0.8rem 1.5rem;
+  }
+  .logo {
+    font-size: 1.2rem;
+    margin-left: 3rem;
+  }
+  .logo i {
+    font-size: 1.2rem;
+  }
+  .btn-danger, 
+  .menu-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 480px) {
+  .header {
+    padding: 0.6rem;
+    gap: 0.5rem;
+  }
+  .logo {
+    font-size: 1rem;
+  }
+  .user-controls {
+    gap: 0.5rem;
+  }
+  #currentUser {
+    display: none; /* Hide on smallest screens if needed */
+  }
+}
+
+/* Sidebar */
+.query-sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Initially hidden */
+    height: 100%;
+    width: 250px;
+    background-color: rgba(0, 0, 0, 0.9); /* Dark semi-transparent background */
+    color: white;
+    transition: left 0.3s ease;
+    z-index: 999;
+    padding-top: 60px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.query-sidebar.open {
+    left: 0; /* Show sidebar */
+}
+
+.query-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.query-sidebar li {
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.query-sidebar li:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effect */
+}
+
+.query-sidebar a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.query-sidebar a i {
+    font-size: 18px;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    z-index: 998;
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+}
+/* Active state for sidebar */
+.query-sidebar.open {
+  left: 0;
+}
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   #egg-production-container {
@@ -327,29 +522,53 @@
         </div>
       </div>
       
-      <!-- Date Filter -->
-      <div class="flex-grow-1">
+      <!-- Enhanced Date Filter -->
+      <div class="flex-grow-1 position-relative">
         <div class="input-group input-group-sm">
           <span class="input-group-text bg-light"><i class="fas fa-calendar text-muted"></i></span>
           <select id="dateFilter" class="form-select form-select-sm">
             <option value="all">All Dates</option>
             <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
             <option value="week">This Week</option>
+            <option value="lastweek">Last Week</option>
             <option value="month">This Month</option>
+            <option value="lastmonth">Last Month</option>
             <option value="year">This Year</option>
-            <option value="custom">Custom Date</option>
+            <option value="custom">Custom Range</option>
           </select>
         </div>
-      </div>
-      
-      <!-- Custom Date Picker (hidden by default) -->
-      <div id="customDateContainer" class="flex-grow-1" style="display: none;">
-        <div class="input-group input-group-sm">
-          <input type="date" id="customDateInput" class="form-control form-control-sm">
+        
+         <!-- Enhanced Date Picker (hidden by default) -->
+         <div id="customDateContainer" class="card position-absolute start-0 end-0 mt-1 z-3 shadow-sm" style="display: none;">
+          <div class="card-body p-2">
+            <div class="d-flex flex-column flex-sm-row gap-2">
+              <div class="flex-grow-1">
+                <label class="small text-muted mb-1">From</label>
+                <input type="date" id="customDateStart" class="form-control form-control-sm">
+              </div>
+              <div class="flex-grow-1">
+                <label class="small text-muted mb-1">To</label>
+                <input type="date" id="customDateEnd" class="form-control form-control-sm">
+              </div>
+              <div class="d-flex align-items-end">
+                <button id="applyDateRange" class="btn btn-sm btn-primary">
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Quick Presets for Mobile -->
+            <div class="d-flex d-sm-none flex-wrap gap-1 mt-2">
+              <button class="btn btn-sm btn-outline-secondary date-preset" data-days="7">Last 7 Days</button>
+              <button class="btn btn-sm btn-outline-secondary date-preset" data-days="30">Last 30 Days</button>
+              <button class="btn btn-sm btn-outline-secondary date-preset" data-month="0">This Month</button>
+            </div>
+          </div>
         </div>
       </div>
       
-      <!-- Rows Selector - Now visible on all screens -->
+      <!-- Rows Selector -->
       <div class="flex-grow-1" style="min-width: 120px;">
         <div class="input-group input-group-sm">
           <span class="input-group-text bg-light"><i class="fas fa-list text-muted"></i></span>
@@ -556,307 +775,419 @@
   </div>
 </section>
 
+<style>
+  /* Custom responsive styles */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Mobile list items */
+  .list-group-item {
+    border-left: 0;
+    border-right: 0;
+  }
+  
+  .list-group-item:first-child {
+    border-top: 0;
+  }
+  
+  .list-group-item:last-child {
+    border-bottom: 0;
+  }
+  
+  /* Progress bar in mobile view */
+  .progress {
+    background-color: #f0f3f5;
+    min-width: 40px;
+  }
+  
+  /* Date picker styling */
+  #customDateContainer {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .card-body {
+      padding: 0;
+    }
+    
+    .input-group {
+      flex-wrap: nowrap;
+    }
+    
+    .input-group .form-control,
+    .input-group .form-select {
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    
+    /* Stack controls vertically on very small screens */
+    .d-flex.flex-sm-row {
+      flex-direction: column !important;
+    }
+    
+    .flex-grow-1 {
+      width: 100%;
+    }
+    
+    /* Make date presets full width on mobile */
+    .date-preset {
+      flex: 1 0 calc(50% - 0.5rem);
+      min-width: calc(50% - 0.5rem);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container-fluid {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+    
+    .card {
+      border-radius: 0;
+      box-shadow: none;
+      border: 1px solid #eee;
+    }
+    
+    /* Adjust date picker for mobile */
+    #customDateContainer {
+      position: fixed !important;
+      left: 10px !important;
+      right: 10px !important;
+      top: 50% !important;
+      transform: translateY(-50%);
+      z-index: 1050 !important;
+    }
+  }
+  
+  @media (min-width: 768px) and (max-width: 992px) {
+    .table td, .table th {
+      padding: 0.5rem;
+    }
+  }
+</style>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  // Initialize variables
-  const batchFilter = document.getElementById("batchFilter");
-  const eggSearchInput = document.getElementById("eggSearchInput");
-  const searchButton = document.getElementById("searchButton");
-  const dateFilter = document.getElementById("dateFilter");
-  const customDateContainer = document.getElementById("customDateContainer");
-  const customDateInput = document.getElementById("customDateInput");
-  const rowsPerPage = document.getElementById("rowsPerPage");
-  const showingCount = document.getElementById("showingCount");
-  const totalCount = document.getElementById("totalCount");
-  const totalRecords = document.getElementById("totalRecords");
-  const prevPage = document.getElementById("prevPage");
-  const nextPage = document.getElementById("nextPage");
-  const pageNumbers = document.getElementById("pageNumbers");
+  document.addEventListener("DOMContentLoaded", function() {
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
   
-  let currentPage = 1;
-  let filteredRecords = [];
-  
-  // Date calculation functions
-  function getDateRange(filterValue) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // DOM elements
+    const batchFilter = document.getElementById("batchFilter");
+    const eggSearchInput = document.getElementById("eggSearchInput");
+    const searchButton = document.getElementById("searchButton");
+    const dateFilter = document.getElementById("dateFilter");
+    const customDateContainer = document.getElementById("customDateContainer");
+    const customDateStart = document.getElementById("customDateStart");
+    const customDateEnd = document.getElementById("customDateEnd");
+    const applyDateRange = document.getElementById("applyDateRange");
+    const rowsPerPage = document.getElementById("rowsPerPage");
+    const showingCount = document.getElementById("showingCount");
+    const totalCount = document.getElementById("totalCount");
+    const totalRecords = document.getElementById("totalRecords");
+    const prevPage = document.getElementById("prevPage");
+    const nextPage = document.getElementById("nextPage");
+    const pageNumbers = document.getElementById("pageNumbers");
     
-    switch(filterValue) {
-      case 'today':
-        return {
-          start: today,
-          end: new Date(today.getTime() + 86400000) // +1 day
-        };
-      case 'week':
-        const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - today.getDay());
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 7);
-        return {
-          start: startOfWeek,
-          end: endOfWeek
-        };
-      case 'month':
-        return {
-          start: new Date(today.getFullYear(), today.getMonth(), 1),
-          end: new Date(today.getFullYear(), today.getMonth() + 1, 1)
-        };
-      case 'year':
-        return {
-          start: new Date(today.getFullYear(), 0, 1),
-          end: new Date(today.getFullYear() + 1, 0, 1)
-        };
-      case 'custom':
-        if (customDateInput.value) {
-          const customDate = new Date(customDateInput.value);
+    // Pagination variables
+    let currentPage = 1;
+    let filteredRecords = [];
+    
+    // Set default dates for custom range
+    function setDefaultCustomDates() {
+      const today = new Date();
+      const oneWeekAgo = new Date(today);
+      oneWeekAgo.setDate(today.getDate() - 7);
+      
+      customDateStart.valueAsDate = oneWeekAgo;
+      customDateEnd.valueAsDate = today;
+    }
+    
+    // Date calculation functions
+    function getDateRange(filterValue) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      switch(filterValue) {
+        case 'today':
           return {
-            start: customDate,
-            end: new Date(customDate.getTime() + 86400000)
+            start: today,
+            end: new Date(today.getTime() + 86400000)
           };
+        case 'yesterday':
+          return {
+            start: new Date(today.getTime() - 86400000),
+            end: today
+          };
+        case 'week':
+          const startOfWeek = new Date(today);
+          startOfWeek.setDate(today.getDate() - today.getDay());
+          const endOfWeek = new Date(startOfWeek);
+          endOfWeek.setDate(startOfWeek.getDate() + 7);
+          return {
+            start: startOfWeek,
+            end: endOfWeek
+          };
+        case 'lastweek':
+          const startOfLastWeek = new Date(today);
+          startOfLastWeek.setDate(today.getDate() - today.getDay() - 7);
+          const endOfLastWeek = new Date(startOfLastWeek);
+          endOfLastWeek.setDate(startOfLastWeek.getDate() + 7);
+          return {
+            start: startOfLastWeek,
+            end: endOfLastWeek
+          };
+        case 'month':
+          return {
+            start: new Date(today.getFullYear(), today.getMonth(), 1),
+            end: new Date(today.getFullYear(), today.getMonth() + 1, 1)
+          };
+        case 'lastmonth':
+          return {
+            start: new Date(today.getFullYear(), today.getMonth() - 1, 1),
+            end: new Date(today.getFullYear(), today.getMonth(), 1)
+          };
+        case 'year':
+          return {
+            start: new Date(today.getFullYear(), 0, 1),
+            end: new Date(today.getFullYear() + 1, 0, 1)
+          };
+        case 'custom':
+          if (customDateStart.value && customDateEnd.value) {
+            return {
+              start: new Date(customDateStart.value),
+              end: new Date(new Date(customDateEnd.value).getTime() + 86400000)
+            };
+          }
+          return null;
+        default:
+          return null;
+      }
+    }
+    
+    // Date filter event listener
+    dateFilter.addEventListener("change", function() {
+      if (this.value === 'custom') {
+        setDefaultCustomDates();
+        customDateContainer.style.display = 'block';
+      } else {
+        customDateContainer.style.display = 'none';
+        filterAndPaginate();
+      }
+    });
+    
+    // Apply custom date range
+    applyDateRange.addEventListener("click", function() {
+      if (customDateStart.value && customDateEnd.value) {
+        const startDate = new Date(customDateStart.value);
+        const endDate = new Date(customDateEnd.value);
+        
+        if (startDate > endDate) {
+          alert('End date must be after start date');
+          return;
         }
-        return null;
-      default:
-        return null;
+        
+        customDateContainer.style.display = 'none';
+        filterAndPaginate();
+      } else {
+        alert('Please select both start and end dates');
+      }
+    });
+    
+    // Close date picker when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!customDateContainer.contains(event.target) && 
+          event.target !== dateFilter && 
+          !dateFilter.contains(event.target)) {
+        customDateContainer.style.display = 'none';
+      }
+    });
+    
+    // Date presets for mobile
+    document.querySelectorAll('.date-preset').forEach(button => {
+      button.addEventListener('click', function() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (this.dataset.days) {
+          const days = parseInt(this.dataset.days);
+          const startDate = new Date(today);
+          startDate.setDate(today.getDate() - days);
+          customDateStart.valueAsDate = startDate;
+          customDateEnd.valueAsDate = today;
+        } else if (this.dataset.month) {
+          const monthOffset = parseInt(this.dataset.month);
+          const startDate = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
+          const endDate = new Date(today.getFullYear(), today.getMonth() + monthOffset + 1, 0);
+          customDateStart.valueAsDate = startDate;
+          customDateEnd.valueAsDate = endDate;
+        }
+        
+        dateFilter.value = 'custom';
+        customDateContainer.style.display = 'none';
+        filterAndPaginate();
+      });
+    });
+    
+    // Get all records (both desktop and mobile)
+    function getAllRecords() {
+      const desktopRows = document.querySelectorAll("#desktopTableBody tr");
+      const mobileItems = document.querySelectorAll("#mobileList .list-group-item");
+      
+      return Array.from(desktopRows).map((row, index) => ({
+        element: row,
+        mobileElement: mobileItems[index],
+        batch: row.getAttribute("data-batch"),
+        date: row.getAttribute("data-date"),
+        id: row.getAttribute("data-record-id")
+      }));
     }
-  }
-  
-  // Date filter event listener
-  dateFilter.addEventListener("change", function() {
-    if (this.value === 'custom') {
-      customDateContainer.style.display = 'block';
-    } else {
-      customDateContainer.style.display = 'none';
+    
+    // Filter records based on search, batch filter, and date filter
+    function filterRecords() {
+      const searchValue = eggSearchInput.value.toLowerCase();
+      const selectedBatch = batchFilter.value;
+      const dateFilterValue = dateFilter.value;
+      const dateRange = getDateRange(dateFilterValue);
+      
+      return getAllRecords().filter(record => {
+        // Check batch filter
+        const matchesBatch = selectedBatch === "all" || record.batch === selectedBatch;
+        
+        // Check search filter
+        const elementText = record.element.textContent.toLowerCase();
+        const matchesSearch = searchValue === "" || elementText.includes(searchValue);
+        
+        // Check date filter
+        let matchesDate = true;
+        if (dateRange && record.date) {
+          const recordDate = new Date(record.date);
+          matchesDate = recordDate >= dateRange.start && recordDate < dateRange.end;
+        }
+        
+        return matchesBatch && matchesSearch && matchesDate;
+      });
+    }
+    
+    // Main function to filter and paginate records
+    function filterAndPaginate() {
+      currentPage = 1;
+      filteredRecords = filterRecords();
+      updatePagination();
       updateDisplay();
     }
-  });
-  
-  customDateInput.addEventListener("change", function() {
-    if (dateFilter.value === 'custom') {
-      updateDisplay();
+    
+    // Update the displayed records
+    function updateDisplay() {
+      const rowsPerPageValue = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
+      const startIndex = (currentPage - 1) * rowsPerPageValue;
+      const endIndex = Math.min(startIndex + rowsPerPageValue, filteredRecords.length);
+      
+      // Hide all records first
+      getAllRecords().forEach(record => {
+        record.element.style.display = "none";
+        if (record.mobileElement) record.mobileElement.style.display = "none";
+      });
+      
+      // Show only the records for the current page
+      for (let i = startIndex; i < endIndex; i++) {
+        if (filteredRecords[i]) {
+          filteredRecords[i].element.style.display = "";
+          if (filteredRecords[i].mobileElement) {
+            filteredRecords[i].mobileElement.style.display = "";
+          }
+        }
+      }
+      
+      // Update showing counts
+      showingCount.textContent = filteredRecords.length === 0 ? 0 : startIndex + 1;
+      totalCount.textContent = endIndex;
+      totalRecords.textContent = filteredRecords.length;
     }
-  });
-  
-  // Get all records (both desktop and mobile)
-  function getAllRecords() {
-    const desktopRows = Array.from(document.querySelectorAll("#desktopTableBody tr"));
-    const mobileItems = Array.from(document.querySelectorAll("#mobileList .list-group-item"));
-    
-    // Combine and deduplicate records
-    const allRecords = [];
-    const seenIds = new Set();
-    
-    desktopRows.forEach(row => {
-      const id = row.getAttribute("data-record-id");
-      if (!seenIds.has(id)) {
-        seenIds.add(id);
-        allRecords.push({
-          id,
-          batch: row.getAttribute("data-batch"),
-          date: row.getAttribute("data-date"),
-          element: row,
-          mobileElement: mobileItems.find(item => item.getAttribute("data-record-id") === id)
-        });
-      }
-    });
-    
-    mobileItems.forEach(item => {
-      const id = item.getAttribute("data-record-id");
-      if (!seenIds.has(id)) {
-        seenIds.add(id);
-        allRecords.push({
-          id,
-          batch: item.getAttribute("data-batch"),
-          date: item.getAttribute("data-date"),
-          element: desktopRows.find(row => row.getAttribute("data-record-id") === id),
-          mobileElement: item
-        });
-      }
-    });
-    
-    return allRecords;
-  }
-  
-  // Filter records based on search, batch filter, and date filter
-  function filterRecords() {
-    const searchValue = eggSearchInput.value.toLowerCase();
-    const selectedBatch = batchFilter.value;
-    const dateFilterValue = dateFilter.value;
-    const dateRange = getDateRange(dateFilterValue);
-    
-    return getAllRecords().filter(record => {
-      // Check batch filter
-      const matchesBatch = selectedBatch === "all" || record.batch === selectedBatch;
-      
-      // Check search filter
-      const elementText = record.element ? record.element.textContent.toLowerCase() : 
-                        record.mobileElement.textContent.toLowerCase();
-      const matchesSearch = searchValue === "" || elementText.includes(searchValue);
-      
-      // Check date filter
-      let matchesDate = true;
-      if (dateRange && record.date) {
-        const recordDate = new Date(record.date);
-        matchesDate = recordDate >= dateRange.start && recordDate < dateRange.end;
-      }
-      
-      return matchesBatch && matchesSearch && matchesDate;
-    });
-  }
-  
-  // Update the displayed records
-  function updateDisplay() {
-    filteredRecords = filterRecords();
-    const rowsToShow = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
-    const totalPages = Math.ceil(filteredRecords.length / rowsToShow);
     
     // Update pagination controls
-    updatePagination(totalPages);
+    function updatePagination() {
+      const rowsPerPageValue = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
+      const totalPages = Math.ceil(filteredRecords.length / rowsPerPageValue) || 1;
+      
+      // Clear existing page numbers
+      pageNumbers.innerHTML = '';
+      
+      // Simple pagination - show up to 5 pages
+      const pagesToShow = Math.min(totalPages, 5);
+      let startPage = Math.max(1, currentPage - 2);
+      if (startPage + pagesToShow > totalPages) {
+        startPage = Math.max(1, totalPages - pagesToShow + 1);
+      }
+      
+      // Add page buttons
+      for (let i = startPage; i < startPage + pagesToShow; i++) {
+        if (i > totalPages) break;
+        
+        const pageBtn = document.createElement('button');
+        pageBtn.className = `btn btn-sm btn-outline-secondary ${i === currentPage ? 'active' : ''}`;
+        pageBtn.textContent = i;
+        pageBtn.addEventListener('click', () => {
+          currentPage = i;
+          updateDisplay();
+        });
+        pageNumbers.appendChild(pageBtn);
+      }
+      
+      // Update prev/next buttons
+      prevPage.disabled = currentPage === 1;
+      nextPage.disabled = currentPage === totalPages || totalPages === 0;
+    }
     
-    // Calculate start and end indices
-    const startIndex = (currentPage - 1) * rowsToShow;
-    const endIndex = Math.min(startIndex + rowsToShow, filteredRecords.length);
+    // Event listeners
+    batchFilter.addEventListener("change", filterAndPaginate);
+    eggSearchInput.addEventListener("input", filterAndPaginate);
+    searchButton.addEventListener("click", filterAndPaginate);
+    rowsPerPage.addEventListener("change", filterAndPaginate);
     
-    // Hide all records first
-    getAllRecords().forEach(record => {
-      if (record.element) record.element.style.display = "none";
-      if (record.mobileElement) record.mobileElement.style.display = "none";
+    prevPage.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        updateDisplay();
+        updatePagination();
+      }
     });
     
-    // Show only the records for the current page
-    for (let i = startIndex; i < endIndex; i++) {
-      const record = filteredRecords[i];
-      if (record.element) record.element.style.display = "";
-      if (record.mobileElement) record.mobileElement.style.display = "";
-    }
-    
-    // Update showing counts
-    showingCount.textContent = Math.min(startIndex + 1, filteredRecords.length);
-    totalCount.textContent = endIndex;
-    totalRecords.textContent = filteredRecords.length;
-  }
-  
-  // Update pagination controls
-  function updatePagination(totalPages) {
-    // Clear existing page numbers
-    pageNumbers.innerHTML = "";
-    
-    // Add page number buttons
-    const maxVisiblePages = 5; // Maximum number of visible page buttons
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-    
-    // Adjust if we're at the beginning or end
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      if (currentPage < totalPages / 2) {
-        endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-      } else {
-        startPage = Math.max(1, endPage - maxVisiblePages + 1);
-      }
-    }
-    
-    // Add first page button if needed
-    if (startPage > 1) {
-      const firstBtn = document.createElement("button");
-      firstBtn.className = "btn btn-sm btn-outline-secondary";
-      firstBtn.textContent = "1";
-      firstBtn.addEventListener("click", () => {
-        currentPage = 1;
-        updateDisplay();
-      });
-      pageNumbers.appendChild(firstBtn);
+    nextPage.addEventListener("click", () => {
+      const rowsPerPageValue = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
+      const totalPages = Math.ceil(filteredRecords.length / rowsPerPageValue);
       
-      if (startPage > 2) {
-        const ellipsis = document.createElement("button");
-        ellipsis.className = "btn btn-sm btn-outline-secondary disabled";
-        ellipsis.textContent = "...";
-        pageNumbers.appendChild(ellipsis);
-      }
-    }
-    
-    // Add page buttons
-    for (let i = startPage; i <= endPage; i++) {
-      const pageBtn = document.createElement("button");
-      pageBtn.className = `btn btn-sm btn-outline-secondary ${i === currentPage ? 'active' : ''}`;
-      pageBtn.textContent = i;
-      pageBtn.addEventListener("click", () => {
-        currentPage = i;
+      if (currentPage < totalPages) {
+        currentPage++;
         updateDisplay();
-      });
-      pageNumbers.appendChild(pageBtn);
-    }
-    
-    // Add last page button if needed
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        const ellipsis = document.createElement("button");
-        ellipsis.className = "btn btn-sm btn-outline-secondary disabled";
-        ellipsis.textContent = "...";
-        pageNumbers.appendChild(ellipsis);
+        updatePagination();
       }
+    });
+    
+    // Initialize
+    setDefaultCustomDates();
+    filteredRecords = getAllRecords();
+    updatePagination();
+    updateDisplay();
+  });
+  
+  // Global delete function
+  window.deleteRecord = function(recordId, element) {
+    if (confirm('Are you sure you want to delete this record?')) {
+      // In a real app, you would make an AJAX call here
+      const row = element.closest('tr') || element.closest('.list-group-item');
+      if (row) row.remove();
       
-      const lastBtn = document.createElement("button");
-      lastBtn.className = "btn btn-sm btn-outline-secondary";
-      lastBtn.textContent = totalPages;
-      lastBtn.addEventListener("click", () => {
-        currentPage = totalPages;
-        updateDisplay();
-      });
-      pageNumbers.appendChild(lastBtn);
+      // Refresh the interface
+      document.dispatchEvent(new Event('DOMContentLoaded'));
     }
-    
-    // Update prev/next buttons
-    prevPage.disabled = currentPage === 1;
-    nextPage.disabled = currentPage === totalPages || totalPages === 0;
-  }
-  
-  // Event listeners
-  batchFilter.addEventListener("change", () => {
-    currentPage = 1;
-    updateDisplay();
-  });
-  
-  eggSearchInput.addEventListener("input", () => {
-    currentPage = 1;
-    updateDisplay();
-  });
-  
-  searchButton.addEventListener("click", () => {
-    currentPage = 1;
-    updateDisplay();
-  });
-  
-  rowsPerPage.addEventListener("change", () => {
-    currentPage = 1;
-    updateDisplay();
-  });
-  
-  prevPage.addEventListener("click", () => {
-    if (currentPage > 1) {
-      currentPage--;
-      updateDisplay();
-    }
-  });
-  
-  nextPage.addEventListener("click", () => {
-    const rowsToShow = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
-    const totalPages = Math.ceil(filteredRecords.length / rowsToShow);
-    
-    if (currentPage < totalPages) {
-      currentPage++;
-      updateDisplay();
-    }
-  });
-  
-  // Initialize
-  updateDisplay();
-  
-  // Initialize tooltips
-  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-  tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl);
-  });
-});
-</script>
+  };
+  </script>
 <script>
 function toggleSidebar() {
     const sidebar = document.getElementById('querySidebar');
@@ -1017,6 +1348,9 @@ function deleteRecord(recordId, buttonElement) {
         alert('Error deleting record');
     });
 }
+
+
+
     </script>
  
 </body>

@@ -9,413 +9,380 @@
     <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Flatpickr for date range selection -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
     <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --accent-color: #4895ef;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4cc9f0;
-            --warning-color: #f8961e;
-            --danger-color: #f94144;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            color: var(--dark-color);
-        }
-
         .container {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            margin-top: 30px !important;
-            padding: 30px !important;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px !important;
+            padding-top: 50px !important;
+        }
+
+        h2, h3, h5 {
+            color: #2c3e50;
         }
 
         h2 {
-            color: var(--dark-color);
-            font-weight: 700;
-            margin-bottom: 25px;
-            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
 
         h2 i {
-            margin-right: 12px;
-            color: var(--primary-color);
+            margin-right: 10px;
+            color: #3498db;
         }
 
-        /* Form Label Styling */
-        .form-label {
-            font-weight: 600;
-            color: var(--dark-color);
-            margin-bottom: 8px;
-            font-size: 15px;
+        /* Form Styles */
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        .form-label i {
-            margin-right: 8px;
-            color: var(--primary-color);
+        .form-group {
+            flex: 1 1 auto;
+            min-width: 150px;
+            position: relative;
         }
 
-        /* Input and Select Styling */
-        .form-control, .form-select {
-            border: 2px solid #e9ecef;
+        .search-group {
+            position: relative;
+            max-width: 250px;
+        }
+
+        .search-input {
+            padding-left: 35px;
+            width: 100%;
+            border: 2px solid #bdc3c7;
             border-radius: 8px;
-            padding: 12px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            height: auto;
+            padding: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
         }
 
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.15);
+        .search-input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
         }
 
-        /* Button Styling */
-        .btn-primary {
-            background-color: var(--primary-color);
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+            z-index: 2;
+        }
+
+        .select-dropdown {
+            width: 100%;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 15px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .submit-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+            min-width: fit-content;
+            background-color: #3498db;
             border: none;
             padding: 12px 24px;
             font-size: 16px;
             font-weight: 600;
             border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Table Styles */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #2c3e50;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tbody tr:nth-of-type(even) {
+            background-color: #f8f9fa;
+        }
+
+        .table tbody tr:last-of-type {
+            border-bottom: 2px solid #2c3e50;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Analysis Row Styles */
+        .analysis-row {
+            background-color: #e9f5ff !important;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        /* Scrollable Table Container */
+        .table-container {
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 40px;
+            padding-bottom: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scroll-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
             transition: all 0.3s ease;
+            opacity: 0.9;
         }
 
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+        .scroll-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-50%) scale(1.1);
+            opacity: 1;
         }
 
-        /* Date Range Picker Styling */
-        .date-range-container {
+        .scroll-button.left {
+            left: 0;
+        }
+
+        .scroll-button.right {
+            right: 0;
+        }
+
+        .scroll-button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+        /* Death Reason Badges */
+        .reason-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .reason-Disease { background-color: #dc3545; color: white; }
+        .reason-Predator { background-color: #6c757d; color: white; }
+        .reason-Accident { background-color: #fd7e14; color: white; }
+        .reason-Heat-Stress { background-color: #ffc107; color: #212529; }
+        .reason-Cold-Stress { background-color: #0dcaf0; color: #212529; }
+        .reason-Unknown { background-color: #6610f2; color: white; }
+        .reason-Other { background-color: #20c997; color: #212529; }
+
+        /* Recommendation Cards */
+        .recommendation-card {
+            border-left: 4px solid;
+            margin-bottom: 15px;
+        }
+        .recommendation-Disease { border-left-color: #dc3545; }
+        .recommendation-Predator { border-left-color: #6c757d; }
+        .recommendation-Accident { border-left-color: #fd7e14; }
+        .recommendation-Heat-Stress { border-left-color: #ffc107; }
+        .recommendation-Cold-Stress { border-left-color: #0dcaf0; }
+        .recommendation-Unknown { border-left-color: #6610f2; }
+        .recommendation-Other { border-left-color: #20c997; }
+
+        /* Date Range Filter Styles */
+        .date-range-filter {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .date-range-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .date-range-controls {
             display: flex;
             gap: 10px;
             align-items: center;
         }
-
-        .date-range-separator {
-            color: #6c757d;
-            font-weight: bold;
+        
+        .date-range-inputs {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
         }
-
-        .flatpickr-input {
-            background-color: white !important;
+        
+        .date-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
-        /* Card Styling */
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-header {
-            border-radius: 10px 10px 0 0 !important;
-            font-weight: 600;
-        }
-
-        /* Table Styling */
-        .table {
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .table th {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: 600;
-            padding: 15px;
-        }
-
-        .table td {
-            padding: 12px 15px;
-            vertical-align: middle;
-        }
-
-        .table tbody tr:nth-child(even) {
-            background-color: rgba(67, 97, 238, 0.03);
-        }
-
-        .table tbody tr:hover {
-            background-color: rgba(67, 97, 238, 0.08);
-        }
-
-        /* Analysis Row */
-        .analysis-row {
-            background-color: rgba(72, 149, 239, 0.1) !important;
-        }
-
-        /* Badge Styling */
-        .badge {
-            padding: 6px 10px;
+        
+        .date-input-group label {
+            margin-bottom: 0;
             font-weight: 500;
-            border-radius: 6px;
+        }
+        
+        .date-range-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .quick-range-btn {
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .quick-range-btn:hover {
+            background-color: #dee2e6;
+        }
+        
+        .quick-range-btn.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+        
+        /* Hidden class for filtered elements */
+        .filtered-out {
+            display: none !important;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
-                padding: 20px !important;
-            }
-            
-            .date-range-container {
+            .form-container {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 15px;
+            }
+
+            .form-group, .search-group {
+                max-width: 100% !important;
+                width: 100%;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+
+            .btn-text {
+                display: inline;
+            }
+
+            .table-wrapper {
+                margin: 0 30px;
             }
             
-            .date-range-separator {
-                display: none;
+            .scroll-button {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+            }
+
+            /* Date Range Filter Responsive */
+            .date-range-inputs {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .date-range-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .date-range-buttons {
+                margin-top: 10px;
             }
         }
 
-        /* Form Container */
-        .form-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: flex-end;
-            margin-bottom: 25px;
-        }
+        @media (max-width: 480px) {
+            .btn-text {
+                display: none;
+            }
 
-        .form-group {
-            flex: 1 1 auto;
-            min-width: 180px;
-        }
+            .submit-btn {
+                padding: 10px 15px;
+            }
 
-        .search-group {
-            position: relative;
-        }
+            .submit-btn i {
+                margin-right: 0;
+            }
 
-        .search-input {
-            padding-left: 40px;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6c757d;
-            z-index: 2;
-        }
-
-        /* Date Range Selector */
-        .date-range-selector {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .date-range-options {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-
-        .date-range-btn {
-            border: 1px solid #dee2e6;
-            background: white;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .date-range-btn:hover, .date-range-btn.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 4px;
-        }
-
-        /* Loading Spinner */
-        .spinner-container {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(67, 97, 238, 0.1);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Export Buttons */
-        .export-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .export-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        /* Chart Container */
-        .chart-container {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Summary Cards */
-        .summary-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .summary-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .summary-card h5 {
-            color: var(--dark-color);
-            font-weight: 600;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-
-        .summary-card .value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        /* Responsive Table Container */
-        .table-responsive-container {
-            position: relative;
-            margin: 25px 0;
-        }
-
-        .table-responsive-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 10px;
-        }
-
-        .table-responsive-wrapper::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        /* Tabs */
-        .nav-tabs {
-            border-bottom: 2px solid #e9ecef;
-        }
-
-        .nav-tabs .nav-link {
-            border: none;
-            color: #6c757d;
-            font-weight: 500;
-            padding: 12px 20px;
-            transition: all 0.2s ease;
-        }
-
-        .nav-tabs .nav-link.active {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--primary-color);
-            background: transparent;
-        }
-
-        .nav-tabs .nav-link:hover:not(.active) {
-            color: var(--dark-color);
-            border-bottom: 3px solid #e9ecef;
-        }
-
-        /* KPI Cards */
-        .kpi-card {
-            border-left: 4px solid var(--primary-color);
-            padding-left: 15px;
-            margin-bottom: 15px;
-        }
-
-        .kpi-card .kpi-title {
-            font-size: 14px;
-            color: #6c757d;
-            margin-bottom: 5px;
-        }
-
-        .kpi-card .kpi-value {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--dark-color);
-        }
-
-        .kpi-card .kpi-change {
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-        }
-
-        .kpi-card .kpi-change.positive {
-            color: #2ecc71;
-        }
-
-        .kpi-card .kpi-change.negative {
-            color: #e74c3c;
+            .table th, .table td {
+                padding: 8px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -455,35 +422,9 @@
     
     <!-- Main Content -->
     <div class="container my-5">
-        <h2><i class="fas fa-chart-pie"></i> Batch Analytics Report</h2>
-        
-        <!-- Date Range Selector -->
-        <div class="date-range-selector mb-4">
-            <h5><i class="far fa-calendar-alt me-2"></i>Select Date Range</h5>
-            <div class="date-range-options mb-3">
-                <button class="date-range-btn" data-range="today">Today</button>
-                <button class="date-range-btn" data-range="yesterday">Yesterday</button>
-                <button class="date-range-btn" data-range="last7">Last 7 Days</button>
-                <button class="date-range-btn" data-range="last30">Last 30 Days</button>
-                <button class="date-range-btn" data-range="month">This Month</button>
-                <button class="date-range-btn" data-range="lastmonth">Last Month</button>
-                <button class="date-range-btn" data-range="year">This Year</button>
-                <button class="date-range-btn active" data-range="all">All Time</button>
-            </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="startDate" class="form-label">From Date</label>
-                    <input type="text" class="form-control flatpickr-input" id="startDate" placeholder="Select start date">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="endDate" class="form-label">To Date</label>
-                    <input type="text" class="form-control flatpickr-input" id="endDate" placeholder="Select end date">
-                </div>
-            </div>
-        </div>
-        
-        <!-- Report Filters -->
-        <form action="/report" method="GET">
+        <h2><i class="fas fa-file-alt"></i> Batch Report</h2>
+      
+        <form action="/report" method="GET" id="reportForm">
             <div class="form-container">
                 <!-- Search input -->
                 <div class="form-group search-group">
@@ -494,9 +435,8 @@
                 
                 <!-- Batch Dropdown -->
                 <div class="form-group">
-                    <label for="batchDropdown" class="form-label">Select Batch</label>
-                    <select name="batch" class="form-select" id="batchDropdown">
-                        <option value="">All Batches</option>
+                    <select name="batch" class="form-control select-dropdown" id="batchDropdown">
+                        <option value="">Select Batch</option>
                         <% allBatches.forEach(b => { %>
                             <option value="<%= b._id %>" <%= selectedBatchId == b._id ? 'selected' : '' %>>
                                 <%= b.batchNo %>
@@ -505,711 +445,630 @@
                     </select>
                 </div>
                 
-                <!-- Report Type Dropdown -->
-                <div class="form-group">
-                    <label for="reportType" class="form-label">Report Type</label>
-                    <select name="reportType" class="form-select" id="reportType">
-                        <option value="summary">Summary Report</option>
-                        <option value="detailed">Detailed Report</option>
-                        <option value="financial">Financial Report</option>
-                        <option value="production">Production Report</option>
-                    </select>
-                </div>
-                
                 <!-- Submit button -->
-                <button class="btn btn-primary submit-btn" type="submit" id="generateReportBtn">
-                    <i class="fas fa-chart-line"></i> <span class="btn-text">Generate Report</span>
+                <button class="btn btn-primary submit-btn" type="submit">
+                    <i class="fas fa-search"></i> <span class="btn-text">Generate Report</span>
                 </button>
             </div>
         </form>
         
-        <!-- Export Buttons -->
-        <div class="export-buttons">
-            <button class="btn btn-outline-primary export-btn" id="exportPDF">
-                <i class="far fa-file-pdf"></i> Export PDF
-            </button>
-            <button class="btn btn-outline-success export-btn" id="exportExcel">
-                <i class="far fa-file-excel"></i> Export Excel
-            </button>
-            <button class="btn btn-outline-secondary export-btn" id="exportCSV">
-                <i class="fas fa-file-csv"></i> Export CSV
-            </button>
-            <button class="btn btn-outline-dark export-btn" id="printReport">
-                <i class="fas fa-print"></i> Print
-            </button>
-        </div>
-        
-        <!-- Loading Spinner -->
-        <div class="spinner-container" id="loadingSpinner">
-            <div class="spinner"></div>
-        </div>
-        
         <% if (selectedBatch) { %>
-            <!-- Summary Cards -->
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="summary-card">
-                        <h5><i class="fas fa-egg me-2"></i>Total Eggs</h5>
-                        <div class="value"><%= eggData.reduce((sum, entry) => sum + entry.totalEggs, 0).toLocaleString() %></div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="summary-card">
-                        <h5><i class="fas fa-percentage me-2"></i>Avg Production</h5>
-                        <div class="value">
-                            <%= (eggData.reduce((sum, entry) => sum + (entry.totalEggs / selectedBatch.totalNumber * 100), 0) / eggData.length).toFixed(2) %>%
+            <!-- Date Range Filter -->
+            <div class="date-range-filter">
+                <div class="date-range-header">
+                    <h5 class="mb-0">Filter Data by Date Range</h5>
+                    <div class="date-range-controls">
+                        <div class="date-range-inputs">
+                            <div class="date-input-group">
+                                <label for="startDate">From:</label>
+                                <input type="date" id="startDate" class="form-control">
+                            </div>
+                            <div class="date-input-group">
+                                <label for="endDate">To:</label>
+                                <input type="date" id="endDate" class="form-control">
+                            </div>
+                        </div>
+                        <div class="date-range-buttons">
+                            <button type="button" class="quick-range-btn" data-days="7">Last 7 Days</button>
+                            <button type="button" class="quick-range-btn" data-days="30">Last 30 Days</button>
+                            <button type="button" class="quick-range-btn" data-days="90">Last 90 Days</button>
+                            <button type="button" class="quick-range-btn active" data-range="all">All Time</button>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="summary-card">
-                        <h5><i class="fas fa-dollar-sign me-2"></i>Total Income</h5>
-                        <div class="value">
-                            <%= financialData.reduce((sum, entry) => sum + entry.totalIncome, 0).toLocaleString() %>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="summary-card">
-                        <h5><i class="fas fa-piggy-bank me-2"></i>Total Profit</h5>
-                        <div class="value">
-                            <%= financialData.reduce((sum, entry) => sum + entry.profit, 0).toLocaleString() %>
-                        </div>
-                    </div>
+                <div class="d-flex justify-content-end mt-2">
+                    <button id="applyDateRange" class="btn btn-sm btn-primary">Apply Filter</button>
+                    <button id="resetDateRange" class="btn btn-sm btn-outline-secondary ms-2">Reset</button>
                 </div>
             </div>
-            
-            <!-- Report Tabs -->
-            <ul class="nav nav-tabs mb-4" id="reportTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">Summary</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="production-tab" data-bs-toggle="tab" data-bs-target="#production" type="button" role="tab">Production</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="financial-tab" data-bs-toggle="tab" data-bs-target="#financial" type="button" role="tab">Financial</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="analysis-tab" data-bs-toggle="tab" data-bs-target="#analysis" type="button" role="tab">Analysis</button>
-                </li>
-            </ul>
-            
-            <div class="tab-content" id="reportTabContent">
-                <!-- Summary Tab -->
-                <div class="tab-pane fade show active" id="summary" role="tabpanel">
-                    <h3 class="mb-4">Batch Summary: <%= selectedBatch.batchNo %></h3>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card mb-4">
-                                <div class="card-header bg-primary text-white">
-                                    <i class="fas fa-info-circle me-2"></i>Batch Details
+
+            <h3>Report for Batch: <%= selectedBatch.batchNo %></h3>
+        
+            <!-- Batch Details Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Batch Details</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Batch Number</th>
+                                <th>Breed</th>
+                                <th>Initial Age</th>
+                                <th>Current Age</th>
+                                <th>Initial Count</th>
+                                <th>Current Count</th>
+                                <th>Status</th>
+                                <th>Creation Date</th>
+                                <th>Last Update</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><%= selectedBatch.batchNo %></td>
+                                <td><%= selectedBatch.grade %></td>
+                                <td><%= selectedBatch.initialAgeWeeks %> weeks</td>
+                                <td><%= selectedBatch.currentAgeWeeks %> weeks</td>
+                                <td><%= selectedBatch.totalNumber %></td>
+                                <td><%= selectedBatch.currentCount %></td>
+                                <td><%= selectedBatch.status %></td>
+                                <td><%= selectedBatch.creationDate.toDateString() %></td>
+                                <td><%= selectedBatch.lastAgeUpdate.toDateString() %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+            <!-- Death Records Section -->
+            <% if (selectedBatch.deathRecords && selectedBatch.deathRecords.length > 0) { %>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Death Records</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Count</th>
+                                    <th>Reason</th>
+                                    <th>Other Reason</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% selectedBatch.deathRecords.forEach(record => { %>
+                                    <tr class="date-filterable" data-date="<%= new Date(record.date).getTime() %>">
+                                        <td><%= record.date.toDateString() %></td>
+                                        <td><%= record.count %></td>
+                                        <td>
+                                            <% if (record.reason) { %>
+                                                <span class="reason-badge reason-<%= record.reason.replace(' ', '-') %>">
+                                                    <%= record.reason %>
+                                                </span>
+                                            <% } else { %>
+                                                <span class="text-muted">Not specified</span>
+                                            <% } %>
+                                        </td>
+                                        <td><%= record.otherReason || 'N/A' %></td>
+                                        <td><%= record.notes || 'N/A' %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Death Analysis Section -->
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5><i class="fas fa-chart-pie"></i> Death Analysis</h5>
+                    </div>
+                    <div class="card-body">
+                        <% 
+                            // Calculate death reasons statistics
+                            const deathReasons = {};
+                            let totalDeaths = 0;
+                            
+                            selectedBatch.deathRecords.forEach(record => {
+                                const reason = record.reason || 'Unknown';
+                                deathReasons[reason] = (deathReasons[reason] || 0) + record.count;
+                                totalDeaths += record.count;
+                            });
+                            
+                            // Sort by count descending
+                            const sortedReasons = Object.entries(deathReasons)
+                                .sort((a, b) => b[1] - a[1]);
+                        %>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Death Reasons Breakdown</h6>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Reason</th>
+                                            <th>Count</th>
+                                            <th>Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% sortedReasons.forEach(([reason, count]) => { %>
+                                            <tr>
+                                                <td>
+                                                    <span class="reason-badge reason-<%= reason.replace(' ', '-') %>">
+                                                        <%= reason %>
+                                                    </span>
+                                                </td>
+                                                <td><%= count %></td>
+                                                <td><%= ((count / totalDeaths) * 100).toFixed(1) %>%</td>
+                                            </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Recommendations</h6>
+                                <% if (totalDeaths > (selectedBatch.totalNumber * 0.05)) { %>
+                                    <div class="alert alert-warning">
+                                        <h6><i class="fas fa-exclamation-triangle"></i> High Mortality Rate (<%= ((totalDeaths / selectedBatch.totalNumber) * 100).toFixed(1) %>%)</h6>
+                                        <p>Your mortality rate exceeds the recommended 5% threshold. Specific recommendations:</p>
+                                        
+                                        <% if (deathReasons['Disease']) { %>
+                                            <div class="card recommendation-card recommendation-Disease mb-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Disease (<%= ((deathReasons['Disease'] / totalDeaths) * 100).toFixed(1) %>%)</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Review vaccination schedule with your veterinarian</li>
+                                                        <li>Implement stricter biosecurity measures (foot baths, disinfectants)</li>
+                                                        <li>Isolate sick birds immediately to prevent spread</li>
+                                                        <li>Consider water medication if appropriate for the disease</li>
+                                                        <li>Test for common poultry diseases in your area</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                        
+                                        <% if (deathReasons['Predator']) { %>
+                                            <div class="card recommendation-card recommendation-Predator mb-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Predator Attack (<%= ((deathReasons['Predator'] / totalDeaths) * 100).toFixed(1) %>%)</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Inspect housing daily for potential entry points</li>
+                                                        <li>Install motion-activated lights or alarms</li>
+                                                        <li>Use predator-proof fencing with buried edges</li>
+                                                        <li>Consider guard animals (dogs, geese) if problem persists</li>
+                                                        <li>Remove nearby cover that predators might use</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                        
+                                        <% if (deathReasons['Accident']) { %>
+                                            <div class="card recommendation-card recommendation-Accident mb-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Accident (<%= ((deathReasons['Accident'] / totalDeaths) * 100).toFixed(1) %>%)</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Check for and remove any sharp edges in housing</li>
+                                                        <li>Ensure proper spacing between equipment</li>
+                                                        <li>Train staff on safe bird handling techniques</li>
+                                                        <li>Implement safety checks for all equipment</li>
+                                                        <li>Review housing design for potential hazards</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                        
+                                        <% if (deathReasons['Heat Stress']) { %>
+                                            <div class="card recommendation-card recommendation-Heat-Stress mb-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Heat Stress (<%= ((deathReasons['Heat Stress'] / totalDeaths) * 100).toFixed(1) %>%)</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Increase ventilation with fans or open sides</li>
+                                                        <li>Provide additional cool water sources</li>
+                                                        <li>Install misting systems for extreme heat</li>
+                                                        <li>Adjust feeding times to cooler parts of the day</li>
+                                                        <li>Provide shade and reduce stocking density</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                        
+                                        <% if (deathReasons['Cold Stress']) { %>
+                                            <div class="card recommendation-card recommendation-Cold-Stress mb-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Cold Stress (<%= ((deathReasons['Cold Stress'] / totalDeaths) * 100).toFixed(1) %>%)</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Improve insulation in housing</li>
+                                                        <li>Provide supplemental heat sources</li>
+                                                        <li>Ensure dry bedding is maintained</li>
+                                                        <li>Protect from drafts while maintaining ventilation</li>
+                                                        <li>Increase feed amounts during cold periods</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                        
+                                        <% if (deathReasons['Unknown']) { %>
+                                            <div class="card recommendation-card recommendation-Unknown mb-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Unknown Causes (<%= ((deathReasons['Unknown'] / totalDeaths) * 100).toFixed(1) %>%)</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Implement more detailed record keeping</li>
+                                                        <li>Consider necropsy for sudden unexplained deaths</li>
+                                                        <li>Monitor closely for patterns in timing or symptoms</li>
+                                                        <li>Consult with poultry health specialist</li>
+                                                        <li>Review all management practices</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                        
+                                        <% if (deathReasons['Other']) { %>
+                                            <div class="card recommendation-card recommendation-Other mb-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Other Causes (<%= ((deathReasons['Other'] / totalDeaths) * 100).toFixed(1) %>%)</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Review notes for specific details on these cases</li>
+                                                        <li>Identify any common factors among "Other" deaths</li>
+                                                        <li>Consider creating new categories for recurring issues</li>
+                                                        <li>Document all observations thoroughly</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                <% } else { %>
+                                    <div class="alert alert-success">
+                                        <h6><i class="fas fa-check-circle"></i> Normal Mortality Rate (<%= ((totalDeaths / selectedBatch.totalNumber) * 100).toFixed(1) %>%)</h6>
+                                        <p>Your mortality rate is within acceptable limits. Maintenance recommendations:</p>
+                                        
+                                        <% if (deathReasons['Disease']) { %>
+                                            <p class="mb-1"><strong>Disease Prevention:</strong> Continue current vaccination program and biosecurity measures.</p>
+                                        <% } %>
+                                        
+                                        <% if (deathReasons['Predator']) { %>
+                                            <p class="mb-1"><strong>Predator Control:</strong> Maintain existing predator deterrents and monitoring.</p>
+                                        <% } %>
+                                        
+                                        <% if (deathReasons['Heat Stress'] || deathReasons['Cold Stress']) { %>
+                                            <p class="mb-1"><strong>Environmental Management:</strong> Continue monitoring temperature and adjusting as needed.</p>
+                                        <% } %>
+                                        
+                                        <p class="mt-2 mb-0">Regularly review your mortality patterns for any changes.</p>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="alert alert-info">No death records found for this batch.</div>
+            <% } %>
+        
+            <!-- Egg Production Section -->
+            <% if (eggData && eggData.length > 0) { %>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Egg Production</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Total Eggs</th>
+                                    <th>Good Eggs %</th>
+                                    <th>Bad Eggs %</th>
+                                    <th>Weight (kg)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% eggData.forEach(entry => { 
+                                    // Calculate Egg Production Percentage
+                                    const eggProductionPercentage = ((entry.totalEggs / selectedBatch.totalNumber) * 100).toFixed(2);
+                
+                                    // Determine Life Stage and Expected Values
+                                    let lifeStage = "";
+                                    let expectedWeightRange = "";
+                                    let expectedEggProductionRange = "";
+                                    if (selectedBatch.age <= 6) {
+                                        lifeStage = "Chick (Brooding)";
+                                        expectedWeightRange = "0.04–0.60 kg";
+                                        expectedEggProductionRange = "No eggs";
+                                    } else if (selectedBatch.age <= 16) {
+                                        lifeStage = "Grower Stage";
+                                        expectedWeightRange = "0.60–1.2 kg";
+                                        expectedEggProductionRange = "No eggs";
+                                    } else if (selectedBatch.age <= 20) {
+                                        lifeStage = "Pre-laying Stage";
+                                        expectedWeightRange = "1.3–1.5 kg";
+                                        expectedEggProductionRange = "First eggs begin";
+                                    } else if (selectedBatch.age <= 30) {
+                                        lifeStage = "Peak Production";
+                                        expectedWeightRange = "1.5–1.8 kg";
+                                        expectedEggProductionRange = "85%–95%";
+                                    } else if (selectedBatch.age <= 72) {
+                                        lifeStage = "Laying Period";
+                                        expectedWeightRange = "1.8–2.0 kg";
+                                        expectedEggProductionRange = "80%–90%";
+                                    } else {
+                                        lifeStage = "Late Laying Stage";
+                                        expectedWeightRange = "2.0–2.2 kg";
+                                        expectedEggProductionRange = "60%–75%";
+                                    }
+                
+                                    // Feedback based on comparison
+                                    let feedback = "";
+                                    if (entry.weight < parseFloat(expectedWeightRange.split("–")[0])) {
+                                        feedback += "Weight is below expected. Review nutrition and health. ";
+                                    } else if (entry.weight > parseFloat(expectedWeightRange.split("–")[1])) {
+                                        feedback += "Weight is above expected. Monitor feed intake. ";
+                                    } else {
+                                        feedback += "Weight is within the expected range. ";
+                                    }
+                
+                                    if (eggProductionPercentage < parseFloat(expectedEggProductionRange.split("–")[0])) {
+                                        feedback += "Egg production is below expected. Check for stress, disease, or feed quality. ";
+                                    } else if (eggProductionPercentage > parseFloat(expectedEggProductionRange.split("–")[1])) {
+                                        feedback += "Egg production is above expected. Excellent performance! ";
+                                    } else {
+                                        feedback += "Egg production is within the expected range. ";
+                                    }
+                                %>
+                                    <tr class="date-filterable" data-date="<%= new Date(entry.date).getTime() %>">
+                                        <td><%= entry.date.toDateString() %></td>
+                                        <td><%= entry.totalEggs %></td>
+                                        <td><%= entry.goodEggsPercent %>%</td>
+                                        <td><%= entry.badEggsPercent %>%</td>
+                                        <td><%= entry.weight %> kg</td>
+                                    </tr>
+                                    <tr class="analysis-row">
+                                        <td colspan="5">
+                                            <strong>Analysis for <%= entry.date.toDateString() %>:</strong><br>
+                                            - Life Stage: <%= lifeStage %><br>
+                                            - Egg Production Percentage: <%= eggProductionPercentage %>%<br>
+                                            - Expected Weight Range: <%= expectedWeightRange %><br>
+                                            - Expected Egg Production Range: <%= expectedEggProductionRange %><br>
+                                            - Feedback: <%= feedback %>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="alert alert-info">No egg production data available for this batch.</div>
+            <% } %>
+        
+            <!-- Financial Data Section -->
+            <% if (financialData && financialData.length > 0) { %>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Financial Records</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <button class="scroll-button left" disabled>&#9664;</button>
+                            <div class="table-wrapper">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Income</th>
+                                            <th>Expenses</th>
+                                            <th>Profit</th>
+                                            <th>Egg Qty</th>
+                                            <th>Egg Price</th>
+                                            <th>Egg Income</th>
+                                            <th>Culled Qty</th>
+                                            <th>Culled Price</th>
+                                            <th>Culled Income</th>
+                                            <th>Feed Cost</th>
+                                            <th>Chick Cost</th>
+                                            <th>Medication Cost</th>
+                                            <th>Labor Cost</th>
+                                            <th>Transport Cost</th>
+                                            <th>Trays Produced</th>
+                                            <th>Trays Sold</th>
+                                            <th>Trays Remaining</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% financialData.forEach(entry => { %>
+                                            <tr class="date-filterable" data-date="<%= new Date(entry.date).getTime() %>">
+                                                <td><%= entry.date.toLocaleDateString() %></td>
+                                                <td><%= entry.totalIncome.toLocaleString() %></td>
+                                                <td><%= entry.totalExpenses.toLocaleString() %></td>
+                                                <td><%= entry.profit.toLocaleString() %></td>
+                                                <td><%= entry.eggQty.toLocaleString() %></td>
+                                                <td><%= entry.eggPrice.toLocaleString() %></td>
+                                                <td><%= entry.eggIncome.toLocaleString() %></td>
+                                                <td><%= entry.culledQty.toLocaleString() %></td>
+                                                <td><%= entry.culledPrice.toLocaleString() %></td>
+                                                <td><%= entry.culledIncome.toLocaleString() %></td>
+                                                <td><%= entry.feedCost.toLocaleString() %></td>
+                                                <td><%= entry.chickCost.toLocaleString() %></td>
+                                                <td><%= entry.medicationCost.toLocaleString() %></td>
+                                                <td><%= entry.laborCost.toLocaleString() %></td>
+                                                <td><%= entry.transportCost.toLocaleString() %></td>
+                                                <td><%= entry.traysProduced.toLocaleString() %></td>
+                                                <td><%= entry.traysSold.toLocaleString() %></td>
+                                                <td><%= entry.traysRemaining.toLocaleString() %></td>
+                                            </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button class="scroll-button right">&#9654;</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Financial Recommendations Section -->
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5><i class="fas fa-lightbulb"></i> Financial Insights</h5>
+                    </div>
+                    <div class="card-body">
+                        <% 
+                            // Calculate financial metrics
+                            const totalIncome = financialData.reduce((sum, entry) => sum + entry.totalIncome, 0);
+                            const totalExpenses = financialData.reduce((sum, entry) => sum + entry.totalExpenses, 0);
+                            const profitMargin = ((totalIncome - totalExpenses) / totalIncome) * 100;
+                            const avgDailyProfit = (totalIncome - totalExpenses) / financialData.length;
+                            
+                            // Calculate cost percentages
+                            const feedPercentage = (financialData.reduce((sum, entry) => sum + entry.feedCost, 0) / totalExpenses) * 100;
+                            const laborPercentage = (financialData.reduce((sum, entry) => sum + entry.laborCost, 0) / totalExpenses) * 100;
+                            const medicationPercentage = (financialData.reduce((sum, entry) => sum + entry.medicationCost, 0) / totalExpenses) * 100;
+                            
+                            // Calculate tray metrics
+                            const totalTraysProduced = financialData.reduce((sum, entry) => sum + entry.traysProduced, 0);
+                            const totalTraysSold = financialData.reduce((sum, entry) => sum + entry.traysSold, 0);
+                            const traySalesPercentage = (totalTraysSold / totalTraysProduced) * 100;
+                        %>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-header bg-info text-white">
+                                        <strong>Income Summary</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Total Income:</strong> <%= totalIncome.toLocaleString() %></p>
+                                        <p><strong>Egg Income:</strong> <%= financialData.reduce((sum, entry) => sum + entry.eggIncome, 0).toLocaleString() %></p>
+                                        <p><strong>Culled Income:</strong> <%= financialData.reduce((sum, entry) => sum + entry.culledIncome, 0).toLocaleString() %></p>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="kpi-card">
-                                                <div class="kpi-title">Batch Number</div>
-                                                <div class="kpi-value"><%= selectedBatch.batchNo %></div>
-                                            </div>
-                                            <div class="kpi-card">
-                                                <div class="kpi-title">Breed</div>
-                                                <div class="kpi-value"><%= selectedBatch.grade %></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="kpi-card">
-                                                <div class="kpi-title">Age (weeks)</div>
-                                                <div class="kpi-value"><%= selectedBatch.age %></div>
-                                            </div>
-                                            <div class="kpi-card">
-                                                <div class="kpi-title">Total Birds</div>
-                                                <div class="kpi-value"><%= selectedBatch.totalNumber.toLocaleString() %></div>
-                                            </div>
-                                        </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-header bg-info text-white">
+                                        <strong>Expense Summary</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Total Expenses:</strong> <%= totalExpenses.toLocaleString() %></p>
+                                        <p><strong>Feed Cost:</strong> <%= financialData.reduce((sum, entry) => sum + entry.feedCost, 0).toLocaleString() %></p>
+                                        <p><strong>Labor Cost:</strong> <%= financialData.reduce((sum, entry) => sum + entry.laborCost, 0).toLocaleString() %></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-header bg-info text-white">
+                                        <strong>Performance Metrics</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Profit Margin:</strong> <%= profitMargin.toFixed(2) %>%</p>
+                                        <p><strong>Avg Daily Profit:</strong> <%= avgDailyProfit.toLocaleString() %></p>
+                                        <p><strong>Tray Sales Rate:</strong> <%= traySalesPercentage.toFixed(2) %>%</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="col-md-6">
-                            <div class="card mb-4">
-                                <div class="card-header bg-success text-white">
-                                    <i class="fas fa-chart-line me-2"></i>Key Metrics
+                        <!-- Cost Structure Analysis -->
+                        <div class="mb-4">
+                            <h6>Cost Structure Analysis</h6>
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-danger" style="width: <%= feedPercentage %>%" 
+                                     title="Feed: <%= feedPercentage.toFixed(2) %>%">
+                                    Feed
                                 </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="kpi-card">
-                                                <div class="kpi-title">Avg Daily Production</div>
-                                                <div class="kpi-value">
-                                                    <%= (eggData.reduce((sum, entry) => sum + entry.totalEggs, 0) / eggData.length %>
-                                                </div>
-                                            </div>
-                                            <div class="kpi-card">
-                                                <div class="kpi-title">Good Eggs Rate</div>
-                                                <div class="kpi-value">
-                                                    <%= (eggData.reduce((sum, entry) => sum + parseFloat(entry.goodEggsPercent), 0) / eggData.length).toFixed(2) %>%
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="kpi-card">
-                                                <div class="kpi-title">Avg Egg Weight</div>
-                                                <div class="kpi-value">
-                                                    <%= (eggData.reduce((sum, entry) => sum + entry.weight, 0) / eggData.length).toFixed(2) %> kg
-                                                </div>
-                                            </div>
-                                            <div class="kpi-card">
-                                                <div class="kpi-title">Mortality Rate</div>
-                                                <div class="kpi-value">
-                                                    <%# Calculate mortality rate if death data is available %>
-                                                    2.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="progress-bar bg-warning" style="width: <%= laborPercentage %>%" 
+                                     title="Labor: <%= laborPercentage.toFixed(2) %>%">
+                                    Labor
+                                </div>
+                                <div class="progress-bar bg-info" style="width: <%= medicationPercentage %>%" 
+                                     title="Medication: <%= medicationPercentage.toFixed(2) %>%">
+                                    Meds
+                                </div>
+                                <div class="progress-bar bg-success" style="width: <%= (100 - feedPercentage - laborPercentage - medicationPercentage).toFixed(2) %>%" 
+                                     title="Other: <%= (100 - feedPercentage - laborPercentage - medicationPercentage).toFixed(2) %>%">
+                                    Other
                                 </div>
                             </div>
+                            <small class="text-muted">
+                                Feed <%= feedPercentage.toFixed(2) %>% | 
+                                Labor <%= laborPercentage.toFixed(2) %>% | 
+                                Meds <%= medicationPercentage.toFixed(2) %>% | 
+                                Other <%= (100 - feedPercentage - laborPercentage - medicationPercentage).toFixed(2) %>%
+                            </small>
                         </div>
-                    </div>
-                    
-                    <!-- Mini Charts Row -->
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="chart-container">
-                                <h5>Production Trend</h5>
-                                <div id="productionChart" style="height: 250px;">
-                                    <!-- Chart will be rendered here -->
-                                    <div class="text-center text-muted py-5">
-                                        <i class="fas fa-chart-line fa-3x mb-3"></i>
-                                        <p>Production chart will appear here</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="chart-container">
-                                <h5>Egg Quality</h5>
-                                <div id="qualityChart" style="height: 250px;">
-                                    <!-- Chart will be rendered here -->
-                                    <div class="text-center text-muted py-5">
-                                        <i class="fas fa-egg fa-3x mb-3"></i>
-                                        <p>Quality chart will appear here</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="chart-container">
-                                <h5>Financial Performance</h5>
-                                <div id="financialChart" style="height: 250px;">
-                                    <!-- Chart will be rendered here -->
-                                    <div class="text-center text-muted py-5">
-                                        <i class="fas fa-dollar-sign fa-3x mb-3"></i>
-                                        <p>Financial chart will appear here</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Production Tab -->
-                <div class="tab-pane fade" id="production" role="tabpanel">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3>Egg Production Details</h3>
-                        <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productionDropdown" data-bs-toggle="dropdown">
-                                <i class="fas fa-filter me-2"></i>Filter
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" data-filter="all">All Data</a></li>
-                                <li><a class="dropdown-item" href="#" data-filter="last7">Last 7 Days</a></li>
-                                <li><a class="dropdown-item" href="#" data-filter="last30">Last 30 Days</a></li>
-                                <li><a class="dropdown-item" href="#" data-filter="month">This Month</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="table-responsive-container">
-                        <div class="table-responsive-wrapper">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Total Eggs</th>
-                                        <th>Good Eggs %</th>
-                                        <th>Bad Eggs %</th>
-                                        <th>Weight (kg)</th>
-                                        <th>WC Layer %</th>
-                                        <th>Production %</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% eggData.forEach(entry => { 
-                                        const layerAge = Math.floor((new Date(entry.date) - new Date(selectedBatch.date)) / (1000 * 60 * 60 * 24));
-                                        let wcLayerPercentage = 0;
-                                        if (layerAge <= 4) {
-                                            wcLayerPercentage = 0; 
-                                        } else if (layerAge <= 12) {
-                                            wcLayerPercentage = 0;
-                                        } else if (layerAge <= 16) {
-                                            wcLayerPercentage = 0;
-                                        } else if (layerAge <= 20) {
-                                            wcLayerPercentage = 50;
-                                        } else if (layerAge <= 30) {
-                                            wcLayerPercentage = 85;
-                                        } else if (layerAge <= 60) {
-                                            wcLayerPercentage = 80;
-                                        } else if (layerAge <= 80) {
-                                            wcLayerPercentage = 60;
-                                        } else {
-                                            wcLayerPercentage = 30;
-                                        }
-                                        const wcLayerCount = Math.round(selectedBatch.totalNumber * (wcLayerPercentage / 100));
-                                        const eggProductionPercentage = ((entry.totalEggs / selectedBatch.totalNumber) * 100).toFixed(2);
-                                    %>
-                                        <tr>
-                                            <td><%= entry.date.toLocaleDateString() %></td>
-                                            <td><%= entry.totalEggs.toLocaleString() %></td>
-                                            <td>
-                                                <div class="progress" style="height: 20px;">
-                                                    <div class="progress-bar bg-success" style="width: <%= entry.goodEggsPercent %>%">
-                                                        <%= entry.goodEggsPercent %>%
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="progress" style="height: 20px;">
-                                                    <div class="progress-bar bg-danger" style="width: <%= entry.badEggsPercent %>%">
-                                                        <%= entry.badEggsPercent %>%
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td><%= entry.weight %> kg</td>
-                                            <td>
-                                                <div class="progress" style="height: 20px;">
-                                                    <div class="progress-bar bg-info" style="width: <%= wcLayerPercentage %>%">
-                                                        <%= wcLayerPercentage %>% (<%= wcLayerCount %>)
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td><%= eggProductionPercentage %>%</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#entryModal<%= entry._id %>">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <% }) %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Financial Tab -->
-                <div class="tab-pane fade" id="financial" role="tabpanel">
-                    <h3 class="mb-4">Financial Details</h3>
-                    
-                    <div class="table-responsive-container">
-                        <div class="table-responsive-wrapper">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Income</th>
-                                        <th>Expenses</th>
-                                        <th>Profit</th>
-                                        <th>Egg Qty</th>
-                                        <th>Egg Price</th>
-                                        <th>Egg Income</th>
-                                        <th>Culled Qty</th>
-                                        <th>Culled Price</th>
-                                        <th>Culled Income</th>
-                                        <th>Feed Cost</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% financialData.forEach(entry => { %>
-                                        <tr>
-                                            <td><%= entry.date.toLocaleDateString() %></td>
-                                            <td><%= entry.totalIncome.toLocaleString() %></td>
-                                            <td><%= entry.totalExpenses.toLocaleString() %></td>
-                                            <td class="<%= entry.profit >= 0 ? 'text-success' : 'text-danger' %>">
-                                                <%= entry.profit.toLocaleString() %>
-                                            </td>
-                                            <td><%= entry.eggQty.toLocaleString() %></td>
-                                            <td><%= entry.eggPrice.toLocaleString() %></td>
-                                            <td><%= entry.eggIncome.toLocaleString() %></td>
-                                            <td><%= entry.culledQty.toLocaleString() %></td>
-                                            <td><%= entry.culledPrice.toLocaleString() %></td>
-                                            <td><%= entry.culledIncome.toLocaleString() %></td>
-                                            <td><%= entry.feedCost.toLocaleString() %></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#financialModal<%= entry._id %>">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <% }) %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <!-- Financial Analysis -->
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header bg-info text-white">
-                                    <i class="fas fa-chart-pie me-2"></i>Expense Breakdown
-                                </div>
-                                <div class="card-body">
-                                    <div id="expenseChart" style="height: 300px;">
-                                        <!-- Chart will be rendered here -->
-                                        <div class="text-center text-muted py-5">
-                                            <i class="fas fa-chart-pie fa-3x mb-3"></i>
-                                            <p>Expense breakdown chart will appear here</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header bg-success text-white">
-                                    <i class="fas fa-chart-line me-2"></i>Profit Trend
-                                </div>
-                                <div class="card-body">
-                                    <div id="profitChart" style="height: 300px;">
-                                        <!-- Chart will be rendered here -->
-                                        <div class="text-center text-muted py-5">
-                                            <i class="fas fa-chart-line fa-3x mb-3"></i>
-                                            <p>Profit trend chart will appear here</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Analysis Tab -->
-                <div class="tab-pane fade" id="analysis" role="tabpanel">
-                    <h3 class="mb-4">Performance Analysis</h3>
-                    
-                    <!-- Life Stage Analysis -->
-                    <div class="card mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <i class="fas fa-chart-bar me-2"></i>Life Stage Analysis
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h5>Current Life Stage</h5>
-                                    <% 
-                                        let lifeStage = "";
-                                        let expectedWeightRange = "";
-                                        let expectedEggProductionRange = "";
-                                        let stageIcon = "";
-                                        let stageClass = "";
-                                        
-                                        if (selectedBatch.age <= 6) {
-                                            lifeStage = "Chick (Brooding)";
-                                            expectedWeightRange = "0.04–0.60 kg";
-                                            expectedEggProductionRange = "No eggs";
-                                            stageIcon = "fas fa-kiwi-bird";
-                                            stageClass = "text-info";
-                                        } else if (selectedBatch.age <= 16) {
-                                            lifeStage = "Grower Stage";
-                                            expectedWeightRange = "0.60–1.2 kg";
-                                            expectedEggProductionRange = "No eggs";
-                                            stageIcon = "fas fa-feather";
-                                            stageClass = "text-primary";
-                                        } else if (selectedBatch.age <= 20) {
-                                            lifeStage = "Pre-laying Stage";
-                                            expectedWeightRange = "1.3–1.5 kg";
-                                            expectedEggProductionRange = "First eggs begin";
-                                            stageIcon = "fas fa-egg";
-                                            stageClass = "text-warning";
-                                        } else if (selectedBatch.age <= 30) {
-                                            lifeStage = "Peak Production";
-                                            expectedWeightRange = "1.5–1.8 kg";
-                                            expectedEggProductionRange = "85%–95%";
-                                            stageIcon = "fas fa-chart-line";
-                                            stageClass = "text-success";
-                                        } else if (selectedBatch.age <= 72) {
-                                            lifeStage = "Laying Period";
-                                            expectedWeightRange = "1.8–2.0 kg";
-                                            expectedEggProductionRange = "80%–90%";
-                                            stageIcon = "fas fa-layer-group";
-                                            stageClass = "text-success";
-                                        } else {
-                                            lifeStage = "Late Laying Stage";
-                                            expectedWeightRange = "2.0–2.2 kg";
-                                            expectedEggProductionRange = "60%–75%";
-                                            stageIcon = "fas fa-hourglass-end";
-                                            stageClass = "text-secondary";
-                                        }
-                                    %>
-                                    <div class="alert <%= stageClass %> bg-light">
-                                        <i class="<%= stageIcon %> fa-2x me-3"></i>
-                                        <div>
-                                            <h4 class="alert-heading"><%= lifeStage %></h4>
-                                            <p class="mb-1"><strong>Age:</strong> <%= selectedBatch.age %> weeks</p>
-                                            <p class="mb-0"><strong>Expected Production:</strong> <%= expectedEggProductionRange %></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>Performance Indicators</h5>
-                                    <div class="kpi-card">
-                                        <div class="kpi-title">Current Production Rate</div>
-                                        <div class="kpi-value">
-                                            <% 
-                                                const latestProduction = eggData.length > 0 ? 
-                                                    ((eggData[eggData.length-1].totalEggs / selectedBatch.totalNumber) * 100).toFixed(2) : 
-                                                    0;
-                                            %>
-                                            <%= latestProduction %>%
-                                        </div>
-                                        <div class="kpi-change <%= latestProduction >= parseFloat(expectedEggProductionRange.split('–')[0]) ? 'positive' : 'negative' %>">
-                                            <i class="fas fa-arrow-<%= latestProduction >= parseFloat(expectedEggProductionRange.split('–')[0]) ? 'up' : 'down' %> me-1"></i>
-                                            <%= (latestProduction - parseFloat(expectedEggProductionRange.split('–')[0])).toFixed(2) %>% vs expected
-                                        </div>
-                                    </div>
-                                    <div class="kpi-card">
-                                        <div class="kpi-title">Current Egg Weight</div>
-                                        <div class="kpi-value">
-                                            <%= eggData.length > 0 ? eggData[eggData.length-1].weight : 'N/A' %> kg
-                                        </div>
-                                        <div class="kpi-change <%= eggData.length > 0 && eggData[eggData.length-1].weight >= parseFloat(expectedWeightRange.split('–')[0]) ? 'positive' : 'negative' %>">
-                                            <i class="fas fa-arrow-<%= eggData.length > 0 && eggData[eggData.length-1].weight >= parseFloat(expectedWeightRange.split('–')[0]) ? 'up' : 'down' %> me-1"></i>
-                                            <% if (eggData.length > 0) { %>
-                                                <%= (eggData[eggData.length-1].weight - parseFloat(expectedWeightRange.split('–')[0])).toFixed(2) %> kg vs expected
-                                            <% } else { %>
-                                                N/A
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Recommendations -->
-                    <div class="card">
-                        <div class="card-header bg-warning text-dark">
-                            <i class="fas fa-lightbulb me-2"></i>Recommendations
-                        </div>
-                        <div class="card-body">
-                            <% 
-                                let recommendations = [];
-                                let warnings = [];
-                                
-                                if (selectedBatch.age <= 6) {
-                                    recommendations.push(
-                                        "Ensure proper brooding temperature (35°C in first week, reducing by 3°C each week)",
-                                        "Provide starter feed with 18-20% protein content",
-                                        "Maintain 24-hour lighting for first 2-3 days"
-                                    );
-                                } else if (selectedBatch.age <= 16) {
-                                    recommendations.push(
-                                        "Switch to grower feed with 16-18% protein",
-                                        "Provide adequate space (3-4 birds per square meter)",
-                                        "Implement vaccination program if not done"
-                                    );
-                                } else if (selectedBatch.age <= 20) {
-                                    recommendations.push(
-                                        "Transition to layer feed with 16% protein and 3.5% calcium",
-                                        "Increase daylight hours to 14-16 hours",
-                                        "Prepare nest boxes (1 nest per 4-5 hens)"
-                                    );
-                                } else if (selectedBatch.age <= 30) {
-                                    if (latestProduction < 85) {
-                                        warnings.push(
-                                            "Production below expected range. Check for:",
-                                            "- Stress factors (overcrowding, predators)",
-                                            "- Disease or parasite issues",
-                                            "- Nutritional deficiencies (especially calcium)"
-                                        );
-                                    }
-                                    recommendations.push(
-                                        "Monitor feed intake (110-120g per bird per day)",
-                                        "Ensure constant supply of clean water",
-                                        "Collect eggs frequently (at least 3 times daily)"
-                                    );
-                                } else if (selectedBatch.age <= 72) {
-                                    if (latestProduction < 80) {
-                                        warnings.push(
-                                            "Production below expected range. Consider:",
-                                            "- Flock uniformity issues",
-                                            "- Feed quality and freshness",
-                                            "- Environmental conditions"
-                                        );
-                                    }
-                                    recommendations.push(
-                                        "Consider feed supplementation (calcium, vitamins)",
-                                        "Monitor bird weight and condition",
-                                        "Plan for molting or replacement if production drops below 65%"
-                                    );
-                                } else {
-                                    warnings.push(
-                                        "Flock is in late production stage. Consider:",
-                                        "- Economic viability of continued production",
-                                        "- Planning for flock replacement"
-                                    );
-                                    recommendations.push(
-                                        "Increase calcium supplementation",
-                                        "Monitor egg quality closely",
-                                        "Reduce stocking density if possible"
-                                    );
-                                }
-                                
-                                // Add financial recommendations if data exists
-                                if (financialData.length > 0) {
-                                    const profitMargin = ((financialData.reduce((sum, entry) => sum + entry.profit, 0) / 
-                                        financialData.reduce((sum, entry) => sum + entry.totalIncome, 0)) * 100;
-                                    
-                                    if (profitMargin < 15) {
-                                        warnings.push(
-                                            "Profit margin is low (" + profitMargin.toFixed(2) + "%). Consider:",
-                                            "- Reviewing feed costs and alternatives",
-                                            "- Evaluating pricing strategy",
-                                            "- Reducing non-essential expenses"
-                                        );
-                                    }
-                                }
-                            %>
-                            
-                            <% if (warnings.length > 0) { %>
+                        
+                        <!-- Recommendations -->
+                        <div>
+                            <h6>Recommendations</h6>
+                            <% if (profitMargin < 15) { %>
                                 <div class="alert alert-warning">
-                                    <h5><i class="fas fa-exclamation-triangle me-2"></i>Attention Needed</h5>
-                                    <ul class="mb-0">
-                                        <% warnings.forEach(warning => { %>
-                                            <li><%= warning %></li>
-                                        <% }); %>
+                                    <h6><i class="fas fa-exclamation-triangle"></i> Low Profit Margin (<%= profitMargin.toFixed(2) %>%%)</h6>
+                                    <p>Your profit margin is below the recommended 15% threshold. Consider:</p>
+                                    <ul>
+                                        <% if (feedPercentage > 60) { %>
+                                            <li>Feed costs make up <%= feedPercentage.toFixed(2) %>% of expenses - explore bulk purchasing or alternative suppliers</li>
+                                        <% } %>
+                                        <% if (laborPercentage > 25) { %>
+                                            <li>Labor costs are high at <%= laborPercentage.toFixed(2) %>% - consider efficiency improvements</li>
+                                        <% } %>
+                                        <% if (medicationPercentage > 15) { %>
+                                            <li>Medication costs are significant at <%= medicationPercentage.toFixed(2) %>% - review health management practices</li>
+                                        <% } %>
+                                        <li>Explore premium markets for your eggs to increase revenue</li>
+                                        <li>Review pricing strategy for eggs and culled birds</li>
                                     </ul>
                                 </div>
                             <% } %>
                             
-                            <div class="alert alert-success">
-                                <h5><i class="fas fa-check-circle me-2"></i>Recommended Actions</h5>
-                                <ul class="mb-0">
-                                    <% recommendations.forEach(rec => { %>
-                                        <li><%= rec %></li>
-                                    <% }); %>
-                                </ul>
-                            </div>
+                            <% if (traySalesPercentage < 90) { %>
+                                <div class="alert alert-warning">
+                                    <h6><i class="fas fa-exclamation-triangle"></i> Inventory Management</h6>
+                                    <p>Only <%= traySalesPercentage.toFixed(2) %>% of produced trays were sold (<%= totalTraysSold %>/<%= totalTraysProduced %>).</p>
+                                    <ul>
+                                        <li>Review your sales channels and marketing strategies</li>
+                                        <li>Consider offering promotions for older inventory</li>
+                                        <li>Adjust production to better match demand</li>
+                                    </ul>
+                                </div>
+                            <% } %>
+                            
+                            <% if (avgDailyProfit > 0 && profitMargin >= 15) { %>
+                                <div class="alert alert-success">
+                                    <h6><i class="fas fa-check-circle"></i> Healthy Financial Performance</h6>
+                                    <p>Your batch is performing well with a <%= profitMargin.toFixed(2) %>% profit margin.</p>
+                                    <ul>
+                                        <li>Consider reinvesting profits in equipment upgrades</li>
+                                        <li>Explore expanding production capacity</li>
+                                        <li>Review opportunities for premium product lines</li>
+                                    </ul>
+                                </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
-            </div>
+            <% } else { %>
+                <div class="alert alert-info">No financial data available for this batch.</div>
+            <% } %>
         <% } else { %>
-            <div class="text-center py-5">
-                <i class="fas fa-chart-pie fa-4x text-muted mb-4"></i>
-                <h4 class="text-muted">No Batch Selected</h4>
-                <p class="text-muted">Please select a batch to generate the report</p>
-            </div>
+            <div class="alert alert-info">Select a batch or search to generate a report.</div>
         <% } %>
     </div>
-    
+
     <!-- JavaScript -->
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Flatpickr for date range selection -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- Chart.js for visualizations -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <script>
-        // Initialize date range picker
-        flatpickr("#startDate", {
-            dateFormat: "Y-m-d",
-            defaultDate: "<%= new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().split('T')[0] %>"
-        });
-        
-        flatpickr("#endDate", {
-            dateFormat: "Y-m-d",
-            defaultDate: "<%= new Date().toISOString().split('T')[0] %>"
-        });
-        
-        // Date range buttons functionality
-        document.querySelectorAll('.date-range-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remove active class from all buttons
-                document.querySelectorAll('.date-range-btn').forEach(b => b.classList.remove('active'));
-                // Add active class to clicked button
-                this.classList.add('active');
-                
-                const today = new Date();
-                let startDate, endDate = today;
-                
-                switch(this.dataset.range) {
-                    case 'today':
-                        startDate = new Date(today);
-                        break;
-                    case 'yesterday':
-                        startDate = new Date(today);
-                        startDate.setDate(today.getDate() - 1);
-                        endDate = new Date(today);
-                        endDate.setDate(today.getDate() - 1);
-                        break;
-                    case 'last7':
-                        startDate = new Date(today);
-                        startDate.setDate(today.getDate() - 7);
-                        break;
-                    case 'last30':
-                        startDate = new Date(today);
-                        startDate.setDate(today.getDate() - 30);
-                        break;
-                    case 'month':
-                        startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-                        break;
-                    case 'lastmonth':
-                        startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-                        endDate = new Date(today.getFullYear(), today.getMonth(), 0);
-                        break;
-                    case 'year':
-                        startDate = new Date(today.getFullYear(), 0, 1);
-                        break;
-                    case 'all':
-                        startDate = null;
-                        endDate = null;
-                        break;
-                }
-                
-                if (startDate) {
-                    document.getElementById('startDate')._flatpickr.setDate(startDate);
-                } else {
-                    document.getElementById('startDate')._flatpickr.clear();
-                }
-                
-                if (endDate) {
-                    document.getElementById('endDate')._flatpickr.setDate(endDate);
-                } else {
-                    document.getElementById('endDate')._flatpickr.clear();
-                }
-            });
-        });
-        
-        // Filter batches function
+        function logout() {
+            alert("Logging out...");
+            // Add your logout logic here
+        }
+
         function filterBatches() {
             const input = document.getElementById('searchInput').value.toLowerCase();
             const options = document.querySelectorAll('#batchDropdown option');
             
             options.forEach(option => {
-                if (option.value === "") {
-                    return; // Skip the "Select Batch" option
-                }
-                
                 const batchNo = option.textContent.toLowerCase();
                 if (batchNo.includes(input)) {
                     option.style.display = 'block';
@@ -1218,207 +1077,176 @@
                 }
             });
         }
-        
-        // Generate report button loading state
-        document.querySelector('form').addEventListener('submit', function() {
-            document.getElementById('loadingSpinner').style.display = 'flex';
-            document.getElementById('generateReportBtn').disabled = true;
-        });
-        
-        // Export buttons functionality
-        document.getElementById('exportPDF').addEventListener('click', function() {
-            alert('PDF export functionality would be implemented here');
-            // In a real implementation, this would generate a PDF version of the report
-        });
-        
-        document.getElementById('exportExcel').addEventListener('click', function() {
-            alert('Excel export functionality would be implemented here');
-            // In a real implementation, this would generate an Excel file
-        });
-        
-        document.getElementById('exportCSV').addEventListener('click', function() {
-            alert('CSV export functionality would be implemented here');
-            // In a real implementation, this would generate a CSV file
-        });
-        
-        document.getElementById('printReport').addEventListener('click', function() {
-            window.print();
-        });
-        
-        // Sidebar toggle function
-        function toggleSidebar() {
-            const sidebar = document.getElementById('querySidebar');
-            sidebar.style.width = sidebar.style.width === '250px' ? '0' : '250px';
-        }
-        
-        // Logout function
-        function logout() {
-            // In a real implementation, this would log the user out
-            window.location.href = '/logout';
-        }
-        
-        // Initialize tooltips
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-        
-        // Table horizontal scrolling with buttons
-        const tableWrappers = document.querySelectorAll('.table-responsive-wrapper');
-        
-        tableWrappers.forEach(wrapper => {
-            const container = wrapper.parentElement;
-            const leftBtn = container.querySelector('.scroll-button.left');
-            const rightBtn = container.querySelector('.scroll-button.right');
+
+        // Table scrolling functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableContainers = document.querySelectorAll('.table-container');
             
-            if (leftBtn && rightBtn) {
+            tableContainers.forEach(container => {
+                const wrapper = container.querySelector('.table-wrapper');
+                const leftBtn = container.querySelector('.scroll-button.left');
+                const rightBtn = container.querySelector('.scroll-button.right');
+                
                 // Check if scrolling is needed
-                const checkScroll = () => {
-                    leftBtn.disabled = wrapper.scrollLeft <= 0;
-                    rightBtn.disabled = wrapper.scrollLeft >= wrapper.scrollWidth - wrapper.clientWidth;
-                };
-                
-                // Initial check
-                checkScroll();
-                
-                // Scroll buttons functionality
-                leftBtn.addEventListener('click', () => {
-                    wrapper.scrollBy({ left: -200, behavior: 'smooth' });
+                if (wrapper.scrollWidth > wrapper.clientWidth) {
+                    // Enable scrolling buttons
+                    wrapper.addEventListener('scroll', function() {
+                        leftBtn.disabled = wrapper.scrollLeft === 0;
+                        rightBtn.disabled = wrapper.scrollLeft >= (wrapper.scrollWidth - wrapper.clientWidth);
+                    });
+                    
+                    leftBtn.addEventListener('click', function() {
+                        wrapper.scrollBy({ left: -200, behavior: 'smooth' });
+                    });
+                    
+                    rightBtn.addEventListener('click', function() {
+                        wrapper.scrollBy({ left: 200, behavior: 'smooth' });
+                    });
+                } else {
+                    // Hide buttons if no scrolling needed
+                    leftBtn.style.display = 'none';
+                    rightBtn.style.display = 'none';
+                }
+            });
+
+            // Date Range Filter Functionality
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            const quickRangeBtns = document.querySelectorAll('.quick-range-btn');
+            const applyBtn = document.getElementById('applyDateRange');
+            const resetBtn = document.getElementById('resetDateRange');
+            
+            // Set default end date to today
+            if (endDateInput) {
+                endDateInput.value = new Date().toISOString().split('T')[0];
+            }
+            
+            // Quick range button handlers
+            if (quickRangeBtns) {
+                quickRangeBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Remove active class from all buttons
+                        quickRangeBtns.forEach(b => b.classList.remove('active'));
+                        // Add active class to clicked button
+                        this.classList.add('active');
+                        
+                        const today = new Date();
+                        const endDate = new Date(today);
+                        
+                        if (this.dataset.days) {
+                            const days = parseInt(this.dataset.days);
+                            const startDate = new Date(today);
+                            startDate.setDate(today.getDate() - days);
+                            
+                            startDateInput.value = startDate.toISOString().split('T')[0];
+                            endDateInput.value = endDate.toISOString().split('T')[0];
+                        } else if (this.dataset.range === 'all') {
+                            startDateInput.value = '';
+                            endDateInput.value = '';
+                        }
+                    });
                 });
-                
-                rightBtn.addEventListener('click', () => {
-                    wrapper.scrollBy({ left: 200, behavior: 'smooth' });
+            }
+            
+            // Apply date range filter
+            if (applyBtn) {
+                applyBtn.addEventListener('click', function() {
+                    const startDate = startDateInput.value ? new Date(startDateInput.value).getTime() : null;
+                    const endDate = endDateInput.value ? new Date(endDateInput.value).getTime() : null;
+                    
+                    // Filter all date-filterable elements
+                    document.querySelectorAll('.date-filterable').forEach(row => {
+                        const rowDate = parseInt(row.dataset.date);
+                        const shouldShow = 
+                            (!startDate || rowDate >= startDate) && 
+                            (!endDate || rowDate <= endDate);
+                        
+                        if (shouldShow) {
+                            row.classList.remove('filtered-out');
+                        } else {
+                            row.classList.add('filtered-out');
+                        }
+                    });
+                    
+                    // Update analysis rows based on visible data
+                    updateAnalysisAfterFilter();
                 });
+            }
+            
+            // Reset date range filter
+            if (resetBtn) {
+                resetBtn.addEventListener('click', function() {
+                    startDateInput.value = '';
+                    endDateInput.value = '';
+                    
+                    // Set "All Time" as active
+                    quickRangeBtns.forEach(b => b.classList.remove('active'));
+                    document.querySelector('.quick-range-btn[data-range="all"]').classList.add('active');
+                    
+                    // Show all rows
+                    document.querySelectorAll('.date-filterable').forEach(row => {
+                        row.classList.remove('filtered-out');
+                    });
+                    
+                    // Restore original analysis
+                    restoreOriginalAnalysis();
+                });
+            }
+            
+            // Ensure end date is not before start date
+            if (startDateInput) {
+                startDateInput.addEventListener('change', function() {
+                    if (endDateInput.value && new Date(startDateInput.value) > new Date(endDateInput.value)) {
+                        endDateInput.value = startDateInput.value;
+                    }
+                });
+            }
+            
+            if (endDateInput) {
+                endDateInput.addEventListener('change', function() {
+                    if (startDateInput.value && new Date(endDateInput.value) < new Date(startDateInput.value)) {
+                        startDateInput.value = endDateInput.value;
+                    }
+                });
+            }
+            
+            // Store original analysis data
+            const originalAnalysis = {};
+            document.querySelectorAll('.analysis-row').forEach(row => {
+                const key = row.closest('table').id || 'table-' + Math.random().toString(36).substr(2, 9);
+                originalAnalysis[key] = row.innerHTML;
+            });
+            
+            // Function to update analysis after filtering
+            function updateAnalysisAfterFilter() {
+                // This would need to be customized based on your specific analysis needs
+                // For example, you might want to recalculate totals based on visible rows
                 
-                // Check on scroll
-                wrapper.addEventListener('scroll', checkScroll);
-                
-                // Check on resize
-                window.addEventListener('resize', checkScroll);
+                // For now, we'll just show/hide analysis rows with their parent tables
+                document.querySelectorAll('.analysis-row').forEach(row => {
+                    const tableBody = row.closest('tbody');
+                    const visibleRows = tableBody.querySelectorAll('tr.date-filterable:not(.filtered-out)');
+                    
+                    if (visibleRows.length === 0) {
+                        row.classList.add('filtered-out');
+                    } else {
+                        row.classList.remove('filtered-out');
+                    }
+                });
+            }
+            
+            // Function to restore original analysis
+            function restoreOriginalAnalysis() {
+                for (const key in originalAnalysis) {
+                    const row = document.querySelector(`#${key} .analysis-row`) || 
+                                document.querySelector(`[data-table="${key}"] .analysis-row`);
+                    if (row) {
+                        row.innerHTML = originalAnalysis[key];
+                    }
+                }
             }
         });
-        
-        // Sample chart initialization (would be more dynamic in a real implementation)
-        <% if (selectedBatch) { %>
-            // Production Trend Chart
-            const productionCtx = document.createElement('canvas');
-            document.getElementById('productionChart').innerHTML = '';
-            document.getElementById('productionChart').appendChild(productionCtx);
-            
-            new Chart(productionCtx, {
-                type: 'line',
-                data: {
-                    labels: <%= JSON.stringify(eggData.map(entry => entry.date.toLocaleDateString())) %>,
-                    datasets: [{
-                        label: 'Egg Production',
-                        data: <%= JSON.stringify(eggData.map(entry => entry.totalEggs)) %>,
-                        borderColor: '#4361ee',
-                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
-                        tension: 0.3,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Egg Count'
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Egg Quality Chart
-            const qualityCtx = document.createElement('canvas');
-            document.getElementById('qualityChart').innerHTML = '';
-            document.getElementById('qualityChart').appendChild(qualityCtx);
-            
-            new Chart(qualityCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Good Eggs', 'Bad Eggs'],
-                    datasets: [{
-                        data: [
-                            <%= eggData.reduce((sum, entry) => sum + (entry.totalEggs * entry.goodEggsPercent / 100), 0) %>,
-                            <%= eggData.reduce((sum, entry) => sum + (entry.totalEggs * entry.badEggsPercent / 100), 0) %>
-                        ],
-                        backgroundColor: ['#4cc9f0', '#f94144'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-            
-            // Financial Chart
-            const financialCtx = document.createElement('canvas');
-            document.getElementById('financialChart').innerHTML = '';
-            document.getElementById('financialChart').appendChild(financialCtx);
-            
-            new Chart(financialCtx, {
-                type: 'bar',
-                data: {
-                    labels: <%= JSON.stringify(financialData.map(entry => entry.date.toLocaleDateString())) %>,
-                    datasets: [
-                        {
-                            label: 'Income',
-                            data: <%= JSON.stringify(financialData.map(entry => entry.totalIncome)) %>,
-                            backgroundColor: '#2ecc71'
-                        },
-                        {
-                            label: 'Expenses',
-                            data: <%= JSON.stringify(financialData.map(entry => entry.totalExpenses)) %>,
-                            backgroundColor: '#e74c3c'
-                        },
-                        {
-                            label: 'Profit',
-                            data: <%= JSON.stringify(financialData.map(entry => entry.profit)) %>,
-                            backgroundColor: '#3498db',
-                            type: 'line',
-                            borderColor: '#3498db',
-                            borderWidth: 2,
-                            pointBackgroundColor: '#3498db',
-                            fill: false
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Amount'
-                            }
-                        }
-                    }
-                }
-            });
-        <% } %>
     </script>
+    <script src="/js/scripts.js"></script>
 </body>
 </html>

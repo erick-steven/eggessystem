@@ -377,7 +377,7 @@
         }
       }
     </style>
- <section class="container-fluid px-lg-4 py-3">
+<section class="container-fluid px-lg-4 py-3">
   <!-- Header Section -->
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3 mb-3">
     <h2 class="h5 mb-0 d-flex align-items-center">
@@ -416,28 +416,52 @@
       </div>
       
       <!-- Date Filter -->
-      <div class="flex-grow-1">
+      <div class="flex-grow-1 position-relative">
         <div class="input-group input-group-sm">
           <span class="input-group-text bg-light"><i class="fas fa-calendar text-muted"></i></span>
           <select id="dateFilter" class="form-select form-select-sm">
             <option value="all">All Dates</option>
             <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
             <option value="week">This Week</option>
+            <option value="lastweek">Last Week</option>
             <option value="month">This Month</option>
+            <option value="lastmonth">Last Month</option>
             <option value="year">This Year</option>
-            <option value="custom">Custom Date</option>
+            <option value="custom">Custom Range</option>
           </select>
         </div>
-      </div>
-      
-      <!-- Custom Date Picker (hidden by default) -->
-      <div id="customDateContainer" class="flex-grow-1" style="display: none;">
-        <div class="input-group input-group-sm">
-          <input type="date" id="customDateInput" class="form-control form-control-sm">
+        
+        <!-- Enhanced Date Picker (hidden by default) -->
+        <div id="customDateContainer" class="card position-absolute start-0 end-0 mt-1 z-3 shadow-sm" style="display: none;">
+          <div class="card-body p-2">
+            <div class="d-flex flex-column flex-sm-row gap-2">
+              <div class="flex-grow-1">
+                <label class="small text-muted mb-1">From</label>
+                <input type="date" id="customDateStart" class="form-control form-control-sm">
+              </div>
+              <div class="flex-grow-1">
+                <label class="small text-muted mb-1">To</label>
+                <input type="date" id="customDateEnd" class="form-control form-control-sm">
+              </div>
+              <div class="d-flex align-items-end">
+                <button id="applyDateRange" class="btn btn-sm btn-primary">
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Quick Presets for Mobile -->
+            <div class="d-flex d-sm-none flex-wrap gap-1 mt-2">
+              <button class="btn btn-sm btn-outline-secondary date-preset" data-days="7">Last 7 Days</button>
+              <button class="btn btn-sm btn-outline-secondary date-preset" data-days="30">Last 30 Days</button>
+              <button class="btn btn-sm btn-outline-secondary date-preset" data-month="0">This Month</button>
+            </div>
+          </div>
         </div>
       </div>
       
-      <!-- Rows Selector - Now visible on all screens -->
+      <!-- Rows Selector -->
       <div class="flex-grow-1" style="min-width: 120px;">
         <div class="input-group input-group-sm">
           <span class="input-group-text bg-light"><i class="fas fa-list text-muted"></i></span>
@@ -633,6 +657,12 @@
     min-width: 40px;
   }
   
+  /* Date picker styling */
+  #customDateContainer {
+    width: 100%;
+    max-width: 500px;
+  }
+  
   /* Responsive adjustments */
   @media (max-width: 576px) {
     .card-body {
@@ -657,6 +687,12 @@
     .flex-grow-1 {
       width: 100%;
     }
+    
+    /* Make date presets full width on mobile */
+    .date-preset {
+      flex: 1 0 calc(50% - 0.5rem);
+      min-width: calc(50% - 0.5rem);
+    }
   }
   
   @media (max-width: 768px) {
@@ -669,6 +705,16 @@
       border-radius: 0;
       box-shadow: none;
       border: 1px solid #eee;
+    }
+    
+    /* Adjust date picker for mobile */
+    #customDateContainer {
+      position: fixed !important;
+      left: 10px !important;
+      right: 10px !important;
+      top: 50% !important;
+      transform: translateY(-50%);
+      z-index: 1050 !important;
     }
   }
   
@@ -692,7 +738,9 @@ document.addEventListener("DOMContentLoaded", function() {
   const eggSearchInput = document.getElementById("eggSearchInput");
   const dateFilter = document.getElementById("dateFilter");
   const customDateContainer = document.getElementById("customDateContainer");
-  const customDateInput = document.getElementById("customDateInput");
+  const customDateStart = document.getElementById("customDateStart");
+  const customDateEnd = document.getElementById("customDateEnd");
+  const applyDateRange = document.getElementById("applyDateRange");
   const rowsPerPage = document.getElementById("rowsPerPage");
   const showingCount = document.getElementById("showingCount");
   const totalCount = document.getElementById("totalCount");
@@ -716,6 +764,11 @@ document.addEventListener("DOMContentLoaded", function() {
           start: today,
           end: new Date(today.getTime() + 86400000) // +1 day
         };
+      case 'yesterday':
+        return {
+          start: new Date(today.getTime() - 86400000),
+          end: today
+        };
       case 'week':
         const startOfWeek = new Date(today);
         startOfWeek.setDate(today.getDate() - today.getDay());
@@ -725,10 +778,24 @@ document.addEventListener("DOMContentLoaded", function() {
           start: startOfWeek,
           end: endOfWeek
         };
+      case 'lastweek':
+        const startOfLastWeek = new Date(today);
+        startOfLastWeek.setDate(today.getDate() - today.getDay() - 7);
+        const endOfLastWeek = new Date(startOfLastWeek);
+        endOfLastWeek.setDate(startOfLastWeek.getDate() + 7);
+        return {
+          start: startOfLastWeek,
+          end: endOfLastWeek
+        };
       case 'month':
         return {
           start: new Date(today.getFullYear(), today.getMonth(), 1),
           end: new Date(today.getFullYear(), today.getMonth() + 1, 1)
+        };
+      case 'lastmonth':
+        return {
+          start: new Date(today.getFullYear(), today.getMonth() - 1, 1),
+          end: new Date(today.getFullYear(), today.getMonth(), 1)
         };
       case 'year':
         return {
@@ -736,11 +803,10 @@ document.addEventListener("DOMContentLoaded", function() {
           end: new Date(today.getFullYear() + 1, 0, 1)
         };
       case 'custom':
-        if (customDateInput.value) {
-          const customDate = new Date(customDateInput.value);
+        if (customDateStart.value && customDateEnd.value) {
           return {
-            start: customDate,
-            end: new Date(customDate.getTime() + 86400000)
+            start: new Date(customDateStart.value),
+            end: new Date(new Date(customDateEnd.value).getTime() + 86400000) // +1 day to include end date
           };
         }
         return null;
@@ -749,9 +815,20 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
   
+  // Set default dates for custom range
+  function setDefaultCustomDates() {
+    const today = new Date();
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(today.getDate() - 7);
+    
+    customDateStart.valueAsDate = oneWeekAgo;
+    customDateEnd.valueAsDate = today;
+  }
+  
   // Date filter event listener
   dateFilter.addEventListener("change", function() {
     if (this.value === 'custom') {
+      setDefaultCustomDates();
       customDateContainer.style.display = 'block';
     } else {
       customDateContainer.style.display = 'none';
@@ -759,10 +836,45 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
   
-  customDateInput.addEventListener("change", function() {
-    if (dateFilter.value === 'custom') {
-      filterRows();
+  // Apply custom date range
+  applyDateRange.addEventListener("click", function() {
+    customDateContainer.style.display = 'none';
+    filterRows();
+  });
+  
+  // Close date picker when clicking outside
+  document.addEventListener('click', function(event) {
+    if (!customDateContainer.contains(event.target) && 
+        event.target !== dateFilter && 
+        !dateFilter.contains(event.target)) {
+      customDateContainer.style.display = 'none';
     }
+  });
+  
+  // Date presets for mobile
+  document.querySelectorAll('.date-preset').forEach(button => {
+    button.addEventListener('click', function() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      if (this.dataset.days) {
+        const days = parseInt(this.dataset.days);
+        const startDate = new Date(today);
+        startDate.setDate(today.getDate() - days);
+        customDateStart.valueAsDate = startDate;
+        customDateEnd.valueAsDate = today;
+      } else if (this.dataset.month) {
+        const monthOffset = parseInt(this.dataset.month);
+        const startDate = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
+        const endDate = new Date(today.getFullYear(), today.getMonth() + monthOffset + 1, 0);
+        customDateStart.valueAsDate = startDate;
+        customDateEnd.valueAsDate = endDate;
+      }
+      
+      dateFilter.value = 'custom';
+      customDateContainer.style.display = 'none';
+      filterRows();
+    });
   });
   
   // Filter functionality
@@ -901,6 +1013,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
   
   // Initialize
+  setDefaultCustomDates();
   filterRows();
 });
 </script>
