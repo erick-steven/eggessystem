@@ -5,6 +5,8 @@ const router = express.Router();
 const Batch = require('../models/Batch');
 const EggProduction = require('../models/EggProduction');
 const Financial = require('../models/Financial'); // Add this line
+
+
 router.get('/egg-production', async (req, res) => {
     if (!req.isAuthenticated()) {
         return res.redirect('/');

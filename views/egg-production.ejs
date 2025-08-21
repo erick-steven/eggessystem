@@ -1242,10 +1242,7 @@ async function calculateProductionPercent() {
             throw new Error('Total eggs cannot be negative');
         }
         
-        if (totalFlock <= 0) {
-            totalFlockInput.classList.add('is-invalid');
-            throw new Error('Flock size must be greater than 0');
-        }
+         
 
         // Calculate egg production percentage
         const eggProductionPercent = totalFlock > 0 ? (totalEggs / totalFlock) * 100 : 0;
