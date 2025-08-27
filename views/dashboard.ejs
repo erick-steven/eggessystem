@@ -39,11 +39,11 @@
             color: #070650;
         }
         .card h5 {
-            color: #0c0758;
+            color: #0c092e;
             font-weight: 500;
         }
         .card a {
-    background: rgb(3, 64, 85);
+    background: rgb(55, 155, 189);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
     transition: all 0.3s ease; /* Transition all properties */
@@ -287,72 +287,6 @@ body {
 
 
 
-.container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #fff;
-        }
-
-        .chart-row {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .chart-row {
-                flex-direction: row;
-            }
-        }
-        .chart-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    max-height: 90vh; /* Limits height within the viewport */
-    overflow-y: auto; /* Enables scrolling if content exceeds limit */
-}
-
-canvas {
-    width: 100% !important;
-    height: 250px !important; /* Ensure fixed height */
-}
-
-        h5 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
-        .buttons {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .buttons button {
-            background-color: #008CFF;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            margin: 5px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .buttons button:hover {
-            background-color: #005f99;
-        }
-
-
-
-
-
-
     /* Base Footer Styles */
     .dashboard-footer {
       background-color:rgb(3, 64, 85); 
@@ -412,7 +346,201 @@ canvas {
       color: #444;
       user-select: none;
     }
+    .dashboard-card {
+    color: #fff;
+    padding: 30px 20px;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.dashboard-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+}
+
+.icon-wrapper {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    margin: 0 auto 15px;
+}
+
+.dashboard-card h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.dashboard-card p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+/* Ultra-Modern & Electric Gradients */
+.gradient-blue {
+    background: linear-gradient(135deg, rgba(0, 59, 74, 0.85), rgba(0, 119, 182, 0.85)),
+                url('/images/m.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.gradient-orange {
+    background: linear-gradient(135deg, rgba(0, 59, 74, 0.85) 30%, rgba(255, 140, 0, 0.85) 80%, rgba(255, 173, 66, 0.85) 100%),
+                url('/images/m.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.gradient-green {
+    background: linear-gradient(135deg, rgba(0, 59, 74, 0.85), rgba(0, 204, 102, 0.85)),
+                url('/images/m.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.gradient-purple {
+    background: linear-gradient(135deg, rgba(0, 59, 74, 0.85), rgba(157, 0, 255, 0.85)),
+                url('/images/m.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Background */
+ 
+/* Header Controls */
+.header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.dashboard-title {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #00f5d4, #00bbf9, #9b5de5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-select, .refresh-btn {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.filter-select {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.refresh-btn {
+    background: linear-gradient(135deg, #00f5d4, #00bbf9, #9b5de5);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 255, 200, 0.4);
+}
+
+.refresh-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 255, 200, 0.6);
+}
+
+/* Chart Grid */
+.chart-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+ 
+}
+
+@media (min-width: 768px) {
+    .chart-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+.chart-card {
+    padding: 25px;
+    border-radius: 18px;
+
+    /* Gradient Glass Effect */
+    background: linear-gradient(135deg, rgba(0, 255, 200, 0.87), rgba(154, 93, 229, 0.911));
     
+    /* Glassmorphism Blur */
+    backdrop-filter: blur(16px);
+
+    /* Border & Glow */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 
+                0 0 20px rgba(0, 255, 200, 0.15);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 380px;
+}
+
+.chart-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(0, 255, 200, 0.4);
+}
+
+/* Chart Title */
+.chart-title {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 18px;
+    font-size: 1.4rem;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+/* Canvas Styling */
+canvas {
+    width: 100% !important;
+    height: 280px !important;
+}
+
 
   </style>
 </head>
@@ -462,50 +590,56 @@ canvas {
              
         </div>
     </div>
-
-    <!-- Statistics Cards -->
     <div class="row text-center">
-        <!-- Total Batch Card -->
+        <!-- Total Flock Card -->
         <div class="col-lg-3 col-md-6 col-6 mb-4">
-            <div class="card p-3">
-          
-                <h5 class="mt-2"> Total Flock</h5>
-                <p><%= totalFlock %></p> <!-- Dynamic total flock count -->
-                <a href="flock.html" class="btn btn-primary btn-sm"> view all</a>
+            <div class="dashboard-card gradient-blue">
+                <div class="icon-wrapper">
+                    <i class="fas fa-dove"></i>
+                </div>
+                <h5>Total Flock</h5>
+                <p><%= totalFlock %></p>
+                <a href="flock.html" class="btn btn-light btn-sm mt-2">View All</a>
             </div>
         </div>
-
+    
         <!-- Total Egg Production Card -->
         <div class="col-lg-3 col-md-6 col-6 mb-4">
-            <div class="card p-3">
-          
-                <h5 class="mt-2"> Total Egg Production</h5>
-                <p><%= totalEggs %></p> <!-- Dynamic total eggs count -->
-                <a href="eggs.html" class="btn btn-primary btn-sm"> view all  </a>
+            <div class="dashboard-card gradient-orange">
+                <div class="icon-wrapper">
+                    <i class="fas fa-egg"></i>
+                </div>
+                <h5>Total Egg Production</h5>
+                <p><%= totalEggs %></p>
+                <a href="eggs.html" class="btn btn-light btn-sm mt-2">View All</a>
             </div>
         </div>
-
+    
         <!-- Financials Review Card -->
         <div class="col-lg-3 col-md-6 col-6 mb-4">
-            <div class="card p-3">
-             
-                <h5 class="mt-2"> Financials Review</h5>
+            <div class="dashboard-card gradient-green">
+                <div class="icon-wrapper">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h5>Financials Review</h5>
                 <p>Income: <%= income %>, Expenses: <%= expenses %>, Profit: <%= profit %></p>
-                <a href="Financials.html" class="btn btn-primary btn-sm">view all</a>
+                <a href="Financials.html" class="btn btn-light btn-sm mt-2">View All</a>
             </div>
         </div>
-
+    
         <!-- Peak Production Card -->
         <div class="col-lg-3 col-md-6 col-6 mb-4">
-            <div class="card p-3">
-               
-                <h5 class="mt-2"> Peak Production</h5>
-                <p><%= peakEggs %></p> <!-- Dynamic peak egg production -->
-                <a href="#" class="btn btn-primary btn-sm"> view all  </a>
+            <div class="dashboard-card gradient-purple">
+                <div class="icon-wrapper">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h5>Peak Production</h5>
+                <p><%= peakEggs %></p>
+                <a href="#" class="btn btn-light btn-sm mt-2">View All</a>
             </div>
         </div>
     </div>
-</div>
+    
 <div class="container mt-4">
     <!-- Dashboard Header with Batch Number -->
     <h2 class="text-center mb-4" style="color: #fff;">
@@ -518,21 +652,43 @@ canvas {
         <% } %>
         </span>
     </h2>
-
-    <!-- Charts Container -->
-    <div class="d-flex flex-column flex-md-row gap-4 justify-content-center">
-        <!-- Egg Production Chart -->
-        <div class="chart-card" style="flex: 1; padding: 20px; border-radius: 10px; background-color: rgba(244, 246, 255, 0.993); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
-            <h3 class="text-center mb-3" style="color: #000000; font-weight: 600;">Egg Production Trend</h3>
-            <canvas id="eggChart" height="280"></canvas>
+   
+    <div class="charts-section container">
+        <div class="header-controls">
+            <h2 class="dashboard-title">📊 Production & Financial Overview</h2>
+            <div class="controls">
+                <select id="filterRange" class="filter-select">
+                    <option value="7">Last 7 Days</option>
+                    <option value="30">Last 30 Days</option>
+                    <option value="90">Last 3 Months</option>
+                    <option value="365">Last Year</option>
+                </select>
+                <button class="refresh-btn" onclick="refreshCharts()">🔄 Refresh</button>
+            </div>
         </div>
-        
-        <!-- Financial Chart -->
-        <div class="chart-card" style="flex: 1; padding: 20px; border-radius: 10px; background-color: rgb(255, 255, 255); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
-            <h3 class="text-center mb-3" style="color: #000000; font-weight: 600;">Financial Performance</h3>
-            <canvas id="financialChart" height="280"></canvas>
+    
+        <div class="chart-grid">
+            <!-- Egg Production Chart -->
+            <div class="chart-card glass-card">
+                <h3 class="chart-title">🥚 Egg Production Trend</h3>
+                <canvas id="eggChart"></canvas>
+            </div>
+            
+            <!-- Financial Chart -->
+            <div class="chart-card glass-card">
+                <h3 class="chart-title">💰 Financial Performance</h3>
+                <canvas id="financialChart"></canvas>
+            </div>
         </div>
     </div>
+    
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <!-- Footer Section -->
 
   
@@ -543,12 +699,14 @@ canvas {
 
 <script>
     // Prepare data
-    const eggLabels = <%- JSON.stringify(eggGraph.map(e => e.date)) %>;
-const eggData = <%- JSON.stringify(eggGraph.map(e => e.totalEggs)) %>;
-const financialLabels = <%- JSON.stringify(financialGraph.map(f => f.date)) %>;
-const financialData = <%- JSON.stringify(financialGraph.map(f => f.profit)) %>;
+ // Prepare data from server
+let eggLabels = <%- JSON.stringify(eggGraph.map(e => e.date)) %>;
+let eggData = <%- JSON.stringify(eggGraph.map(e => e.totalEggs)) %>;
+let financialLabels = <%- JSON.stringify(financialGraph.map(f => f.date)) %>;
+let financialData = <%- JSON.stringify(financialGraph.map(f => f.profit)) %>;
 
-// Enhanced chart configuration for better visibility
+// Chart Options
+// Base Chart Options
 const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -556,124 +714,111 @@ const chartOptions = {
         legend: { 
             display: true,
             labels: {
-                color: '#000000', // Black for better contrast
-                font: {
-                    weight: 'bold'
-                }
+                color: '#fff',
+                font: { weight: 'bold', size: 14 }
             }
         },
         tooltip: {
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            titleColor: '#000',
-            bodyColor: '#333',
-            borderColor: 'rgba(9, 30, 128, 1)',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            borderColor: '#FF6B00',
             borderWidth: 1,
             padding: 12,
-            cornerRadius: 6,
+            cornerRadius: 8,
             displayColors: true,
             callbacks: {
-                label: function(context) {
-                    return `${context.dataset.label}: ${context.parsed.y}`;
-                }
+                label: context => `${context.dataset.label}: ${context.parsed.y.toLocaleString()}`
             }
         }
     },
     scales: {
         x: {
-            grid: { 
-                display: false,
-                color: 'rgba(0, 0, 0, 0.1)'
-            },
-            ticks: { 
-                color: '#000000',
-                font: {
-                    weight: 'bold'
-                }
-            }
+            grid: { display: false },
+            ticks: { color: '#fff', font: { weight: 'bold' } }
         },
         y: {
-            grid: { 
-                color: 'rgba(0, 0, 0, 0.1)',
-                borderDash: [3, 3]
-            },
+            grid: { color: 'rgba(255, 255, 255, 0.1)', borderDash: [3, 3] },
             ticks: { 
-                color: '#000000',
-                font: {
-                    weight: 'bold'
-                },
-                callback: function(value) {
-                    return value.toLocaleString(); // Format numbers
-                }
+                color: '#fff',
+                font: { weight: 'bold' },
+                callback: value => value.toLocaleString()
             },
             beginAtZero: true
         }
     },
-    animation: {
-        duration: 1200,
-        easing: 'easeOutQuart'
-    }
+    animation: { duration: 1000, easing: 'easeOutQuart' }
 };
 
-// Initialize Egg Production Chart (Line)
-new Chart(
-    document.getElementById('eggChart').getContext('2d'),
-    {
-        type: 'line',
-        data: {
-            labels: eggLabels,
-            datasets: [{
-                label: 'Eggs Produced',
-                data: eggData,
-                borderColor: '#FF6B00', // Orange for high contrast
-                backgroundColor: 'rgba(255, 107, 0, 0.2)',
-                borderWidth: 3,
-                tension: 0.3,
-                pointRadius: 5,
-                pointHoverRadius: 8,
-                pointBackgroundColor: '#FF6B00',
-                pointBorderColor: '#FFF',
-                pointBorderWidth: 2,
-                fill: true
-            }]
-        },
-        options: chartOptions
-    }
-);
+// Egg Production Chart
+let eggChart = new Chart(document.getElementById('eggChart').getContext('2d'), {
+    type: 'line',
+    data: {
+        labels: eggLabels,
+        datasets: [{
+            label: 'Eggs Produced',
+            data: eggData,
+            borderColor: '#FF6B00',
+            backgroundColor: 'rgba(255, 107, 0, 0.2)',
+            borderWidth: 3,
+            tension: 0.4,
+            pointRadius: 6,
+            pointHoverRadius: 9,
+            pointBackgroundColor: '#FF6B00',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            fill: true
+        }]
+    },
+    options: chartOptions
+});
 
-// Initialize Financial Chart (Bar)
-new Chart(
-    document.getElementById('financialChart').getContext('2d'),
-    {
-        type: 'bar',
-        data: {
-            labels: financialLabels,
-            datasets: [{
-                label: 'Profit ($)',
-                data: financialData,
-                backgroundColor: 'rgba(0, 168, 107, 0.8)', // Green for positive financials
-                hoverBackgroundColor: 'rgba(0, 168, 107, 1)',
-                borderColor: 'rgba(0, 0, 0, 0.2)',
-                borderWidth: 1,
-                borderRadius: 4
-            }]
-        },
-        options: {
-            ...chartOptions,
-            scales: {
-                ...chartOptions.scales,
-                y: {
-                    ...chartOptions.scales.y,
-                    ticks: {
-                        ...chartOptions.scales.y.ticks,
-                        callback: function(value) {
-                            return '$' + value.toLocaleString(); // Currency format
-                        }
-                    }
+// Financial Performance Chart
+let financialChart = new Chart(document.getElementById('financialChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+        labels: financialLabels,
+        datasets: [{
+            label: 'Profit ($)',
+            data: financialData,
+            backgroundColor: 'rgba(0, 168, 107, 0.85)',
+            hoverBackgroundColor: '#00a86b',
+            borderRadius: 8
+        }]
+    },
+    options: {
+        ...chartOptions,
+        scales: {
+            ...chartOptions.scales,
+            y: {
+                ...chartOptions.scales.y,
+                ticks: {
+                    ...chartOptions.scales.y.ticks,
+                    callback: value => `$${value.toLocaleString()}`
                 }
             }
         }
     }
-);
+});
+
+// Refresh Charts
+function refreshCharts() {
+    eggChart.update();
+    financialChart.update();
+
+    // Modern feedback instead of alert
+    console.log("✅ Charts refreshed successfully!");
+}
+
+// Filter Logic (Dynamic Data Fetch or Local Filter)
+document.getElementById('filterRange').addEventListener('change', function() {
+    const days = parseInt(this.value);
+    console.log(`📊 Filter applied: Last ${days} days`);
+
+    // Example: dynamic filter logic (fetch from API or filter local data)
+    // fetch(`/api/charts?days=${days}`).then(res => updateCharts(res.data));
+});
+
 
     function toggleSidebar() {
             const sidebar = document.getElementById('querySidebar');
