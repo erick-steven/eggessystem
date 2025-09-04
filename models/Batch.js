@@ -1,5 +1,3 @@
-// Batch.js
-
 const mongoose = require('mongoose');
 
 const batchSchema = new mongoose.Schema({
@@ -8,12 +6,11 @@ const batchSchema = new mongoose.Schema({
     totalNumber: { type: Number, required: true },
     currentCount: { type: Number, required: true },
     initialAgeWeeks: { type: Number, required: true },
-    date: { type: Date, default: Date.now }, // Add this line
+    date: { type: Date, default: Date.now },
     creationDate: { type: Date, default: Date.now },
     lastAgeUpdate: { type: Date, default: Date.now },
     currentAgeWeeks: { type: Number, required: true },
     status: { type: String, default: 'Active' },
-    
     deathRecords: [
         {
             date: { type: Date, default: Date.now },
@@ -22,10 +19,21 @@ const batchSchema = new mongoose.Schema({
             otherReason: { type: String },
             notes: { type: String }
         }
+    ],
+    schedule: [
+        {
+            week: { type: Number, required: true },
+            feed: { type: String },
+            feedAmountPerBird: { type: Number },
+            vaccine: { type: String },
+            vitamins: { type: String },
+            notes: { type: String },
+            notified: { type: Boolean, default: false }
+        }
     ]
 });
 
-// Add the method to the schema methods
+// Update age
 batchSchema.methods.updateAge = function() {
     const now = new Date();
     const diffInMs = now - this.creationDate;
@@ -35,29 +43,44 @@ batchSchema.methods.updateAge = function() {
     return this;
 };
 
-// Update age before saving
+// Generate schedule for 104 weeks (2 years)
+batchSchema.methods.generateSchedule = function() {
+    const schedule = [];
+    for (let week = 1; week <= 104; week++) {
+        let feed = '', feedAmount = 0, vaccine = '', vitamins = '';
+
+        if (week <= 8) {
+            feed = 'Starter'; feedAmount = 50; vaccine = (week===1)?'NDV':''; vitamins='Vit A,D,E,B';
+        } else if (week <= 18) {
+            feed = 'Grower'; feedAmount = 90; vaccine = (week===12)?'NDV booster':''; vitamins='Vit A,D,E';
+        } else {
+            feed = 'Layer Mash'; feedAmount = 120; vaccine = (week % 8===0)?'NDV/IB booster':''; vitamins='Calcium + Vit D3';
+        }
+
+        schedule.push({ week, feed, feedAmountPerBird: feedAmount, vaccine, vitamins, notes:'', notified:false });
+    }
+    this.schedule = schedule;
+    return this;
+};
+
+// Get tasks for current week
+batchSchema.methods.getWeeklyTasks = function() {
+    this.updateAge();
+    return this.schedule.filter(s => s.week === this.currentAgeWeeks && !s.notified);
+};
+
+// Pre-save update age
 batchSchema.pre('save', function(next) {
     this.updateAge();
     next();
 });
 
-// For find operations, we need a different approach
-batchSchema.pre(/^find/, function(next) {
-    // This refers to the query, not the document
-    // We'll update age after documents are retrieved
-    next();
-});
-
-// Add a post-find hook to update ages on returned documents
+batchSchema.pre(/^find/, function(next) { next(); });
 batchSchema.post(/^find/, function(docs, next) {
-    if (Array.isArray(docs)) {
-        docs.forEach(doc => doc.updateAge());
-    } else if (docs) {
-        docs.updateAge();
-    }
+    if (Array.isArray(docs)) docs.forEach(doc => doc.updateAge());
+    else if (docs) docs.updateAge();
     next();
 });
 
 const Batch = mongoose.model('Batch', batchSchema);
-
 module.exports = Batch;

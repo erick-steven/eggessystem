@@ -420,73 +420,77 @@
 </div>
 <style>
   /* Match financial form header exactly */
-  .table thead th {
-    background-color: rgb(3, 64, 85);
-    color: white;
-    padding: 10px 12px;
-    text-align: center;
+ /* Match financial form header exactly */
+.table thead th {
+  background-color: rgb(3, 64, 85);
+  color: white;
+  padding: 10px 12px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+}
+
+/* Rounded corners for header */
+.table thead tr:first-child th:first-child {
+  border-top-left-radius: 5px;
+}
+
+.table thead tr:first-child th:last-child {
+  border-top-right-radius: 5px;
+}
+
+/* Mobile responsive styles from financial form */
+@media (max-width: 768px) {
+  /* Remove horizontal scroll */
+  .table-responsive {
+    overflow-x: hidden !important;
+  }
+
+  .table {
+    display: block;
+    width: 100%;
     border: none;
-    white-space: nowrap;
   }
-  
-  /* Rounded corners for header */
-  .table thead tr:first-child th:first-child {
-    border-top-left-radius: 5px;
+
+  .table thead {
+    display: none;
   }
-  
-  .table thead tr:first-child th:last-child {
-    border-top-right-radius: 5px;
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    background: #f8f9fa;
   }
-  
-  /* Mobile responsive styles from financial form */
-  @media (max-width: 768px) {
-    .table-responsive {
-      overflow-x: hidden;
-    }
-    
-    .table {
-      display: block;
-      width: 100%;
-    }
-    
-    .table thead {
-      display: none;
-    }
-    
-    .table tbody tr {
-      display: block;
-      margin-bottom: 1rem;
-      padding: 0.75rem;
-      border: 1px solid #dee2e6;
-      border-radius: 0.5rem;
-      background: #f8f9fa;
-    }
-    
-    .table tbody td {
-      display: flex;
-      align-items: center;
-      padding: 0.5rem 0;
-      border: none !important;
-    }
-    
-    .table tbody td::before {
-      content: attr(data-label);
-      flex: 0 0 40%;
-      font-weight: bold;
-      font-size: 0.85rem;
-      color: #495057;
-      padding-right: 1rem;
-    }
-    
-    .table tbody td > * {
-      flex: 1;
-    }
-    
-    /* Hide icons on mobile */
-    .table thead th i {
-      display: none;
-    }
+
+  .table tbody td {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border: none !important;
   }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    flex: 0 0 40%;
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #495057;
+    padding-right: 1rem;
+  }
+
+  .table tbody td > * {
+    flex: 1;
+  }
+
+  /* Hide icons on mobile */
+  .table thead th i {
+    display: none;
+  }
+}
+
 </style>
 <section class="container-fluid px-lg-4 py-3">
   <!-- Header Section -->

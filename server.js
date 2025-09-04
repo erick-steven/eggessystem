@@ -16,6 +16,11 @@ const visualizationRoutes = require('./routes/visualization'); // path may vary
 const balanceSheetRouter = require('./routes/balanceSheet');
 const trialBalanceRoutes = require('./routes/trialbalanceRoutes');
 const eggReplacementRoutes = require('./routes/eggReplacements');
+const vaccinationRoutes = require('./routes/vaccinationRoutes');
+const medicationRoutes = require('./routes/medicationRoutes');
+const BatchRoutesVMV = require('./routes/BatchRoutesv-m-v');
+
+
 
 
 require('./config/passport')(passport);
@@ -62,7 +67,9 @@ app.use('/trial-balance', trialBalanceRoutes);
 app.use('/api/egg-replacements', eggReplacementRoutes);
 app.use('/api/financials', financialRoutes); // This is the critical line
 app.use(flash());
-
+app.use('/api/vaccinations', vaccinationRoutes);
+app.use('/api/medications', medicationRoutes);
+app.use('/', BatchRoutesVMV);
 
 
 

@@ -1,0 +1,887 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poultry Manager - Batch Management</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+
+  </head>
+  <style>
+    /* Your custom CSS here */
+ 
+    :root {
+      --primary: #4e73df;
+      --secondary: #858796;
+      --success: #1cc88a;
+      --info: #36b9cc;
+      --warning: #f6c23e;
+      --danger: #e74a3b;
+      --light: #f8f9fc;
+      --dark: #5a5c69;
+    }
+    
+    body {
+      background-color: #f8f9fc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .navbar-brand {
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-header {
+      background-color: #f8f9fc;
+      border-bottom: 1px solid #e3e6f0;
+      padding: 1rem 1.35rem;
+      font-weight: 700;
+    }
+    
+    .batch-info-card {
+      border-left: 4px solid var(--primary);
+    }
+    
+    .task-alert {
+      border-left: 4px solid;
+      border-radius: 8px;
+    }
+    
+    .alert-current {
+      border-left-color: var(--warning);
+    }
+    
+    .alert-upcoming {
+      border-left-color: var(--info);
+    }
+    
+    .alert-overdue {
+      border-left-color: var(--danger);
+    }
+    
+    .table th {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: var(--secondary);
+    }
+    
+    .badge {
+      font-weight: 500;
+      padding: 0.35em 0.5em;
+    }
+    
+    .btn-success {
+      background-color: var(--success);
+      border-color: var(--success);
+    }
+    
+    .btn-success:hover {
+      background-color: #17a673;
+      border-color: #17a673;
+    }
+    
+    .stat-card {
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #5a5c69;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--secondary);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    
+    .icon-circle {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    .bg-primary {
+      background-color: var(--primary) !important;
+    }
+    
+    .bg-success {
+      background-color: var(--success) !important;
+    }
+    
+    .bg-info {
+      background-color: var(--info) !important;
+    }
+    
+    .bg-warning {
+      background-color: var(--warning) !important;
+    }
+    
+    .bg-danger {
+      background-color: var(--danger) !important;
+    }
+    
+    .schedule-table tbody tr:hover {
+      background-color: rgba(78, 115, 223, 0.05);
+    }
+    
+    .custom-select {
+      border-radius: 8px;
+      padding: 10px 15px;
+      border: 1px solid #d1d3e2;
+    }
+    
+    .page-title {
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    
+    .page-subtitle {
+      color: var(--secondary);
+      margin-bottom: 1.5rem;
+    }
+
+
+    
+
+/* Query Action Button */
+/* Query Action Button - adjusted positioning */
+.query-action {
+  position: relative; /* Changed from absolute */
+  left: 0;
+  z-index: 1000;
+}
+
+
+.query-action button {
+    background-color:red; /* Teal color */
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.query-action button:hover {
+    background-color: #d11e1e; /* Darker teal on hover */
+}
+/* Base Header Styles */
+.header {
+  background: #003B4A;
+  color: white;
+  padding: 0.1rem 0.5rem; /* Almost no vertical padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  gap: 0.2rem; /* Minimal gap */
+  line-height: 1; /* Prevents extra height from text */
+  font-size: 0.9rem; /* Smaller text (adjust if needed) */
+}
+/* Logo Section */
+
+/* Logo Section - fixed alignment */
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: orange;
+  z-index: 1;
+  margin-left: 0; /* Remove previous margin */
+}
+.logo i {
+  font-size: 1.1rem;
+}
+
+/* User Controls - ensure proper spacing */
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto; /* Push to the right */
+  z-index: 1;
+}
+
+#currentUser {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.btn-danger {
+  background: red;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* Menu Button */
+.menu-button {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 769px) {
+  .header {
+    padding: 0.8rem 1.5rem;
+  }
+  .logo {
+    font-size: 1.2rem;
+    margin-left: 3rem;
+  }
+  .logo i {
+    font-size: 1.2rem;
+  }
+  .btn-danger, 
+  .menu-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 480px) {
+  .header {
+    padding: 0.6rem;
+    gap: 0.5rem;
+  }
+  .logo {
+    font-size: 1rem;
+  }
+  .user-controls {
+    gap: 0.5rem;
+  }
+  #currentUser {
+    display: none; /* Hide on smallest screens if needed */
+  }
+}
+
+/* Sidebar */
+.query-sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Initially hidden */
+    height: 100%;
+    width: 250px;
+    background-color: rgba(0, 0, 0, 0.9); /* Dark semi-transparent background */
+    color: white;
+    transition: left 0.3s ease;
+    z-index: 999;
+    padding-top: 60px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.query-sidebar.open {
+    left: 0; /* Show sidebar */
+}
+
+.query-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.query-sidebar li {
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.query-sidebar li:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effect */
+}
+
+.query-sidebar a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.query-sidebar a i {
+    font-size: 18px;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    z-index: 998;
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+}
+/* Active state for sidebar */
+.query-sidebar.open {
+  left: 0;
+}
+
+      
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <div class="header">
+    <!-- Query Action Button -->
+    <div class="query-action">
+        <button class="btn btn-info" onclick="toggleSidebar()">Queqky Action</button>
+    </div>
+    <!-- Logo -->
+    <div class="logo" style="margin-right: auto; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-egg" style="color: orange;"></i> Layers
+      </div>
+    <!-- User Info and Logout -->
+    <div>
+     
+
+        <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+    </div>
+</div><!-- Sidebar -->
+<div id="querySidebar" class="query-sidebar">
+    <ul>
+        <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+        <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+        <li><a href="/financials"><i class="fas fa-dollar-sign"></i> Financials</a></li>
+      
+        <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+        <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+        <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+        <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+    <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+
+    <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+    </ul>
+    
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="container mt-4">
+    <!-- Time Filter Dropdown -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+        
+             
+        </div>
+    </div>
+  <div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <div>
+        <h1 class="page-title h3">Batch Management</h1>
+        <p class="page-subtitle">Monitor and manage your poultry batches</p>
+      </div>
+      <div>
+        <button class="btn btn-sm btn-primary shadow-sm">
+          <i class="bi bi-plus-circle me-1"></i> New Batch
+        </button>
+      </div>
+    </div>
+
+    <!-- Batch Selection -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Select Batch</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <select id="batchSelect" class="form-select custom-select" onchange="location = this.value;">
+              <option value="">-- Choose Batch --</option>
+              <% batches.forEach(batch => { %>
+                <option value="/v-m-v/<%= batch._id %>" 
+                  <%= selectedBatch && selectedBatch._id.toString() === batch._id.toString() ? 'selected' : '' %>>
+                  <%= batch.batchNo %> - <%= batch.grade %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if (selectedBatch) { %>
+      <!-- Batch Stats -->
+      <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card stat-card h-100">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <div class="stat-label">Current Age</div>
+                  <div class="stat-value"><%= selectedBatch.currentAgeWeeks %> weeks</div>
+                </div>
+                <div class="col-auto">
+                  <div class="icon-circle bg-primary text-white">
+                    <i class="bi bi-calendar-week"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card stat-card h-100">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <div class="stat-label">Current Count</div>
+                  <div class="stat-value"><%= selectedBatch.currentCount %></div>
+                </div>
+                <div class="col-auto">
+                  <div class="icon-circle bg-success text-white">
+                    <i class="bi bi-egg"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card stat-card h-100">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <div class="stat-label">Mortality Rate</div>
+                  <%
+                    const total = selectedBatch.totalNumber;
+                    const current = selectedBatch.currentCount;
+                    const mortality = total > 0 ? (((total - current) / total) * 100).toFixed(2) : 0;
+                  %>
+                  <div class="stat-value"><%= mortality %>%</div>
+                </div>
+                <div class="col-auto">
+                  <div class="icon-circle bg-danger text-white">
+                    <i class="bi bi-heartbreak"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card stat-card h-100">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <div class="stat-label">Status</div>
+                  <div class="stat-value">
+                    <span class="badge bg-<%= selectedBatch.status === 'Active' ? 'success' : 'secondary' %>">
+                      <%= selectedBatch.status %>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="icon-circle bg-info text-white">
+                    <i class="bi bi-clipboard-check"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Batch Details Card -->
+      <div class="card batch-info-card mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Batch Details</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-borderless">
+                <tr>
+                  <td width="30%"><strong>Batch No:</strong></td>
+                  <td><%= selectedBatch.batchNo %></td>
+                </tr>
+                <tr>
+                  <td><strong>Grade:</strong></td>
+                  <td><%= selectedBatch.grade %></td>
+                </tr>
+                <tr>
+                  <td><strong>Initial Age:</strong></td>
+                  <td><%= selectedBatch.initialAgeWeeks %> weeks</td>
+                </tr>
+                <tr>
+                  <td><strong>Created:</strong></td>
+                  <td><%= selectedBatch.creationDate.toDateString() %></td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <table class="table table-borderless">
+                <tr>
+                  <td width="30%"><strong>Total Birds:</strong></td>
+                  <td><%= selectedBatch.totalNumber %></td>
+                </tr>
+                <tr>
+                  <td><strong>Current Birds:</strong></td>
+                  <td><%= selectedBatch.currentCount %></td>
+                </tr>
+                <tr>
+                  <td><strong>Last Update:</strong></td>
+                  <td><%= selectedBatch.lastAgeUpdate.toDateString() %></td>
+                </tr>
+                <tr>
+                  <td><strong>Status:</strong></td>
+                  <td>
+                    <span class="badge bg-<%= selectedBatch.status === 'Active' ? 'success' : 'secondary' %>">
+                      <%= selectedBatch.status %>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task Notifications -->
+      <div class="row mb-4">
+        <!-- Current Tasks -->
+        <% if (currentTasks && currentTasks.length > 0) { %>
+          <div class="col-lg-6 mb-4">
+            <div class="card task-alert alert-current h-100">
+              <div class="card-header bg-warning text-dark">
+                <h6 class="m-0 font-weight-bold"><i class="bi bi-exclamation-triangle me-2"></i>Current Week Tasks (Week <%= currentWeek %>)</h6>
+              </div>
+              <div class="card-body">
+                <div class="list-group list-group-flush">
+                  <% currentTasks.forEach(task => { %>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                      <div>
+                        <h6 class="mb-1">Week <%= task.week %></h6>
+                        <p class="mb-1 small">
+                          <span class="text-dark"><%= task.vaccine %></span> | 
+                          <%= task.vitamins %> | 
+                          <%= task.feed %>
+                        </p>
+                      </div>
+                      <div>
+                        <% if (task.approved) { %>
+                          <span class="badge bg-success">Approved</span>
+                          <% if (task.overdue) { %>
+                            <span class="badge bg-danger">Completed Late</span>
+                          <% } %>
+                        <% } else { %>
+                          <button class="btn btn-sm btn-success approve-btn" data-id="<%= task._id %>">
+                            <i class="bi bi-check-circle me-1"></i>Approve
+                          </button>
+                        <% } %>
+                      </div>
+                    </div>
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+
+        <!-- Upcoming Tasks -->
+        <% if (upcomingSchedules && upcomingSchedules.length > 0) { %>
+          <div class="col-lg-6 mb-4">
+            <div class="card task-alert alert-upcoming h-100">
+              <div class="card-header bg-info text-white">
+                <h6 class="m-0 font-weight-bold"><i class="bi bi-clock me-2"></i>Upcoming Tasks (Next 2-3 Weeks)</h6>
+              </div>
+              <div class="card-body">
+                <div class="list-group list-group-flush">
+                  <% upcomingSchedules.forEach(task => { %>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                      <div>
+                        <h6 class="mb-1">Week <%= task.week %></h6>
+                        <p class="mb-1 small">
+                          <span class="text-dark"><%= task.vaccine %></span> | 
+                          <%= task.vitamins %> | 
+                          <%= task.feed %>
+                        </p>
+                      </div>
+                      <div>
+                        <button class="btn btn-sm btn-outline-secondary" disabled>
+                          <i class="bi bi-clock me-1"></i>Upcoming
+                        </button>
+                      </div>
+                    </div>
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+
+        <!-- Overdue Tasks -->
+        <% if (overdueTasks && overdueTasks.length > 0) { %>
+          <div class="col-12 mb-4">
+            <div class="card task-alert alert-overdue">
+              <div class="card-header bg-danger text-white">
+                <h6 class="m-0 font-weight-bold"><i class="bi bi-exclamation-octagon me-2"></i>Overdue Tasks</h6>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <% overdueTasks.forEach(task => { %>
+                    <div class="col-md-6 mb-2">
+                      <div class="card bg-light">
+                        <div class="card-body py-2">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <h6 class="mb-0">Week <%= task.week %></h6>
+                              <p class="mb-0 small">
+                                <%= task.vaccine %> | <%= task.vitamins %> | <%= task.feed %>
+                              </p>
+                            </div>
+                            <div>
+                              <% if (task.approved) { %>
+                                <span class="badge bg-success">Approved</span>
+                                <span class="badge bg-danger">Completed Late</span>
+                              <% } else { %>
+                                <button class="btn btn-sm btn-success approve-btn" data-id="<%= task._id %>">
+                                  <i class="bi bi-check-circle me-1"></i>Approve
+                                </button>
+                              <% } %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Death Records -->
+      <div class="card mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Death Records</h6>
+        </div>
+        <div class="card-body">
+          <% if (selectedBatch.deathRecords && selectedBatch.deathRecords.length > 0) { %>
+            <div class="table-responsive">
+              <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Date</th>
+                    <th>Count</th>
+                    <th>Reason</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% selectedBatch.deathRecords.forEach(record => { %>
+                    <tr>
+                      <td><%= record.date.toDateString() %></td>
+                      <td><%= record.count %></td>
+                      <td><%= record.reason || record.otherReason %></td>
+                      <td><%= record.notes || '-' %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          <% } else { %>
+            <p class="text-center text-muted py-3">No death records for this batch.</p>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Full Vaccination & Feed Schedule Table -->
+      <div class="card mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+          <h6 class="m-0 font-weight-bold text-primary">Vaccination & Feed Schedule</h6>
+          <div>
+            <span class="badge bg-warning me-1">Current Week</span>
+            <span class="badge bg-info me-1">Upcoming</span>
+            <span class="badge bg-danger">Overdue</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered schedule-table" width="100%" cellspacing="0">
+              <thead class="thead-light">
+                <tr>
+                  <th>Week</th>
+                  <th>Vaccine</th>
+                  <th>Vitamins / Supplements</th>
+                  <th>Feed per Bird</th>
+                  <th>Notes</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% fullSchedule.forEach(task => { %>
+                  <tr class="<%= 
+                        task.week === currentWeek ? 'table-warning' :
+                        upcomingSchedules.some(u => u.week === task.week) ? 'table-info' :
+                        task.week < currentWeek ? 'table-danger' : ''
+                      %>">
+                    <td><strong><%= task.week %></strong></td>
+                    <td><%= task.vaccine %></td>
+                    <td><%= task.vitamins %></td>
+                    <td><%= task.feed %></td>
+                    <td><%= task.notes %></td>
+                    <td>
+                      <% if (task.approved) { %>
+                        <span class="badge bg-success">Action Taken</span>
+                        <% if (task.overdue) { %>
+                          <span class="badge bg-danger mt-1 d-block">Completed Late</span>
+                        <% } %>
+                      <% } else if (task.week > currentWeek) { %>
+                        <span class="badge bg-secondary">Not yet</span>
+                      <% } else { %>
+                        <button class="btn btn-sm btn-primary approve-btn" data-id="<%= task._id %>">
+                          <i class="bi bi-check-circle me-1"></i>Approve
+                        </button>
+                        <% if (task.week < currentWeek) { %>
+                          <span class="badge bg-danger mt-1 d-block">Overdue</span>
+                        <% } %>
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    <% } else { %>
+      <!-- Empty State -->
+      <div class="card mb-4">
+        <div class="card-body text-center py-5">
+          <i class="bi bi-inboxes display-4 text-muted"></i>
+          <h3 class="mt-3 text-muted">No Batch Selected</h3>
+          <p class="text-muted">Please select a batch from the dropdown to view details</p>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Footer -->
+ 
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    $(document).on('click', '.approve-btn', function(e) {
+      e.preventDefault();
+      const button = $(this);
+      const taskId = button.data('id');
+      const batchId = '<%= selectedBatch ? selectedBatch._id : "" %>';
+    
+      $.ajax({
+        url: '/v-m-v/approve/' + taskId + '/' + batchId,
+        method: 'POST',
+        success: function(response) {
+          // Update the UI to show the task is approved
+          const cell = button.closest('td');
+          
+          // Create success badge
+          let badgeHtml = '<span class="badge bg-success">Action Taken</span>';
+          
+          // Add overdue badge if task was overdue
+          if (response.overdue) {
+            badgeHtml += ' <span class="badge bg-danger mt-1 d-block">Completed Late</span>';
+          }
+          
+          cell.html(badgeHtml);
+          
+          // Also update any list items with this task
+          $(`li:has(button[data-id="${taskId}"])`).each(function() {
+            $(this).find('button').remove();
+            $(this).append(' <span class="badge bg-success">Approved</span>');
+            if (response.overdue) {
+              $(this).append(' <span class="badge bg-danger">Completed Late</span>');
+            }
+          });
+          
+          // Update cards with task lists
+          $(`.list-group-item:has(button[data-id="${taskId}"])`).each(function() {
+            $(this).find('button').remove();
+            $(this).append('<span class="badge bg-success">Approved</span>');
+            if (response.overdue) {
+              $(this).append('<span class="badge bg-danger ms-1">Completed Late</span>');
+            }
+          });
+        },
+        error: function(xhr) {
+          const errorMsg = xhr.responseJSON?.message || 'Error approving task.';
+          alert(errorMsg);
+        }
+      });
+    });
+
+
+
+    
+
+
+    function toggleSidebar() {
+    const sidebar = document.getElementById("querySidebar");
+    const overlay = document.getElementById("overlay");
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("active");
+}
+
+// Close sidebar when clicking outside
+document.getElementById("overlay").addEventListener("click", () => {
+    toggleSidebar();
+});
+  </script>
+</body>
+</html>
