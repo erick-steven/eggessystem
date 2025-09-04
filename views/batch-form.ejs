@@ -298,88 +298,89 @@
     </div>
     
     <style>
-      /* Match the exact financial form table header style */
-      .table thead th {
-        background-color: rgb(3, 64, 85);
-        color: white;
-        padding: 10px 12px;
-        text-align: center;
-        border: none;
-        white-space: nowrap;
-      }
-      
-      /* Maintain the original border radius */
-      .table thead tr:first-child th:first-child {
-        border-top-left-radius: 5px;
-      }
-      
-      .table thead tr:first-child th:last-child {
-        border-top-right-radius: 5px;
-      }
-      
-      /* Keep all other financial form table styles */
-      .table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        min-width: 600px;
-      }
-      
-      .table tbody td {
-        padding: 8px 10px;
-        vertical-align: middle;
-        border: none;
-      }
-      
-      /* Mobile responsive styles from financial form */
-      @media (max-width: 768px) {
-        .table-responsive {
-          overflow-x: hidden;
-        }
-        
-        .table {
-          display: block;
-          width: 100%;
-        }
-        
-        .table thead {
-          display: none;
-        }
-        
-        .table tbody tr {
-          display: block;
-          margin-bottom: 1rem;
-          padding: 0.75rem;
-          border: 1px solid #dee2e6;
-          border-radius: 0.5rem;
-          background: #f8f9fa;
-        }
-        
-        .table tbody td {
-          display: flex;
-          align-items: center;
-          padding: 0.5rem 0;
-          border: none !important;
-        }
-        
-        .table tbody td::before {
-          content: attr(data-label);
-          flex: 0 0 40%;
-          font-weight: bold;
-          font-size: 0.85rem;
-          color: #495057;
-          padding-right: 1rem;
-        }
-        
-        .table tbody td > * {
-          flex: 1;
-        }
-        
-        /* Hide icons on mobile to match financial form */
-        .table thead th i {
-          display: none;
-        }
-      }
+    .table thead th {
+  background-color: rgb(3, 64, 85);
+  color: white;
+  padding: 10px 12px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+}
+
+/* Maintain the original border radius */
+.table thead tr:first-child th:first-child {
+  border-top-left-radius: 5px;
+}
+
+.table thead tr:first-child th:last-child {
+  border-top-right-radius: 5px;
+}
+
+/* Default table styles */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 600px; /* Keeps desktop layout nice */
+}
+
+.table tbody td {
+  padding: 8px 10px;
+  vertical-align: middle;
+  border: none;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: hidden; /* Disable scrolling */
+  }
+
+  .table {
+    display: block;
+    width: 100%;
+    min-width: auto; /* ✅ Remove fixed width on small screens */
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    background: #f8f9fa;
+  }
+
+  .table tbody td {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border: none !important;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    flex: 0 0 40%;
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #495057;
+    padding-right: 1rem;
+  }
+
+  .table tbody td > * {
+    flex: 1;
+  }
+
+  /* Hide icons on mobile */
+  .table thead th i {
+    display: none;
+  }
+}
+
     </style>
 <section class="container-fluid px-lg-4 py-3">
   <!-- Header Section -->
