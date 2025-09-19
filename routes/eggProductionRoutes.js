@@ -58,6 +58,59 @@ router.get('/egg-production', async (req, res) => {
     }
 });
 
+
+
+router.get('/eggview', async (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/');
+    }
+
+    try {
+        // Fetch all batches for the dropdown
+        const batches = await Batch.find().sort({ batchNo: 1 });
+
+        // Get selected batch ID from query, if provided
+        let selectedBatchId = req.query.batchId || null;
+
+        let query = {}; // Default: Fetch all records
+
+        if (selectedBatchId) {
+            // Validate batch ID
+            if (!mongoose.Types.ObjectId.isValid(selectedBatchId)) {
+                return res.status(400).render('egg-production', {
+                    error: 'Invalid batch ID',
+                    batches,
+                    records: [],
+                    selectedBatchId: null
+                });
+            }
+            query.batch = selectedBatchId; // Filter by selected batch
+        }
+
+        // Fetch egg production records (without limit)
+        const records = await EggProduction.find(query)
+            .populate('batch')
+            .sort({ date: -1 });
+
+        // Render the view with user data
+        res.render('eggview', { 
+            batches, 
+            records, 
+            selectedBatchId,
+            user: req.user // Pass user data if needed
+        });
+
+    } catch (err) {
+        console.error('Error fetching egg production data:', err);
+        res.status(500).render('egg-production', {
+            error: 'Server error',
+            batches: [],
+            records: [],
+            selectedBatchId: null
+        });
+    }
+});
+
 router.get('/api/batch/:batchId/trays', async (req, res) => {
     if (!req.isAuthenticated()) {
         return res.status(401).json({ error: 'Unauthorized' });

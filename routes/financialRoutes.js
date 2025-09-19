@@ -43,6 +43,39 @@ router.get('/financials', async (req, res) => {
     }
 });
 
+
+router.get('/viewfinancai', async (req, res) => {
+    try {
+        // Fetch all financial records and populate the batch field
+        const financialRecords = await Financial.find({}).populate('batch', 'batchNo');
+
+        // Fetch all batches with tray data
+        const allBatches = await Batch.find({});
+        const batchesWithTrays = await Promise.all(
+            allBatches.map(async (batch) => {
+                const trayData = await getTrayData(batch._id);
+                return {
+                    ...batch.toObject(),
+                    ...trayData,
+                };
+            })
+        );
+
+        // Fetch top 5 batches (example logic)
+        const topBatches = batchesWithTrays.slice(0, 5);
+
+        // Render the financials page with the fetched data
+        res.render('viewfinancai', {
+            allBatches: batchesWithTrays,
+            topBatches,
+            financialRecords, // Pass financialRecords to the template
+        });
+    } catch (err) {
+        console.error('Error in /financials route:', err);
+        res.status(500).send('Server Error');
+    }
+});
+
 // Helper function to get tray data for a batch
 async function getTrayData(batchId) {
     const eggProduction = await EggProduction.findOne({ batch: batchId }).sort({ date: -1 });
@@ -248,6 +281,173 @@ router.post('/financials', async (req, res) => {
         res.redirect('/financials');
     }
 });
+
+
+
+
+router.post('/financials', async (req, res) => {
+    try {
+        console.log('Request Body:', req.body);
+
+        // Destructure all fields with null defaults
+        const {
+            batch,
+            date,
+            // Egg sales
+            eggQty = 0,
+            eggPrice = 0,
+            eggPaymentMethod = null,
+            eggCustomer = null,
+            eggAccountType = null,
+            // Culled sales
+            culledQty = 0,
+            culledPrice = 0,
+            culledPaymentMethod = null,
+            culledCustomer = null,
+            culledAccountType = null,
+            // Expenses
+            feedCost = 0,
+            feedPaymentMethod = null,
+            feedSupplier = null,
+            feedAccountType = null,
+            chickCost = 0,
+            chickPaymentMethod = null,
+            chickSupplier = null,
+            chickAccountType = null,
+            medicationCost = 0,
+            medicationPaymentMethod = null,
+            medicationSupplier = null,
+            medicationAccountType = null,
+            laborCost = 0,
+            laborPaymentMethod = null,
+            laborStaff = null,
+            laborAccountType = null,
+            transportCost = 0,
+            transportPaymentMethod = null,
+            transportSupplier = null,
+            transportAccountType = null
+        } = req.body;
+
+        // Validate required fields
+        if (!batch || !date) {
+            return res.redirect('/financials');
+        }
+
+        // Validate batch ID format
+        if (!mongoose.Types.ObjectId.isValid(batch)) {
+            return res.redirect('/financials');
+        }
+
+        // Convert to ObjectId
+        const batchId = new mongoose.Types.ObjectId(batch);
+
+        // Get ACTUAL stock from production and sales
+        const [productionSummary, salesSummary] = await Promise.all([
+            EggProduction.aggregate([
+                { $match: { batch: batchId } },
+                { $group: { _id: null, totalProduced: { $sum: "$traysDecimal" } } }
+            ]),
+            Financial.aggregate([
+                { $match: { batch: batchId } },
+                { $group: { _id: null, totalSold: { $sum: "$traysSold" } } }
+            ])
+        ]);
+
+        const totalProduced = productionSummary[0]?.totalProduced || 0;
+        const totalSold = salesSummary[0]?.totalSold || 0;
+        const currentStock = totalProduced - totalSold;
+        const sanitizedEggQty = Math.max(0, parseFloat(eggQty) || 0);
+
+        // Validate stock availability
+        if (sanitizedEggQty > currentStock) {
+            return res.redirect('/financials');
+        }
+
+        // Prepare transactions array
+        const transactions = [];
+
+        // Helper function to create payment object
+        const createPaymentObject = (method, accountType, counterparty) => ({
+            method: method || 'cash',
+            accountType: accountType || (method === 'credit' ? 
+                                      (method === 'credit' ? 'receivable' : 'payable') : 'cash'),
+            counterparty,
+            status: method === 'credit' ? 'pending' : 'paid',
+            payments: []
+        });
+
+        // Add egg sale transaction if exists
+        if (sanitizedEggQty > 0) {
+            transactions.push({
+                type: 'income',
+                category: 'egg',
+                amount: sanitizedEggQty * (parseFloat(eggPrice) || 0),
+                payment: createPaymentObject(eggPaymentMethod, eggAccountType, eggCustomer),
+                details: {
+                    qty: sanitizedEggQty,
+                    unitPrice: parseFloat(eggPrice) || 0
+                },
+                date: new Date(date)
+            });
+        }
+
+        // Add culled sale transaction if exists
+        if (parseFloat(culledQty) > 0) {
+            transactions.push({
+                type: 'income',
+                category: 'culled',
+                amount: (parseFloat(culledQty) || 0) * (parseFloat(culledPrice) || 0),
+                payment: createPaymentObject(culledPaymentMethod, culledAccountType, culledCustomer),
+                details: {
+                    qty: parseFloat(culledQty) || 0,
+                    unitPrice: parseFloat(culledPrice) || 0
+                },
+                date: new Date(date)
+            });
+        }
+
+        // Expense transaction helper
+        const addExpenseTransaction = (category, cost, paymentMethod, accountType, supplier) => {
+            const amount = parseFloat(cost) || 0;
+            if (amount > 0) {
+                transactions.push({
+                    type: 'expense',
+                    category,
+                    amount,
+                    payment: createPaymentObject(paymentMethod, accountType, supplier),
+                    details: { supplier },
+                    date: new Date(date)
+                });
+            }
+        };
+
+        // Add all expense transactions
+        addExpenseTransaction('feed', feedCost, feedPaymentMethod, feedAccountType, feedSupplier);
+        addExpenseTransaction('chick', chickCost, chickPaymentMethod, chickAccountType, chickSupplier);
+        addExpenseTransaction('medication', medicationCost, medicationPaymentMethod, medicationAccountType, medicationSupplier);
+        addExpenseTransaction('labor', laborCost, laborPaymentMethod, laborAccountType, laborStaff);
+        addExpenseTransaction('transport', transportCost, transportPaymentMethod, transportAccountType, transportSupplier);
+
+        // Create new financial record
+        const financialRecord = new Financial({
+            batch: batchId,
+            date: new Date(date),
+            transactions
+        });
+
+        // Save the record (pre-save hooks will handle calculations)
+        await financialRecord.save();
+
+        // Successful response - simple redirect
+        res.redirect('/financials');
+
+    } catch (err) {
+        console.error('Error saving financial record:', err);
+        // Simple redirect on error
+        res.redirect('/financials');
+    }
+});
+
 // GET route to show edit form
 router.get('/financials/edit/:id', async (req, res) => {
     try {

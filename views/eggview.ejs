@@ -1,0 +1,1271 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  
+  <!-- Minified Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Minified Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <style>
+ /* Egg Production Form - Soft Modern Style */
+ 
+/* Query Action Button */
+/* Query Action Button - adjusted positioning */
+.query-action {
+  position: relative; /* Changed from absolute */
+  left: 0;
+  z-index: 1000;
+}
+
+
+.query-action button {
+    background-color:red; /* Teal color */
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.query-action button:hover {
+    background-color: #d11e1e; /* Darker teal on hover */
+}
+/* Base Header Styles */
+.header {
+  background: #003B4A;
+  color: white;
+  padding: 0.1rem 0.5rem; /* Almost no vertical padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  gap: 0.2rem; /* Minimal gap */
+  line-height: 1; /* Prevents extra height from text */
+  font-size: 0.9rem; /* Smaller text (adjust if needed) */
+}
+/* Logo Section */
+
+/* Logo Section - fixed alignment */
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: orange;
+  z-index: 1;
+  margin-left: 0; /* Remove previous margin */
+}
+.logo i {
+  font-size: 1.1rem;
+}
+
+/* User Controls - ensure proper spacing */
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto; /* Push to the right */
+  z-index: 1;
+}
+
+#currentUser {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.btn-danger {
+  background: red;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* Menu Button */
+.menu-button {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 769px) {
+  .header {
+    padding: 0.8rem 1.5rem;
+  }
+  .logo {
+    font-size: 1.2rem;
+    margin-left: 3rem;
+  }
+  .logo i {
+    font-size: 1.2rem;
+  }
+  .btn-danger, 
+  .menu-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 480px) {
+  .header {
+    padding: 0.6rem;
+    gap: 0.5rem;
+  }
+  .logo {
+    font-size: 1rem;
+  }
+  .user-controls {
+    gap: 0.5rem;
+  }
+  #currentUser {
+    display: none; /* Hide on smallest screens if needed */
+  }
+}
+
+/* Sidebar */
+.query-sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Initially hidden */
+    height: 100%;
+    width: 250px;
+    background-color: rgba(0, 0, 0, 0.9); /* Dark semi-transparent background */
+    color: white;
+    transition: left 0.3s ease;
+    z-index: 999;
+    padding-top: 60px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.query-sidebar.open {
+    left: 0; /* Show sidebar */
+}
+
+.query-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.query-sidebar li {
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.query-sidebar li:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effect */
+}
+
+.query-sidebar a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.query-sidebar a i {
+    font-size: 18px;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    z-index: 998;
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+}
+/* Active state for sidebar */
+.query-sidebar.open {
+  left: 0;
+}
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  #egg-production-container {
+    padding: 16px;
+    box-shadow: none;
+    border: none;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #ffffff;
+  }
+
+  .table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border: none;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    font-weight: 500;
+    color: #718096;
+    margin-right: 16px;
+  }
+
+  .table tbody td input,
+  .table tbody td select {
+    width: 60%;
+    background-color: #ffffff;
+  }
+}
+
+/* Submit Button */
+.btn-submit {
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: #185c94;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  transition: all 0.2s;
+  margin-top: 20px;
+}
+
+.btn-submit:hover {
+  background-color: #194b7a;
+  transform: translateY(-1px);
+  color: white;
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+ 
+</style>
+</head>
+<body>
+<div class="header">
+    <!-- Query Action Button -->
+    <div class="query-action">
+        <button class="btn btn-info" onclick="toggleSidebar()">Query Action</button>
+    </div>
+    <!-- Logo -->
+    <div class="logo">
+        <i class="bi bi-egg"></i> Layers
+    </div>
+    <!-- User Info and Logout -->
+    <div>
+        <span id="currentUser">Hello, User</span>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div id="querySidebar" class="query-sidebar">
+    <ul>
+      <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+
+      <li><a href="/batch"><i class="fas fa-plus-circle"></i> Add Flock</a></li>
+      <li><a href="/egg-production"><i class="fas fa-egg"></i> Record Egg Production</a></li>
+  
+      <li><a href="/financials"><i class="fas fa-dollar-sign"></i> Financials</a></li>
+     
+      <li><a href="/trial-balance"><i class="fas fa-cog"></i> Trial Balance</a></li>
+      <li><a href="/balance-sheet"><i class="fas fa-download"></i> Balance Sheet Report</a></li>
+      <li><a href="/supplier-payments"><i class="fas fa-exchange-alt"></i> Reconciliation</a></li>
+  
+      <li><a href="/visualization"><i class="fas fa-chart-line"></i> Visualization</a></li>
+      <li><a href="/report"><i class="fas fa-file-alt"></i> Report</a></li>
+  
+      <li><a href="/record-death"><i class="fas fa-skull-crossbones"></i> Record Death</a></li>
+    </ul>
+</div>
+<!-- views/egg-production.ejs -->
+ 
+<style>
+  /* Match financial form header exactly */
+ /* Match financial form header exactly */
+.table thead th {
+  background-color: rgb(3, 64, 85);
+  color: white;
+  padding: 10px 12px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+}
+
+/* Rounded corners for header */
+.table thead tr:first-child th:first-child {
+  border-top-left-radius: 5px;
+}
+
+.table thead tr:first-child th:last-child {
+  border-top-right-radius: 5px;
+}
+
+/* Mobile responsive styles from financial form */
+@media (max-width: 768px) {
+  /* Remove horizontal scroll */
+  .table-responsive {
+    overflow-x: hidden !important;
+  }
+
+  .table {
+    display: block;
+    width: 100%;
+    border: none;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    background: #f8f9fa;
+  }
+
+  .table tbody td {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border: none !important;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    flex: 0 0 40%;
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #495057;
+    padding-right: 1rem;
+  }
+
+  .table tbody td > * {
+    flex: 1;
+  }
+
+  /* Hide icons on mobile */
+  .table thead th i {
+    display: none;
+  }
+}
+
+</style>
+<section class="container-fluid px-lg-4 py-3">
+  <!-- Header Section -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3 mb-3">
+    <h2 class="h5 mb-0 d-flex align-items-center">
+      <i class="fas fa-egg text-primary me-2"></i>
+      <span class="d-none d-sm-inline">Egg Production Records</span>
+      <span class="d-inline d-sm-none">Egg Records</span>
+    </h2>
+    
+    <!-- Controls Container -->
+    <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto">
+      <!-- Batch Filter -->
+      <div class="flex-grow-1">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light border-end-0"><i class="fas fa-filter text-muted"></i></span>
+          <select class="form-select form-select-sm border-start-0" id="batchFilter">
+            <option value="all">All Batches</option>
+            <% batches.forEach(batch => { %>
+              <option value="<%= batch._id %>"><%= batch.batchNo %></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Search -->
+      <div class="flex-grow-1">
+        <div class="input-group input-group-sm">
+          <input type="text" id="eggSearchInput" class="form-control form-control-sm" placeholder="Search records...">
+          <button class="btn btn-sm btn-outline-secondary" type="button" id="searchButton">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Enhanced Date Filter -->
+      <div class="flex-grow-1 position-relative">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light"><i class="fas fa-calendar text-muted"></i></span>
+          <select id="dateFilter" class="form-select form-select-sm">
+            <option value="all">All Dates</option>
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+            <option value="week">This Week</option>
+            <option value="lastweek">Last Week</option>
+            <option value="month">This Month</option>
+            <option value="lastmonth">Last Month</option>
+            <option value="year">This Year</option>
+            <option value="custom">Custom Range</option>
+          </select>
+        </div>
+        
+         <!-- Enhanced Date Picker (hidden by default) -->
+         <div id="customDateContainer" class="card position-absolute start-0 end-0 mt-1 z-3 shadow-sm" style="display: none;">
+          <div class="card-body p-2">
+            <div class="d-flex flex-column flex-sm-row gap-2">
+              <div class="flex-grow-1">
+                <label class="small text-muted mb-1">From</label>
+                <input type="date" id="customDateStart" class="form-control form-control-sm">
+              </div>
+              <div class="flex-grow-1">
+                <label class="small text-muted mb-1">To</label>
+                <input type="date" id="customDateEnd" class="form-control form-control-sm">
+              </div>
+              <div class="d-flex align-items-end">
+                <button id="applyDateRange" class="btn btn-sm btn-primary">
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Quick Presets for Mobile -->
+            <div class="d-flex d-sm-none flex-wrap gap-1 mt-2">
+              <button class="btn btn-sm btn-outline-secondary date-preset" data-days="7">Last 7 Days</button>
+              <button class="btn btn-sm btn-outline-secondary date-preset" data-days="30">Last 30 Days</button>
+              <button class="btn btn-sm btn-outline-secondary date-preset" data-month="0">This Month</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Rows Selector -->
+      <div class="flex-grow-1" style="min-width: 120px;">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light"><i class="fas fa-list text-muted"></i></span>
+          <select id="rowsPerPage" class="form-select form-select-sm">
+            <option value="5">5 rows</option>
+            <option value="10" selected>10 rows</option>
+            <option value="20">20 rows</option>
+            <option value="50">50 rows</option>
+            <option value="all">All</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="card border-0 shadow-sm mb-3">
+    <div class="card-body p-0">
+      <!-- Desktop Table -->
+      <div class="d-none d-md-block">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0" id="desktopTable">
+            <thead class="bg-light">
+              <tr>
+                <th><i class="fas fa-hashtag fa-fw me-1 text-muted"></i>Batch</th>
+                <th><i class="fas fa-calendar-alt fa-fw me-1 text-muted"></i>Date</th>
+                <th><i class="fas fa-egg fa-fw me-1 text-muted"></i>Total</th>
+                <th><i class="fas fa-check-circle fa-fw me-1 text-success"></i>Good</th>
+                <th><i class="fas fa-times-circle fa-fw me-1 text-danger"></i>Bad</th>
+                <th><i class="fas fa-percentage fa-fw me-1 text-muted"></i>Production</th>
+                <th width="100">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="desktopTableBody">
+              <% if (records && records.length > 0) { %>
+                <% records.forEach((record) => { %>
+                  <tr data-batch="<%= record.batch?._id %>" 
+                      data-record-id="<%= record._id %>"
+                      data-date="<%= record.date ? record.date.toISOString().split('T')[0] : '' %>">
+                    <td><span class="fw-semibold"><%= record.batch?.batchNo || 'N/A' %></span></td>
+                    <td>
+                      <span class="text-muted small">
+                        <%= record.date ? record.date.toISOString().split('T')[0] : 'No date' %>
+                      </span>
+                    </td>
+                    <td><%= record.totalEggs %></td>
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="progress flex-grow-1" style="height: 6px;">
+                          <div class="progress-bar bg-success" style="width: <%= record.goodEggsPercent %>%"></div>
+                        </div>
+                        <span><%= record.goodEggsPercent %>%</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="progress flex-grow-1" style="height: 6px;">
+                          <div class="progress-bar bg-danger" style="width: <%= record.badEggsPercent %>%"></div>
+                        </div>
+                        <span><%= record.badEggsPercent %>%</span>
+                      </div>
+                    </td>
+                    <td>
+                      <% if (record.productionPercent) { %>
+                        <span class="badge bg-<%= record.productionPercent >= 80 ? 'success' : record.productionPercent >= 50 ? 'warning' : 'danger' %> bg-opacity-10 text-<%= record.productionPercent >= 80 ? 'success' : record.productionPercent >= 50 ? 'warning' : 'danger' %>">
+                          <%= record.productionPercent %>%
+                        </span>
+                      <% } else { %>
+                        <span class="text-muted">N/A</span>
+                      <% } %>
+                    </td>
+                    <td>
+                      <div class="d-flex gap-1">
+                        <button class="btn btn-sm btn-outline-primary rounded-circle p-1 edit-btn" 
+                                onclick="window.location.href='/egg-production/edit/<%= record._id %>'"
+                                data-bs-toggle="tooltip" title="Edit">
+                          <i class="fas fa-pencil-alt fa-fw"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger rounded-circle p-1 delete-btn" 
+                                onclick="if(confirm('Are you sure?')) { deleteRecord('<%= record._id %>', this) }"
+                                data-bs-toggle="tooltip" title="Delete">
+                          <i class="fas fa-trash-alt fa-fw"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="7" class="text-center py-5 text-muted">
+                    <i class="fas fa-egg fa-2x mb-3 opacity-25"></i>
+                    <p class="mb-0">No production records found</p>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Mobile List -->
+      <div class="d-block d-md-none" id="mobileList">
+        <% if (records && records.length > 0) { %>
+          <div class="list-group list-group-flush">
+            <% records.forEach((record) => { %>
+              <div class="list-group-item p-3" 
+                   data-batch="<%= record.batch?._id %>" 
+                   data-record-id="<%= record._id %>"
+                   data-date="<%= record.date ? record.date.toISOString().split('T')[0] : '' %>">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-bold text-primary"><%= record.batch?.batchNo || 'N/A' %></span>
+                  <span class="text-muted small">
+                    <%= record.date ? record.date.toISOString().split('T')[0] : 'No date' %>
+                  </span>
+                </div>
+                
+                <div class="row g-2 small">
+                  <div class="col-6">
+                    <div class="text-muted">Total Eggs</div>
+                    <div class="fw-medium"><%= record.totalEggs %></div>
+                  </div>
+                  <div class="col-6">
+                    <div class="text-muted">Production</div>
+                    <div>
+                      <% if (record.productionPercent) { %>
+                        <span class="badge bg-<%= record.productionPercent >= 80 ? 'success' : record.productionPercent >= 50 ? 'warning' : 'danger' %> bg-opacity-10 text-<%= record.productionPercent >= 80 ? 'success' : record.productionPercent >= 50 ? 'warning' : 'danger' %>">
+                          <%= record.productionPercent %>%
+                        </span>
+                      <% } else { %>
+                        <span class="text-muted">N/A</span>
+                      <% } %>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="text-muted">Good Eggs</div>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="progress flex-grow-1" style="height: 4px;">
+                        <div class="progress-bar bg-success" style="width: <%= record.goodEggsPercent %>%"></div>
+                      </div>
+                      <span><%= record.goodEggsPercent %>%</span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="text-muted">Bad Eggs</div>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="progress flex-grow-1" style="height: 4px;">
+                        <div class="progress-bar bg-danger" style="width: <%= record.badEggsPercent %>%"></div>
+                      </div>
+                      <span><%= record.badEggsPercent %>%</span>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-flex justify-content-end gap-2 mt-2">
+                      <button class="btn btn-sm btn-outline-primary" 
+                              onclick="window.location.href='/egg-production/edit/<%= record._id %>'">
+                        <i class="fas fa-pencil-alt me-1"></i> Edit
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" 
+                              onclick="if(confirm('Are you sure?')) { deleteRecord('<%= record._id %>', this) }">
+                        <i class="fas fa-trash-alt me-1"></i> Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="text-center py-5 text-muted">
+            <i class="fas fa-egg fa-2x mb-3 opacity-25"></i>
+            <p class="mb-0">No production records found</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <% if (records && records.length > 0) { %>
+      <div class="card-footer bg-light py-2">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+          <div class="small text-muted mb-2 mb-sm-0">
+            Showing <span id="showingCount">1</span> to <span id="totalCount"><%= records.length > 10 ? 10 : records.length %></span> of <span id="totalRecords"><%= records.length %></span>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary" id="prevPage" disabled>
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="btn-group" id="pageNumbers">
+              <button class="btn btn-sm btn-outline-secondary active">1</button>
+              <% if (records.length > 10) { %>
+                <button class="btn btn-sm btn-outline-secondary">2</button>
+              <% } %>
+              <% if (records.length > 20) { %>
+                <button class="btn btn-sm btn-outline-secondary">3</button>
+              <% } %>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary" id="nextPage">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<style>
+  /* Custom responsive styles */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Mobile list items */
+  .list-group-item {
+    border-left: 0;
+    border-right: 0;
+  }
+  
+  .list-group-item:first-child {
+    border-top: 0;
+  }
+  
+  .list-group-item:last-child {
+    border-bottom: 0;
+  }
+  
+  /* Progress bar in mobile view */
+  .progress {
+    background-color: #f0f3f5;
+    min-width: 40px;
+  }
+  
+  /* Date picker styling */
+  #customDateContainer {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .card-body {
+      padding: 0;
+    }
+    
+    .input-group {
+      flex-wrap: nowrap;
+    }
+    
+    .input-group .form-control,
+    .input-group .form-select {
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    
+    /* Stack controls vertically on very small screens */
+    .d-flex.flex-sm-row {
+      flex-direction: column !important;
+    }
+    
+    .flex-grow-1 {
+      width: 100%;
+    }
+    
+    /* Make date presets full width on mobile */
+    .date-preset {
+      flex: 1 0 calc(50% - 0.5rem);
+      min-width: calc(50% - 0.5rem);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container-fluid {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+    
+    .card {
+      border-radius: 0;
+      box-shadow: none;
+      border: 1px solid #eee;
+    }
+    
+    /* Adjust date picker for mobile */
+    #customDateContainer {
+      position: fixed !important;
+      left: 10px !important;
+      right: 10px !important;
+      top: 50% !important;
+      transform: translateY(-50%);
+      z-index: 1050 !important;
+    }
+  }
+  
+  @media (min-width: 768px) and (max-width: 992px) {
+    .table td, .table th {
+      padding: 0.5rem;
+    }
+  }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  
+    // DOM elements
+    const batchFilter = document.getElementById("batchFilter");
+    const eggSearchInput = document.getElementById("eggSearchInput");
+    const searchButton = document.getElementById("searchButton");
+    const dateFilter = document.getElementById("dateFilter");
+    const customDateContainer = document.getElementById("customDateContainer");
+    const customDateStart = document.getElementById("customDateStart");
+    const customDateEnd = document.getElementById("customDateEnd");
+    const applyDateRange = document.getElementById("applyDateRange");
+    const rowsPerPage = document.getElementById("rowsPerPage");
+    const showingCount = document.getElementById("showingCount");
+    const totalCount = document.getElementById("totalCount");
+    const totalRecords = document.getElementById("totalRecords");
+    const prevPage = document.getElementById("prevPage");
+    const nextPage = document.getElementById("nextPage");
+    const pageNumbers = document.getElementById("pageNumbers");
+    
+    // Pagination variables
+    let currentPage = 1;
+    let filteredRecords = [];
+    
+    // Set default dates for custom range
+    function setDefaultCustomDates() {
+      const today = new Date();
+      const oneWeekAgo = new Date(today);
+      oneWeekAgo.setDate(today.getDate() - 7);
+      
+      customDateStart.valueAsDate = oneWeekAgo;
+      customDateEnd.valueAsDate = today;
+    }
+    
+    // Date calculation functions
+    function getDateRange(filterValue) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      switch(filterValue) {
+        case 'today':
+          return {
+            start: today,
+            end: new Date(today.getTime() + 86400000)
+          };
+        case 'yesterday':
+          return {
+            start: new Date(today.getTime() - 86400000),
+            end: today
+          };
+        case 'week':
+          const startOfWeek = new Date(today);
+          startOfWeek.setDate(today.getDate() - today.getDay());
+          const endOfWeek = new Date(startOfWeek);
+          endOfWeek.setDate(startOfWeek.getDate() + 7);
+          return {
+            start: startOfWeek,
+            end: endOfWeek
+          };
+        case 'lastweek':
+          const startOfLastWeek = new Date(today);
+          startOfLastWeek.setDate(today.getDate() - today.getDay() - 7);
+          const endOfLastWeek = new Date(startOfLastWeek);
+          endOfLastWeek.setDate(startOfLastWeek.getDate() + 7);
+          return {
+            start: startOfLastWeek,
+            end: endOfLastWeek
+          };
+        case 'month':
+          return {
+            start: new Date(today.getFullYear(), today.getMonth(), 1),
+            end: new Date(today.getFullYear(), today.getMonth() + 1, 1)
+          };
+        case 'lastmonth':
+          return {
+            start: new Date(today.getFullYear(), today.getMonth() - 1, 1),
+            end: new Date(today.getFullYear(), today.getMonth(), 1)
+          };
+        case 'year':
+          return {
+            start: new Date(today.getFullYear(), 0, 1),
+            end: new Date(today.getFullYear() + 1, 0, 1)
+          };
+        case 'custom':
+          if (customDateStart.value && customDateEnd.value) {
+            return {
+              start: new Date(customDateStart.value),
+              end: new Date(new Date(customDateEnd.value).getTime() + 86400000)
+            };
+          }
+          return null;
+        default:
+          return null;
+      }
+    }
+    
+    // Date filter event listener
+    dateFilter.addEventListener("change", function() {
+      if (this.value === 'custom') {
+        setDefaultCustomDates();
+        customDateContainer.style.display = 'block';
+      } else {
+        customDateContainer.style.display = 'none';
+        filterAndPaginate();
+      }
+    });
+    
+    // Apply custom date range
+    applyDateRange.addEventListener("click", function() {
+      if (customDateStart.value && customDateEnd.value) {
+        const startDate = new Date(customDateStart.value);
+        const endDate = new Date(customDateEnd.value);
+        
+        if (startDate > endDate) {
+          alert('End date must be after start date');
+          return;
+        }
+        
+        customDateContainer.style.display = 'none';
+        filterAndPaginate();
+      } else {
+        alert('Please select both start and end dates');
+      }
+    });
+    
+    // Close date picker when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!customDateContainer.contains(event.target) && 
+          event.target !== dateFilter && 
+          !dateFilter.contains(event.target)) {
+        customDateContainer.style.display = 'none';
+      }
+    });
+    
+    // Date presets for mobile
+    document.querySelectorAll('.date-preset').forEach(button => {
+      button.addEventListener('click', function() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (this.dataset.days) {
+          const days = parseInt(this.dataset.days);
+          const startDate = new Date(today);
+          startDate.setDate(today.getDate() - days);
+          customDateStart.valueAsDate = startDate;
+          customDateEnd.valueAsDate = today;
+        } else if (this.dataset.month) {
+          const monthOffset = parseInt(this.dataset.month);
+          const startDate = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
+          const endDate = new Date(today.getFullYear(), today.getMonth() + monthOffset + 1, 0);
+          customDateStart.valueAsDate = startDate;
+          customDateEnd.valueAsDate = endDate;
+        }
+        
+        dateFilter.value = 'custom';
+        customDateContainer.style.display = 'none';
+        filterAndPaginate();
+      });
+    });
+    
+    // Get all records (both desktop and mobile)
+    function getAllRecords() {
+      const desktopRows = document.querySelectorAll("#desktopTableBody tr");
+      const mobileItems = document.querySelectorAll("#mobileList .list-group-item");
+      
+      return Array.from(desktopRows).map((row, index) => ({
+        element: row,
+        mobileElement: mobileItems[index],
+        batch: row.getAttribute("data-batch"),
+        date: row.getAttribute("data-date"),
+        id: row.getAttribute("data-record-id")
+      }));
+    }
+    
+    // Filter records based on search, batch filter, and date filter
+    function filterRecords() {
+      const searchValue = eggSearchInput.value.toLowerCase();
+      const selectedBatch = batchFilter.value;
+      const dateFilterValue = dateFilter.value;
+      const dateRange = getDateRange(dateFilterValue);
+      
+      return getAllRecords().filter(record => {
+        // Check batch filter
+        const matchesBatch = selectedBatch === "all" || record.batch === selectedBatch;
+        
+        // Check search filter
+        const elementText = record.element.textContent.toLowerCase();
+        const matchesSearch = searchValue === "" || elementText.includes(searchValue);
+        
+        // Check date filter
+        let matchesDate = true;
+        if (dateRange && record.date) {
+          const recordDate = new Date(record.date);
+          matchesDate = recordDate >= dateRange.start && recordDate < dateRange.end;
+        }
+        
+        return matchesBatch && matchesSearch && matchesDate;
+      });
+    }
+    
+    // Main function to filter and paginate records
+    function filterAndPaginate() {
+      currentPage = 1;
+      filteredRecords = filterRecords();
+      updatePagination();
+      updateDisplay();
+    }
+    
+    // Update the displayed records
+    function updateDisplay() {
+      const rowsPerPageValue = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
+      const startIndex = (currentPage - 1) * rowsPerPageValue;
+      const endIndex = Math.min(startIndex + rowsPerPageValue, filteredRecords.length);
+      
+      // Hide all records first
+      getAllRecords().forEach(record => {
+        record.element.style.display = "none";
+        if (record.mobileElement) record.mobileElement.style.display = "none";
+      });
+      
+      // Show only the records for the current page
+      for (let i = startIndex; i < endIndex; i++) {
+        if (filteredRecords[i]) {
+          filteredRecords[i].element.style.display = "";
+          if (filteredRecords[i].mobileElement) {
+            filteredRecords[i].mobileElement.style.display = "";
+          }
+        }
+      }
+      
+      // Update showing counts
+      showingCount.textContent = filteredRecords.length === 0 ? 0 : startIndex + 1;
+      totalCount.textContent = endIndex;
+      totalRecords.textContent = filteredRecords.length;
+    }
+    
+    // Update pagination controls
+    function updatePagination() {
+      const rowsPerPageValue = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
+      const totalPages = Math.ceil(filteredRecords.length / rowsPerPageValue) || 1;
+      
+      // Clear existing page numbers
+      pageNumbers.innerHTML = '';
+      
+      // Simple pagination - show up to 5 pages
+      const pagesToShow = Math.min(totalPages, 5);
+      let startPage = Math.max(1, currentPage - 2);
+      if (startPage + pagesToShow > totalPages) {
+        startPage = Math.max(1, totalPages - pagesToShow + 1);
+      }
+      
+      // Add page buttons
+      for (let i = startPage; i < startPage + pagesToShow; i++) {
+        if (i > totalPages) break;
+        
+        const pageBtn = document.createElement('button');
+        pageBtn.className = `btn btn-sm btn-outline-secondary ${i === currentPage ? 'active' : ''}`;
+        pageBtn.textContent = i;
+        pageBtn.addEventListener('click', () => {
+          currentPage = i;
+          updateDisplay();
+        });
+        pageNumbers.appendChild(pageBtn);
+      }
+      
+      // Update prev/next buttons
+      prevPage.disabled = currentPage === 1;
+      nextPage.disabled = currentPage === totalPages || totalPages === 0;
+    }
+    
+    // Event listeners
+    batchFilter.addEventListener("change", filterAndPaginate);
+    eggSearchInput.addEventListener("input", filterAndPaginate);
+    searchButton.addEventListener("click", filterAndPaginate);
+    rowsPerPage.addEventListener("change", filterAndPaginate);
+    
+    prevPage.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        updateDisplay();
+        updatePagination();
+      }
+    });
+    
+    nextPage.addEventListener("click", () => {
+      const rowsPerPageValue = rowsPerPage.value === "all" ? filteredRecords.length : parseInt(rowsPerPage.value);
+      const totalPages = Math.ceil(filteredRecords.length / rowsPerPageValue);
+      
+      if (currentPage < totalPages) {
+        currentPage++;
+        updateDisplay();
+        updatePagination();
+      }
+    });
+    
+    // Initialize
+    setDefaultCustomDates();
+    filteredRecords = getAllRecords();
+    updatePagination();
+    updateDisplay();
+  });
+  
+  // Global delete function
+  window.deleteRecord = function(recordId, element) {
+    if (confirm('Are you sure you want to delete this record?')) {
+      // In a real app, you would make an AJAX call here
+      const row = element.closest('tr') || element.closest('.list-group-item');
+      if (row) row.remove();
+      
+      // Refresh the interface
+      document.dispatchEvent(new Event('DOMContentLoaded'));
+    }
+  };
+  </script>
+<script>
+function toggleSidebar() {
+    const sidebar = document.getElementById('querySidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+
+function logout() {
+    // Improved logout with confirmation
+    if (confirm('Are you sure you want to logout?')) {
+        // Add your actual logout logic here
+        window.location.href = '/logout'; // Example redirect
+    }
+}
+
+function calculateGoodEggs() {
+    const badEggsInput = document.getElementById('badEggsPercent');
+    const goodEggsInput = document.getElementById('goodEggsPercent');
+    
+    if (!badEggsInput || !goodEggsInput) return;
+
+    const badEggsPercent = parseFloat(badEggsInput.value) || 0;
+    
+    if (badEggsPercent < 0 || badEggsPercent > 100) {
+        goodEggsInput.value = '';
+        alert('Bad eggs percentage must be between 0 and 100');
+        return;
+    }
+    
+    goodEggsInput.value = (100 - badEggsPercent).toFixed(2);
+    calculateProductionPercent();
+}
+
+
+async function calculateProductionPercent() {
+    try {
+        // Get and validate inputs
+        const totalEggsInput = document.getElementById('totalEggs');
+        const totalFlockInput = document.getElementById('totalFlock');
+        
+        const totalEggs = parseFloat(totalEggsInput.value) || 0;
+        const totalFlock = parseFloat(totalFlockInput.value) || 0;
+
+        // Clear previous errors
+        totalEggsInput.classList.remove('is-invalid');
+        totalFlockInput.classList.remove('is-invalid');
+
+        // Validate inputs
+        if (totalEggs < 0) {
+            totalEggsInput.classList.add('is-invalid');
+            throw new Error('Total eggs cannot be negative');
+        }
+        
+         
+
+        // Calculate egg production percentage
+        const eggProductionPercent = totalFlock > 0 ? (totalEggs / totalFlock) * 100 : 0;
+        document.getElementById('eggProductionPercent').value = eggProductionPercent.toFixed(2);
+
+        // Calculate trays (X.YY format)
+        const fullTrays = Math.floor(totalEggs / 30);
+        const remainingEggs = totalEggs % 30;
+        const traysProduced = remainingEggs === 0 ? 
+            fullTrays.toString() : 
+            `${fullTrays}.${remainingEggs.toString().padStart(2, '0')}`;
+        
+        document.getElementById('traysProduced').value = traysProduced;
+
+        // Update remaining trays (fetch if batch selected)
+        const batchId = document.getElementById('batchSelect').value;
+        document.getElementById('traysRemaining').value = batchId ? 
+            (await fetchTrayData(batchId))?.traysRemaining ?? traysProduced : 
+            traysProduced;
+
+    } catch (error) {
+        console.error('Production calculation error:', error);
+        alert(`Error: ${error.message}`);
+    }
+}
+
+// Helper function for API calls
+async function fetchTrayData(batchId) {
+    try {
+        const response = await fetch(`/api/batch/${batchId}/trays`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        return await response.json();
+    } catch (error) {
+        console.error('Fetch error:', error);
+        return null;
+    }
+}
+
+// Update flock details
+async function updateFlockDetails() {
+    try {
+        const selectedBatch = document.getElementById('batchSelect').selectedOptions[0];
+        const totalFlock = selectedBatch ? 
+            parseInt(selectedBatch.getAttribute('data-total')) || 0 : 0;
+        
+        document.getElementById('totalFlock').value = totalFlock;
+        await calculateProductionPercent();
+    } catch (error) {
+        console.error('Error in updateFlockDetails:', error);
+    }
+}
+
+// Event listeners with debouncing for input fields
+function setupEventListeners() {
+    // Debounce function to limit rapid firing of events
+    const debounce = (func, delay) => {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    };
+
+    document.getElementById('batchSelect').addEventListener('change', updateFlockDetails);
+    document.getElementById('totalEggs').addEventListener('input', 
+        debounce(calculateProductionPercent, 300));
+    document.getElementById('badEggsPercent').addEventListener('input', 
+        debounce(calculateGoodEggs, 300));
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    setupEventListeners();
+    // Initial calculations
+    calculateGoodEggs();
+    calculateProductionPercent();
+});
+
+
+// Delete record function
+function deleteRecord(recordId, buttonElement) {
+    fetch(`/egg-production/${recordId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Remove the row from the UI
+            buttonElement.closest('.grid-row').remove();
+            // Show success message
+            alert('Record deleted successfully');
+        } else {
+            alert('Failed to delete record');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting record');
+    });
+}
+
+
+
+    </script>
+ 
+</body>
+</html>

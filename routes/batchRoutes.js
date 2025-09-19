@@ -33,6 +33,33 @@ router.get('/batch', async (req, res) => {
     }
 });
 
+// Change the route path to /viewflock
+router.get('/viewflock', async (req, res) => {
+    try {
+        let batchNo;
+        let isUnique = false;
+
+        while (!isUnique) {
+            batchNo = 'BN-' + crypto.randomBytes(4).toString('hex').toUpperCase();
+            const existingBatch = await Batch.findOne({ batchNo });
+            if (!existingBatch) isUnique = true;
+        }
+
+        const batches = await Batch.find().sort({ creationDate: -1 });
+
+        // Render viewflock.ejs
+        res.render('viewflock', { batchNo, batches });
+
+    } catch (error) {
+        console.error('Error loading batch form:', error);
+        res.status(500).render('viewflock', { 
+            message: 'Error loading batch form',
+            error: error.message 
+        });
+    }
+});
+
+
 // Handle POST form submission for batch entry
 // POST /batch - Create a new batch (without flash)
 router.post('/batch', async (req, res) => {

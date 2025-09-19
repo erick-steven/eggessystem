@@ -249,53 +249,7 @@
 
         </ul>
     </div>
-    <div class="container my-5">
-      <div class="card shadow-sm">
-        <div class="card-body p-2 p-md-3">
-          <form action="/batch" method="POST" id="batch-form-table">
-            <div class="table-responsive">
-              <table class="table table-bordered table-hover mb-0">
-                <thead class="table-dark">
-                  <tr>
-                    <th class="text-nowrap" style="background-color: rgb(3, 64, 85); border-top-left-radius: 5px;"><i class="fas fa-hashtag me-1"></i> Batch No</th>
-                    <th class="text-nowrap" style="background-color: rgb(3, 64, 85);"><i class="fas fa-dna me-1"></i> Breed</th>
-                    <th class="text-nowrap" style="background-color: rgb(3, 64, 85);"><i class="fas fa-chicken me-1"></i> Total Number</th>
-                    <th class="text-nowrap" style="background-color: rgb(3, 64, 85);"><i class="fas fa-calendar-week me-1"></i> Age</th>
-                    <th class="text-nowrap" style="background-color: rgb(3, 64, 85); border-top-right-radius: 5px;"><i class="far fa-calendar-alt me-1"></i> Date</th>
-                  </tr>
-                </thead>
-                
-                <tbody>
-                  <tr>
-                    <td class="align-middle" data-label="Batch No">
-                      <input type="text" name="batchNo" class="form-control form-control-sm" value="<%= batchNo %>" readonly />
-                    </td>
-                    <td class="align-middle" data-label="Breed">
-                      <input type="text" name="grade" class="form-control form-control-sm" placeholder="Enter breed" required />
-                    </td>
-                    <td class="align-middle" data-label="Total Number">
-                      <input type="number" name="totalNumber" class="form-control form-control-sm" placeholder="Total" required />
-                    </td>
-                    <td class="align-middle" data-label="Age">
-                      <input type="number" name="age" class="form-control form-control-sm" placeholder="Age in weeks" required />
-                    </td>
-                    <td class="align-middle" data-label="Date">
-                      <input type="date" name="date" class="form-control form-control-sm" required />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            
-            <div class="text-end mt-3">
-              <button type="submit" class="btn btn-primary btn-sm">
-                <i class="fas fa-save me-1"></i> Save Batch
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    
     
     <style>
    .table thead th {
