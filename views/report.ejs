@@ -384,7 +384,9 @@
                 font-size: 12px;
             }
         }
-    </style>
+      
+ 
+</style>
 </head>
 <body>
     <!-- Header -->
@@ -487,39 +489,112 @@
             <!-- Batch Details Section -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5>Batch Details</h5>
+                  <h5>Batch Details</h5>
                 </div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Batch Number</th>
-                                <th>Breed</th>
-                                <th>Initial Age</th>
-                                <th>Current Age</th>
-                                <th>Initial Count</th>
-                                <th>Current Count</th>
-                                <th>Status</th>
-                                <th>Creation Date</th>
-                                <th>Last Update</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><%= selectedBatch.batchNo %></td>
-                                <td><%= selectedBatch.grade %></td>
-                                <td><%= selectedBatch.initialAgeWeeks %> weeks</td>
-                                <td><%= selectedBatch.currentAgeWeeks %> weeks</td>
-                                <td><%= selectedBatch.totalNumber %></td>
-                                <td><%= selectedBatch.currentCount %></td>
-                                <td><%= selectedBatch.status %></td>
-                                <td><%= selectedBatch.creationDate.toDateString() %></td>
-                                <td><%= selectedBatch.lastAgeUpdate.toDateString() %></td>
-                            </tr>
-                        </tbody>
+                <div class="card-body position-relative">
+                  <!-- Scrollable wrapper -->
+                  <div class="table-responsive scrollable">
+                    <table class="table table-bordered mb-0">
+                      <thead>
+                        <tr>
+                          <th>Batch Number</th>
+                          <th>Breed</th>
+                          <th>Initial Age</th>
+                          <th>Current Age</th>
+                          <th>Initial Count</th>
+                          <th>Current Count</th>
+                          <th>Status</th>
+                          <th>Creation Date</th>
+                          <th>Last Update</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><%= selectedBatch.batchNo %></td>
+                          <td><%= selectedBatch.grade %></td>
+                          <td><%= selectedBatch.initialAgeWeeks %> weeks</td>
+                          <td><%= selectedBatch.currentAgeWeeks %> weeks</td>
+                          <td><%= selectedBatch.totalNumber %></td>
+                          <td><%= selectedBatch.currentCount %></td>
+                          <td><%= selectedBatch.status %></td>
+                          <td><%= selectedBatch.creationDate.toDateString() %></td>
+                          <td><%= selectedBatch.lastAgeUpdate.toDateString() %></td>
+                        </tr>
+                      </tbody>
                     </table>
+                  </div>
+              
+                  <!-- Side scroll buttons only -->
+                  <button class="scroll-button left">&#9664;</button>
+                  <button class="scroll-button right">&#9654;</button>
                 </div>
-            </div>
+              </div>
+              
+              <style>
+              .scrollable {
+                overflow-x: hidden; /* hide the scrollbar */
+                white-space: nowrap;
+                position: relative;
+              }
+              
+              /* Hide scrollbars cross-browser */
+              .scrollable::-webkit-scrollbar {
+                display: none; /* Chrome, Safari */
+              }
+              .scrollable {
+                -ms-overflow-style: none; /* IE/Edge */
+                scrollbar-width: none;    /* Firefox */
+              }
+              
+              /* Floating buttons */
+              .scroll-button {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(0, 123, 255, 0.8);
+                border: none;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 50%;
+                cursor: pointer;
+                z-index: 10;
+              }
+              .scroll-button.left {
+                left: 10px;
+              }
+              .scroll-button.right {
+                right: 10px;
+              }
+              .scroll-button:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+              }
+              </style>
+              
+              <script>
+              const container = document.querySelector('.scrollable');
+              const leftBtn = document.querySelector('.scroll-button.left');
+              const rightBtn = document.querySelector('.scroll-button.right');
+              
+              function updateButtons() {
+                leftBtn.disabled = container.scrollLeft === 0;
+                rightBtn.disabled =
+                  container.scrollLeft + container.clientWidth >= container.scrollWidth;
+              }
+              
+              leftBtn.addEventListener('click', () => {
+                container.scrollBy({ left: -200, behavior: 'smooth' });
+                setTimeout(updateButtons, 300);
+              });
+              rightBtn.addEventListener('click', () => {
+                container.scrollBy({ left: 200, behavior: 'smooth' });
+                setTimeout(updateButtons, 300);
+              });
+              
+              container.addEventListener('scroll', updateButtons);
+              updateButtons();
+              </script>
+              
         
             <!-- Death Records Section -->
             <% if (selectedBatch.deathRecords && selectedBatch.deathRecords.length > 0) { %>
