@@ -879,28 +879,27 @@
                                     </thead>
                                     <tbody>
                                         <% financialData.forEach(entry => { %>
-                                            <tr class="date-filterable" data-date="<%= new Date(entry.date).getTime() %>">
-                                                <td><%= entry.date.toLocaleDateString() %></td>
-                                                <td><%= entry.totalIncome.toLocaleString() %></td>
-                                                <td><%= entry.totalExpenses.toLocaleString() %></td>
-                                                <td><%= entry.profit.toLocaleString() %></td>
-                                                <td><%= entry.eggQty.toLocaleString() %></td>
-                                                <td><%= entry.eggPrice.toLocaleString() %></td>
-                                                <td><%= entry.eggIncome.toLocaleString() %></td>
-                                                <td><%= entry.culledQty.toLocaleString() %></td>
-                                                <td><%= entry.culledPrice.toLocaleString() %></td>
-                                                <td><%= entry.culledIncome.toLocaleString() %></td>
-                                                <td><%= entry.feedCost.toLocaleString() %></td>
-                                                <td><%= entry.chickCost.toLocaleString() %></td>
-                                                <td><%= entry.medicationCost.toLocaleString() %></td>
-                                                <td><%= entry.laborCost.toLocaleString() %></td>
-                                                <td><%= entry.transportCost.toLocaleString() %></td>
-                                                <td><%= entry.traysProduced.toLocaleString() %></td>
-                                                <td><%= entry.traysSold.toLocaleString() %></td>
-                                                <td><%= entry.traysRemaining.toLocaleString() %></td>
+                                            <tr class="date-filterable" data-date="<%= entry.date ? new Date(entry.date).getTime() : '' %>">
+                                                <td><%= entry.date ? entry.date.toLocaleDateString() : 'N/A' %></td>
+                                                <td><%= entry.totalIncome ? entry.totalIncome.toLocaleString() : '0' %></td>
+                                                <td><%= entry.totalExpenses ? entry.totalExpenses.toLocaleString() : '0' %></td>
+                                                <td><%= entry.profit ? entry.profit.toLocaleString() : '0' %></td>
+                                                <td><%= entry.eggQty ? entry.eggQty.toLocaleString() : '0' %></td>
+                                                <td><%= entry.eggPrice ? entry.eggPrice.toLocaleString() : '0' %></td>
+                                                <td><%= entry.eggIncome ? entry.eggIncome.toLocaleString() : '0' %></td>
+                                                <td><%= entry.culledQty ? entry.culledQty.toLocaleString() : '0' %></td>
+                                                <td><%= entry.culledPrice ? entry.culledPrice.toLocaleString() : '0' %></td>
+                                                <td><%= entry.culledIncome ? entry.culledIncome.toLocaleString() : '0' %></td>
+                                                <td><%= entry.feedCost ? entry.feedCost.toLocaleString() : '0' %></td>
+                                                <td><%= entry.chickCost ? entry.chickCost.toLocaleString() : '0' %></td>
+                                                <td><%= entry.medicationCost ? entry.medicationCost.toLocaleString() : '0' %></td>
+                                                <td><%= entry.laborCost ? entry.laborCost.toLocaleString() : '0' %></td>
+                                                <td><%= entry.transportCost ? entry.transportCost.toLocaleString() : '0' %></td>
+                                                <td><%= entry.traysProduced ? entry.traysProduced.toLocaleString() : '0' %></td>
+                                                <td><%= entry.traysSold ? entry.traysSold.toLocaleString() : '0' %></td>
+                                                <td><%= entry.traysRemaining ? entry.traysRemaining.toLocaleString() : '0' %></td>
                                             </tr>
-                                        <% }) %>
-                                    </tbody>
+                                        <% }) %>                       </tbody>
                                 </table>
                             </div>
                             <button class="scroll-button right">&#9654;</button>
