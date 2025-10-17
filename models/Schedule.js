@@ -6,11 +6,11 @@ const scheduleSchema = new mongoose.Schema({
   vitamins: String,
   feed: String,
   notes: String,
-  date: Date, // ✅ needed for comparisons
-  approved: { type: Boolean, default: false },
-  approvalDate: Date,
+  date: Date,
+  approved: { type: Boolean, default: false }, // Starts as false
+  approvalDate: Date, // Will be set when approved
   overdue: { type: Boolean, default: false },
-  batch: { type: mongoose.Schema.Types.ObjectId, ref: "Batch" } // ✅ link to batch
+  batch: { type: mongoose.Schema.Types.ObjectId, ref: "Batch" }
 });
 
 module.exports = mongoose.model("Schedule", scheduleSchema);

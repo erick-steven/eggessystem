@@ -384,7 +384,27 @@
                 font-size: 12px;
             }
         }
-      
+    
+/* Add this to your existing CSS */
+.filtered-out {
+    display: none !important;
+}
+
+/* Ensure tables maintain proper spacing when rows are hidden */
+table tbody tr:not(.filtered-out) {
+    display: table-row;
+}
+
+/* Debug styles - remove after testing */
+.debug-info {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-family: monospace;
+    font-size: 12px;
+}
+ 
  
 </style>
 </head>
@@ -1137,7 +1157,7 @@
             alert("Logging out...");
             // Add your logout logic here
         }
-
+    
         function filterBatches() {
             const input = document.getElementById('searchInput').value.toLowerCase();
             const options = document.querySelectorAll('#batchDropdown option');
@@ -1151,7 +1171,7 @@
                 }
             });
         }
-
+    
         // Table scrolling functionality
         document.addEventListener('DOMContentLoaded', function() {
             const tableContainers = document.querySelectorAll('.table-container');
@@ -1161,28 +1181,34 @@
                 const leftBtn = container.querySelector('.scroll-button.left');
                 const rightBtn = container.querySelector('.scroll-button.right');
                 
-                // Check if scrolling is needed
-                if (wrapper.scrollWidth > wrapper.clientWidth) {
-                    // Enable scrolling buttons
-                    wrapper.addEventListener('scroll', function() {
-                        leftBtn.disabled = wrapper.scrollLeft === 0;
-                        rightBtn.disabled = wrapper.scrollLeft >= (wrapper.scrollWidth - wrapper.clientWidth);
-                    });
-                    
-                    leftBtn.addEventListener('click', function() {
-                        wrapper.scrollBy({ left: -200, behavior: 'smooth' });
-                    });
-                    
-                    rightBtn.addEventListener('click', function() {
-                        wrapper.scrollBy({ left: 200, behavior: 'smooth' });
-                    });
-                } else {
-                    // Hide buttons if no scrolling needed
-                    leftBtn.style.display = 'none';
-                    rightBtn.style.display = 'none';
+                if (wrapper && leftBtn && rightBtn) {
+                    // Check if scrolling is needed
+                    if (wrapper.scrollWidth > wrapper.clientWidth) {
+                        // Enable scrolling buttons
+                        wrapper.addEventListener('scroll', function() {
+                            leftBtn.disabled = wrapper.scrollLeft === 0;
+                            rightBtn.disabled = wrapper.scrollLeft >= (wrapper.scrollWidth - wrapper.clientWidth - 5);
+                        });
+                        
+                        leftBtn.addEventListener('click', function() {
+                            wrapper.scrollBy({ left: -200, behavior: 'smooth' });
+                        });
+                        
+                        rightBtn.addEventListener('click', function() {
+                            wrapper.scrollBy({ left: 200, behavior: 'smooth' });
+                        });
+                        
+                        // Initial button state
+                        leftBtn.disabled = true;
+                        rightBtn.disabled = wrapper.scrollWidth <= wrapper.clientWidth;
+                    } else {
+                        // Hide buttons if no scrolling needed
+                        leftBtn.style.display = 'none';
+                        rightBtn.style.display = 'none';
+                    }
                 }
             });
-
+    
             // Date Range Filter Functionality
             const startDateInput = document.getElementById('startDate');
             const endDateInput = document.getElementById('endDate');
@@ -1225,25 +1251,7 @@
             // Apply date range filter
             if (applyBtn) {
                 applyBtn.addEventListener('click', function() {
-                    const startDate = startDateInput.value ? new Date(startDateInput.value).getTime() : null;
-                    const endDate = endDateInput.value ? new Date(endDateInput.value).getTime() : null;
-                    
-                    // Filter all date-filterable elements
-                    document.querySelectorAll('.date-filterable').forEach(row => {
-                        const rowDate = parseInt(row.dataset.date);
-                        const shouldShow = 
-                            (!startDate || rowDate >= startDate) && 
-                            (!endDate || rowDate <= endDate);
-                        
-                        if (shouldShow) {
-                            row.classList.remove('filtered-out');
-                        } else {
-                            row.classList.add('filtered-out');
-                        }
-                    });
-                    
-                    // Update analysis rows based on visible data
-                    updateAnalysisAfterFilter();
+                    applyDateFilter();
                 });
             }
             
@@ -1255,15 +1263,20 @@
                     
                     // Set "All Time" as active
                     quickRangeBtns.forEach(b => b.classList.remove('active'));
-                    document.querySelector('.quick-range-btn[data-range="all"]').classList.add('active');
+                    const allTimeBtn = document.querySelector('.quick-range-btn[data-range="all"]');
+                    if (allTimeBtn) {
+                        allTimeBtn.classList.add('active');
+                    }
                     
                     // Show all rows
                     document.querySelectorAll('.date-filterable').forEach(row => {
                         row.classList.remove('filtered-out');
                     });
                     
-                    // Restore original analysis
-                    restoreOriginalAnalysis();
+                    // Show all analysis rows
+                    document.querySelectorAll('.analysis-row').forEach(row => {
+                        row.classList.remove('filtered-out');
+                    });
                 });
             }
             
@@ -1284,40 +1297,119 @@
                 });
             }
             
-            // Store original analysis data
-            const originalAnalysis = {};
-            document.querySelectorAll('.analysis-row').forEach(row => {
-                const key = row.closest('table').id || 'table-' + Math.random().toString(36).substr(2, 9);
-                originalAnalysis[key] = row.innerHTML;
-            });
-            
-            // Function to update analysis after filtering
-            function updateAnalysisAfterFilter() {
-                // This would need to be customized based on your specific analysis needs
-                // For example, you might want to recalculate totals based on visible rows
+            function applyDateFilter() {
+                const startDate = startDateInput.value ? new Date(startDateInput.value + 'T00:00:00').getTime() : null;
+                const endDate = endDateInput.value ? new Date(endDateInput.value + 'T23:59:59').getTime() : null;
                 
-                // For now, we'll just show/hide analysis rows with their parent tables
-                document.querySelectorAll('.analysis-row').forEach(row => {
-                    const tableBody = row.closest('tbody');
-                    const visibleRows = tableBody.querySelectorAll('tr.date-filterable:not(.filtered-out)');
-                    
-                    if (visibleRows.length === 0) {
-                        row.classList.add('filtered-out');
-                    } else {
+                console.log('Filtering dates:', { startDate, endDate });
+                
+                // Filter all date-filterable elements
+                document.querySelectorAll('.date-filterable').forEach(row => {
+                    const rowDateStr = row.dataset.date;
+                    if (!rowDateStr) {
+                        console.log('No date found for row:', row);
                         row.classList.remove('filtered-out');
+                        return;
+                    }
+                    
+                    const rowDate = parseInt(rowDateStr);
+                    console.log('Row date:', new Date(rowDate).toDateString(), rowDate);
+                    
+                    const shouldShow = 
+                        (!startDate || rowDate >= startDate) && 
+                        (!endDate || rowDate <= endDate);
+                    
+                    if (shouldShow) {
+                        row.classList.remove('filtered-out');
+                    } else {
+                        row.classList.add('filtered-out');
                     }
                 });
+                
+                // Handle analysis rows - show if any data row in their table is visible
+                document.querySelectorAll('table').forEach(table => {
+                    const analysisRows = table.querySelectorAll('.analysis-row');
+                    const dataRows = table.querySelectorAll('tr.date-filterable:not(.filtered-out)');
+                    
+                    analysisRows.forEach(analysisRow => {
+                        if (dataRows.length > 0) {
+                            analysisRow.classList.remove('filtered-out');
+                        } else {
+                            analysisRow.classList.add('filtered-out');
+                        }
+                    });
+                });
+                
+                // Update financial insights if visible
+                updateFinancialInsights();
             }
             
-            // Function to restore original analysis
-            function restoreOriginalAnalysis() {
-                for (const key in originalAnalysis) {
-                    const row = document.querySelector(`#${key} .analysis-row`) || 
-                                document.querySelector(`[data-table="${key}"] .analysis-row`);
-                    if (row) {
-                        row.innerHTML = originalAnalysis[key];
-                    }
+            function updateFinancialInsights() {
+                // Only update if financial data section is visible
+                const financialSection = document.querySelector('.card-header:contains("Financial Records")')?.closest('.card');
+                if (!financialSection) return;
+                
+                const visibleRows = financialSection.querySelectorAll('tr.date-filterable:not(.filtered-out)');
+                if (visibleRows.length === 0) return;
+                
+                // Recalculate financial metrics based on visible rows
+                let totalIncome = 0;
+                let totalExpenses = 0;
+                let totalTraysProduced = 0;
+                let totalTraysSold = 0;
+                
+                visibleRows.forEach(row => {
+                    const incomeCell = row.cells[1]?.textContent || '0';
+                    const expensesCell = row.cells[2]?.textContent || '0';
+                    const traysProducedCell = row.cells[15]?.textContent || '0';
+                    const traysSoldCell = row.cells[16]?.textContent || '0';
+                    
+                    totalIncome += parseFloat(incomeCell.replace(/,/g, '')) || 0;
+                    totalExpenses += parseFloat(expensesCell.replace(/,/g, '')) || 0;
+                    totalTraysProduced += parseFloat(traysProducedCell.replace(/,/g, '')) || 0;
+                    totalTraysSold += parseFloat(traysSoldCell.replace(/,/g, '')) || 0;
+                });
+                
+                // Update the financial insights section if it exists
+                const incomeElement = document.querySelector('strong:contains("Total Income")')?.closest('p');
+                if (incomeElement) {
+                    incomeElement.innerHTML = `<strong>Total Income:</strong> ${totalIncome.toLocaleString()}`;
                 }
+                
+                const expensesElement = document.querySelector('strong:contains("Total Expenses")')?.closest('p');
+                if (expensesElement) {
+                    expensesElement.innerHTML = `<strong>Total Expenses:</strong> ${totalExpenses.toLocaleString()}`;
+                }
+                
+                const profitMargin = totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome) * 100 : 0;
+                const profitElement = document.querySelector('strong:contains("Profit Margin")')?.closest('p');
+                if (profitElement) {
+                    profitElement.innerHTML = `<strong>Profit Margin:</strong> ${profitMargin.toFixed(2)}%`;
+                }
+                
+                const traySalesPercentage = totalTraysProduced > 0 ? (totalTraysSold / totalTraysProduced) * 100 : 0;
+                const trayElement = document.querySelector('strong:contains("Tray Sales Rate")')?.closest('p');
+                if (trayElement) {
+                    trayElement.innerHTML = `<strong>Tray Sales Rate:</strong> ${traySalesPercentage.toFixed(2)}%`;
+                }
+            }
+            
+            // Add contains helper function if not exists
+            if (!Element.prototype.matches) {
+                Element.prototype.matches = Element.prototype.msMatchesSelector || 
+                                          Element.prototype.webkitMatchesSelector;
+            }
+            
+            if (!Element.prototype.closest) {
+                Element.prototype.closest = function(s) {
+                    var el = this;
+                    if (!document.documentElement.contains(el)) return null;
+                    do {
+                        if (el.matches(s)) return el;
+                        el = el.parentElement || el.parentNode;
+                    } while (el !== null && el.nodeType === 1);
+                    return null;
+                };
             }
         });
     </script>

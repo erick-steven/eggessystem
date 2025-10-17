@@ -20,7 +20,7 @@ const vaccinationRoutes = require('./routes/vaccinationRoutes');
 const medicationRoutes = require('./routes/medicationRoutes');
 const BatchRoutesVMV = require('./routes/BatchRoutesv-m-v');
 
-
+const scheduleApprovalRoutes = require('./routes/scheduleApproval');
 
 
 require('./config/passport')(passport);
@@ -70,7 +70,7 @@ app.use(flash());
 app.use('/api/vaccinations', vaccinationRoutes);
 app.use('/api/medications', medicationRoutes);
 app.use('/', BatchRoutesVMV);
-
+app.use('/v-m-v', scheduleApprovalRoutes);
 
 
 // Server

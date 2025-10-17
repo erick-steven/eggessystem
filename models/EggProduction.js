@@ -16,13 +16,9 @@ const eggProductionSchema = new mongoose.Schema({
         required: true,
         min: 0 
     },
-    traysDecimal: {
-        type: Number,
-        default: 0
-    },
     traysProduced: { 
-        type: Number, 
-        default: 0 
+        type: String,  // X.YY format
+        default: "0.00" 
     },
     remainingEggs: { 
         type: Number, 
@@ -56,54 +52,100 @@ const eggProductionSchema = new mongoose.Schema({
     }
 });
 
-// Calculate trays when saving production record
+// Pre-save hook - calculate individual record trays
 eggProductionSchema.pre('save', function(next) {
+    // Calculate trays for this specific entry only
     const eggsPerTray = this.eggsPerTray || 30;
+    const fullTrays = Math.floor(this.totalEggs / eggsPerTray);
+    const remainingEggs = this.totalEggs % eggsPerTray;
     
-    // Calculate decimal trays (e.g., 45 eggs → 1.5 trays)
-    this.traysDecimal = this.totalEggs / eggsPerTray;
+    // Format as X.YY for this entry only
+    this.traysProduced = remainingEggs === 0 ? 
+        fullTrays.toString() : 
+        `${fullTrays}.${remainingEggs.toString().padStart(2, '0')}`;
     
-    // Calculate whole trays and remaining eggs
-    const fullTrays = Math.floor(this.traysDecimal);
-    this.remainingEggs = this.totalEggs % eggsPerTray;
+    this.remainingEggs = remainingEggs;
     
-    // For new records, find previous production to calculate cumulative trays
-    if (this.isNew) {
-        this.constructor.findOne({ batch: this.batch })
-            .sort({ date: -1 })
-            .then(lastRecord => {
-                this.traysProduced = (lastRecord?.traysProduced || 0) + fullTrays;
-                next();
-            })
-            .catch(err => next(err));
-    } else {
-        next();
+    next();
+});
+
+// Post-save hook - recalculate ALL records for this batch with cumulative logic
+eggProductionSchema.post('save', async function(doc) {
+    try {
+        await recalculateBatchTrays(doc.batch);
+    } catch (error) {
+        console.error('Error updating trays:', error);
     }
 });
 
-// After saving production, update Financial records
-eggProductionSchema.post('save', async function(doc) {
+// Function to recalculate entire batch with proper cumulative tray calculation
+async function recalculateBatchTrays(batchId) {
+    const EggProduction = mongoose.model('EggProduction');
     const Financial = mongoose.model('Financial');
     
-    // Calculate total produced trays across all production records
-    const productionSummary = await this.constructor.aggregate([
-        { $match: { batch: doc.batch } },
-        { $group: { _id: null, totalProduced: { $sum: "$traysDecimal" } } }
-    ]);
+    // Get ALL production records for this batch, sorted by date
+    const allRecords = await EggProduction.find({ 
+        batch: batchId 
+    }).sort({ date: 1 });
     
-    const totalProduced = productionSummary[0]?.totalProduced || 0;
+    let cumulativeFullTrays = 0;
+    let cumulativeRemainingEggs = 0;
+    let totalTraysFromBatch = 0;
     
-    // Update the most recent financial record
+    const updates = [];
+    
+    // Calculate cumulative totals with proper tray formation
+    for (let record of allRecords) {
+        const eggsPerTray = record.eggsPerTray || 30;
+        
+        // Add today's eggs to cumulative remaining eggs
+        const totalEggsAvailable = cumulativeRemainingEggs + record.totalEggs;
+        
+        // Calculate how many full trays we can make now
+        const newFullTrays = Math.floor(totalEggsAvailable / eggsPerTray);
+        cumulativeRemainingEggs = totalEggsAvailable % eggsPerTray;
+        
+        // Update cumulative full trays
+        cumulativeFullTrays += newFullTrays;
+        totalTraysFromBatch = cumulativeFullTrays;
+        
+        // Format for display: cumulativeFullTrays.cumulativeRemainingEggs
+        const traysProducedStr = cumulativeRemainingEggs === 0 ? 
+            cumulativeFullTrays.toString() : 
+            `${cumulativeFullTrays}.${cumulativeRemainingEggs.toString().padStart(2, '0')}`;
+        
+        updates.push({
+            updateOne: {
+                filter: { _id: record._id },
+                update: { 
+                    $set: { 
+                        traysProduced: traysProducedStr,
+                        remainingEggs: cumulativeRemainingEggs
+                    } 
+                }
+            }
+        });
+    }
+    
+    // Bulk update all records
+    if (updates.length > 0) {
+        await EggProduction.bulkWrite(updates);
+    }
+    
+    // Update Financial model
     await Financial.findOneAndUpdate(
-        { batch: doc.batch },
+        { batch: batchId },
         { 
             $set: { 
-                traysProduced: totalProduced,
-                traysProducedDisplay: totalProduced.toFixed(2)
+                traysProduced: totalTraysFromBatch,
+                extraEggs: cumulativeRemainingEggs,
+                traysProducedDisplay: `${totalTraysFromBatch} trays + ${cumulativeRemainingEggs} eggs`
             } 
         },
-        { sort: { date: -1 }, upsert: true }
+        { upsert: true }
     );
-});
+    
+    console.log(`Recalculated batch ${batchId}: ${totalTraysFromBatch} trays + ${cumulativeRemainingEggs} eggs`);
+}
 
 module.exports = mongoose.model('EggProduction', eggProductionSchema);
