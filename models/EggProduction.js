@@ -52,7 +52,7 @@ const eggProductionSchema = new mongoose.Schema({
     }
 });
 
-// Pre-save hook - calculate individual record trays AND round percentages
+// Pre-save hook - calculate individual record trays
 eggProductionSchema.pre('save', function(next) {
     // Calculate trays for this specific entry only
     const eggsPerTray = this.eggsPerTray || 30;
@@ -66,17 +66,6 @@ eggProductionSchema.pre('save', function(next) {
     
     this.remainingEggs = remainingEggs;
     
-    // FIX: Round all percentages to 2 decimal places
-    if (this.goodEggsPercent) {
-        this.goodEggsPercent = Math.round(this.goodEggsPercent * 100) / 100;
-    }
-    if (this.badEggsPercent) {
-        this.badEggsPercent = Math.round(this.badEggsPercent * 100) / 100;
-    }
-    if (this.productionPercent) {
-        this.productionPercent = Math.round(this.productionPercent * 100) / 100;
-    }
-    
     next();
 });
 
@@ -84,41 +73,8 @@ eggProductionSchema.pre('save', function(next) {
 eggProductionSchema.post('save', async function(doc) {
     try {
         await recalculateBatchTrays(doc.batch);
-        
-        // FIX: Also ensure percentages are rounded for all batch records
-        const EggProduction = mongoose.model('EggProduction');
-        await EggProduction.updateMany(
-            { batch: doc.batch },
-            [
-                {
-                    $set: {
-                        goodEggsPercent: { 
-                            $cond: {
-                                if: { $ne: ["$goodEggsPercent", null] },
-                                then: { $round: ["$goodEggsPercent", 2] },
-                                else: "$goodEggsPercent"
-                            }
-                        },
-                        badEggsPercent: { 
-                            $cond: {
-                                if: { $ne: ["$badEggsPercent", null] },
-                                then: { $round: ["$badEggsPercent", 2] },
-                                else: "$badEggsPercent"
-                            }
-                        },
-                        productionPercent: { 
-                            $cond: {
-                                if: { $ne: ["$productionPercent", null] },
-                                then: { $round: ["$productionPercent", 2] },
-                                else: "$productionPercent"
-                            }
-                        }
-                    }
-                }
-            ]
-        );
     } catch (error) {
-        console.error('Error updating trays and percentages:', error);
+        console.error('Error updating trays:', error);
     }
 });
 
