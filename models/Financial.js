@@ -78,7 +78,7 @@ const financialSchema = new mongoose.Schema({
         payment: {
             method: { 
                 type: String, 
-                enum: ['cash', 'credit', 'bank', 'mobile'],
+                enum: ['cash', 'credit', 'bank', 'mmobile_money'],
                 required: true
             },
             accountType: { 
@@ -115,19 +115,23 @@ const financialSchema = new mongoose.Schema({
 // Indexes
 financialSchema.index({ batch: 1, date: 1 });
 
-// Pre-save hook for tray calculations
+// In Financial model pre-save hook, fix the aggregation:
 financialSchema.pre('save', async function(next) {
     try {
         // Calculate totals from transactions
         this.calculateFinancials();
         
-        // Get accurate production totals
+        // FIXED: Use proper field name and handle empty results
         const productionSummary = await EggProduction.aggregate([
             { $match: { batch: this.batch } },
-            { $group: { _id: null, total: { $sum: "$traysDecimal" } } }
+            { $group: { 
+                _id: null, 
+                totalProduced: { $sum: "$traysDecimal" } 
+            } }
         ]);
         
-        this.traysProduced = productionSummary[0]?.total || 0;
+        this.traysProduced = productionSummary.length > 0 ? 
+            productionSummary[0].totalProduced : 0;
         
         // Calculate remaining trays
         this.traysRemaining = this.traysProduced - this.traysSold;

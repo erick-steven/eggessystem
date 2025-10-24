@@ -243,7 +243,11 @@ router.post('/egg-production', async (req, res) => {
         const { batch, date, totalEggs, goodEggsPercent, badEggsPercent, weight } = req.body;
 
         // Validate percentages
-        if (parseFloat(goodEggsPercent) + parseFloat(badEggsPercent) > 100) {
+        const goodPercent = parseFloat(goodEggsPercent) || 100; // Default to 100% good
+        const badPercent = parseFloat(badEggsPercent) || 0;     // Default to 0% bad
+        const totalEggsNum = parseInt(totalEggs);
+        
+        if (goodPercent + badPercent > 100) {
             return res.status(400).render('egg-production', {
                 error: 'The sum of Good Eggs and Bad Eggs percentages cannot exceed 100%',
                 batches: await Batch.find().sort({ batchNo: 1 }),
@@ -252,37 +256,48 @@ router.post('/egg-production', async (req, res) => {
             });
         }
 
-        // Get batch info
+        // Calculate actual counts
+        let goodEggsCount = Math.round(totalEggsNum * (goodPercent / 100));
+        let badEggsCount = Math.round(totalEggsNum * (badPercent / 100));
+        
+        // Ensure total matches exactly
+        const totalCalculated = goodEggsCount + badEggsCount;
+        if (totalCalculated !== totalEggsNum) {
+            const difference = totalEggsNum - totalCalculated;
+            goodEggsCount += difference; // Adjust good eggs to match total
+        }
+
+        console.log(`📝 Creating Production Record:
+        • Total Eggs: ${totalEggsNum}
+        • Good Eggs: ${goodEggsCount} (${goodPercent}%) → Will be added to stock
+        • Bad Eggs: ${badEggsCount} (${badPercent}%) → Will be DEDUCTED from stock`);
+
+        // Get batch info for production percentage
         const batchInfo = await Batch.findById(batch);
         if (!batchInfo) {
             throw new Error('Batch not found');
         }
 
-        // Calculate values with partial trays
-        const eggsPerTray = 30;
-        const traysProduced = Math.floor(totalEggs / eggsPerTray);
-        const remainingEggs = totalEggs % eggsPerTray;
-        const productionPercent = (totalEggs / batchInfo.totalNumber) * 100;
-
-        // Create new record with additional fields
+        // Create new record - trays will be auto-calculated from GOOD EGGS only
         const newProduction = new EggProduction({
             batch,
             date,
-            totalEggs,
-            goodEggsPercent,
-            badEggsPercent,
+            totalEggs: totalEggsNum,
+            goodEggsPercent: goodPercent,
+            badEggsPercent: badPercent,
+            goodEggsCount,    // Store calculated counts
+            badEggsCount,     // Store calculated counts
             weight,
-            traysProduced,
-            remainingEggs, // Store the leftover eggs
-            eggsPerTray,   // Store the conversion rate (typically 30)
-            productionPercent
+            productionPercent: (totalEggsNum / batchInfo.totalNumber) * 100
         });
 
         await newProduction.save();
+        
+        console.log('✅ Production record saved with bad eggs deduction');
         res.redirect('/egg-production');
         
     } catch (err) {
-        console.error('Error saving egg production:', err);
+        console.error('❌ Error saving egg production:', err);
         res.status(500).render('egg-production', {
             error: 'Server error while saving record',
             batches: await Batch.find().sort({ batchNo: 1 }),
